@@ -7,6 +7,3 @@ stages:
     - group:
       - dartfmt
       - dartanalyzer: --fatal-infos --fatal-warnings .
-cache:
-  directories:
-  - .dart_tool/build

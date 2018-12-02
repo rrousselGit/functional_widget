@@ -1,0 +1,16 @@
+name: example
+
+dependencies:
+  functional_widget: 0.0.1
+  flutter:
+    sdk: flutter 
+
+dev_dependencies:
+  functional_widget_generator: 0.0.2
+  build_runner: 1.1.2
+
+dependency_overrides:
+  functional_widget:
+    path: ../../functional_widget
+  functional_widget_generator:
+    path: ../

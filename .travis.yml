@@ -31,5 +31,4 @@ branches:
 cache:
   directories:
     - "$HOME/.pub-cache"
-    - packages/functional_widget/.dart_tool/build
     - packages/functional_widget_generator/.dart_tool/build

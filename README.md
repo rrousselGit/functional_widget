@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/rrousselGit/functional_widget.svg?branch=master)](https://travis-ci.org/rrousselGit/functional_widget)
+
 Widgets are cool. But classes are quite verbose:
 
 ```dart

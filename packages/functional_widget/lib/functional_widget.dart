@@ -6,4 +6,3 @@ class _FunctionalWidget {
 /// The name of the generated widget is the name of the decorated function,
 /// with an uppercase as first letter.
 const widget = _FunctionalWidget();
-

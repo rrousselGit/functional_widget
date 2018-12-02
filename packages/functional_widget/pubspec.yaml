@@ -1,0 +1,12 @@
+name: functional_widget
+description: work in progress
+author: Remi Rousselet <darky12s@gmail.com>
+homepage: https://github.com/rrousselGit/functional_widget
+version: 0.0.0
+
+environment:
+  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+
+dependencies:
+  source_gen: 0.9.1+3 
+  build_config: 0.3.1+4

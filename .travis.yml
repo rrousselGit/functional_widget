@@ -1,26 +1,35 @@
-language: bash
-os:
-  - osx
-sudo: false
-before_script:
-  - cd ..
-  - git clone https://github.com/flutter/flutter.git -b master
-  - export PATH=$PATH:$PWD/flutter/bin
-  - export PATH=$PATH:$PWD/flutter/bin/cache/dart-sdk/bin
-  - flutter doctor
-  - cd -
-script:
-  # abort on error
-  - cd packages/functional_widget_generator
-  - set -e
-  - flutter packages get
-  - flutter format --set-exit-if-changed lib example test
-  - flutter analyze --no-current-package lib test/ example/
-  - flutter test --no-pub
-  # export coverage
-  - bash <(curl -s https://codecov.io/bash)
-  - set +e
-  - cd -
+# Created with package:mono_repo v1.2.1
+language: dart
+
+jobs:
+  include:
+    - stage: analyzer_and_format
+      name: "SDK: stable - DIR: packages/functional_widget - TASKS: [dartfmt -n --set-exit-if-changed ., dartanalyzer --fatal-infos --fatal-warnings .]"
+      script: ./tool/travis.sh dartfmt dartanalyzer
+      env: PKG="packages/functional_widget"
+      dart: stable
+    - stage: analyzer_and_format
+      name: "SDK: stable - DIR: packages/functional_widget_generator - TASKS: [dartfmt -n --set-exit-if-changed ., dartanalyzer --fatal-infos --fatal-warnings .]"
+      script: ./tool/travis.sh dartfmt dartanalyzer
+      env: PKG="packages/functional_widget_generator"
+      dart: stable
+    - stage: unit_test
+      name: "SDK: stable - DIR: packages/functional_widget_generator - TASKS: pub run test"
+      script: ./tool/travis.sh test
+      env: PKG="packages/functional_widget_generator"
+      dart: stable
+
+stages:
+  - analyzer_and_format
+  - unit_test
+
+# Only building master means that we don't run two builds for each pull request.
+branches:
+  only:
+    - master
+
 cache:
   directories:
-    - $HOME/.pub-cache
+    - "$HOME/.pub-cache"
+    - packages/functional_widget/.dart_tool/build
+    - packages/functional_widget_generator/.dart_tool/build

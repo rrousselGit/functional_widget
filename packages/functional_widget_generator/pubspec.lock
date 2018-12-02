@@ -2,7 +2,7 @@
 # See https://www.dartlang.org/tools/pub/glossary#lockfile
 packages:
   analyzer:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: analyzer
       url: "https://pub.dartlang.org"

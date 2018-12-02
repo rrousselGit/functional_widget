@@ -69,6 +69,7 @@ Class _functionToWidgetClass(FunctionElement element) {
   return Class(
     (b) => b
       ..name = toTitle(function.name)
+      ..docs.add(function.documentationComment ?? '')
       ..extend =
           widgetType == WidgetType.hook ? hookWidgetRef : statelessWidgetRef
       ..fields.addAll(_paramsToFields(fields))
@@ -133,6 +134,7 @@ Iterable<Field> _paramsToFields(List<Parameter> params) sync* {
       (b) => b
         ..name = param.name
         ..modifier = FieldModifier.final$
+        ..docs.addAll(param.docs)
         ..type = param.type,
     );
   }
@@ -143,6 +145,10 @@ Iterable<Parameter> _parseParameters(List<ParameterElement> parameters) sync* {
     yield Parameter(
       (b) => b
         ..name = parameter.name
+        ..docs.add(parameter.documentationComment ?? '')
+        ..annotations.addAll(parameter.metadata.map((meta) {
+          return CodeExpression(Code(meta.element.displayName));
+        }))
         ..named = parameter.isNamed
         ..type = parameter.type?.displayName != null
             ? refer(parameter.type.displayName)

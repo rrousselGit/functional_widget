@@ -21,6 +21,10 @@ class MFunctionElement extends Mock implements FunctionElement {
   }
 }
 
+class MElementAnnotation extends Mock implements ElementAnnotation {}
+
+class MElement extends Mock implements Element {}
+
 class MDartType extends Mock implements DartType {
   MDartType();
   MDartType.valid(String displayName) {
@@ -35,6 +39,7 @@ class MParameterElement extends Mock implements ParameterElement {
     when(this.name).thenReturn(name);
     when(this.isNamed).thenReturn(named);
     when(this.type).thenReturn(type);
+    when(this.metadata).thenReturn([]);
   }
 }
 
@@ -361,5 +366,38 @@ class Name extends HookWidget {
 }
 ''');
     });
+  });
+
+  test('annotation/documentation', () {
+    final fe = MFunctionElement.valid();
+    when(fe.documentationComment).thenReturn('''
+/// Hello
+/// WOrld
+''');
+    final parameter = MParameterElement.valid("foo", named: true);
+    final required = MElementAnnotation();
+    final requiredElement = MElement();
+    when(requiredElement.displayName).thenReturn("required");
+    when(required.element).thenReturn(requiredElement);
+    when(parameter.metadata).thenReturn([required]);
+
+    when(fe.parameters).thenReturn([parameter]);
+    final value = generate(fe);
+
+    expectGenerated(value, '''
+/// Hello
+/// WOrld
+
+class Name extends StatelessWidget {
+  const Name({Key key, @required this.foo}) : super(key: key);
+
+  final foo;
+
+  @override
+  Widget build(BuildContext _context) {
+    return name(foo: foo);
+  }
+}
+''');
   });
 }

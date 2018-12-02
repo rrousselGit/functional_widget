@@ -115,4 +115,54 @@ To run the generator, you must use `build_runner` cli:
 flutter pub pub run build_runner watch
 ```
 
+### All the potential syntaxtes
+
+_functional_widget_ will inject widget specific parameters if you ask for them.
+You can potentially write any of the following:
+
+```dart
+Widget foo();
+Widget foo(BuildContext context);
+Widget foo(Key key);
+Widget foo(BuildContext context, Key key);
+Widget foo(Key key, BuildContext context);
+```
+
+You can also replace `BuildContext` by `HookContext` from https://github.com/rrousselGit/flutter_hooks
+
+You can then add however many arguments you like **after** the previously defined arguments. They will then be added to the class constructor and as a widget field:
+
+- positional
+```dart
+@widget
+Widget foo(int value) => Text(value.toString());
+
+// USAGE
+
+new Foo(42);
+```
+
+- named:
+
+```dart
+@widget
+Widget foo({int value}) => Text(value.toString());
+
+// USAGE
+
+new Foo(value: 42);
+```
+
+- A bit of everything:
+
+```dart
+@widget
+Widget foo(BuildContext context, int value, { int value2 }) {
+  return Text('$value $value2')
+}
+
+// USAGE
+
+new Foo(42, value2: 24);
+```
 

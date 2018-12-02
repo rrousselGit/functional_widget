@@ -19,10 +19,15 @@ EXIT_CODE=0
 while (( "$#" )); do
   TASK=$1
   case $TASK in
-  dartanalyzer) echo
-    echo -e '\033[1mTASK: dartanalyzer\033[22m'
+  dartanalyzer_0) echo
+    echo -e '\033[1mTASK: dartanalyzer_0\033[22m'
     echo -e 'dartanalyzer --fatal-infos --fatal-warnings .'
     dartanalyzer --fatal-infos --fatal-warnings . || EXIT_CODE=$?
+    ;;
+  dartanalyzer_1) echo
+    echo -e '\033[1mTASK: dartanalyzer_1\033[22m'
+    echo -e 'dartanalyzer --fatal-infos --fatal-warnings lib test'
+    dartanalyzer --fatal-infos --fatal-warnings lib test || EXIT_CODE=$?
     ;;
   dartfmt) echo
     echo -e '\033[1mTASK: dartfmt\033[22m'

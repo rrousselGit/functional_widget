@@ -30,7 +30,7 @@ packages:
     source: hosted
     version: "1.0.4"
   build:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: build
       url: "https://pub.dartlang.org"
@@ -123,10 +123,10 @@ packages:
   functional_widget:
     dependency: "direct main"
     description:
-      path: "../functional_widget"
-      relative: true
-    source: path
-    version: "0.0.0"
+      name: functional_widget
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   glob:
     dependency: transitive
     description:

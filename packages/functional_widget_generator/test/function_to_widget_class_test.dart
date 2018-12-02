@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:functional_widget_generator/function_to_widget_class.dart';
 import 'package:test/test.dart';
-import 'package:functional_widget_generator/builder.dart';
 import 'package:mockito/mockito.dart';
 import 'package:dart_style/dart_style.dart';
 

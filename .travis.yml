@@ -11,14 +11,15 @@ before_script:
   - cd -
 script:
   # abort on error
-  - set -e
   - cd packages/functional_widget_generator
+  - set -e
   - flutter packages get
   - flutter format --set-exit-if-changed lib example test
   - flutter analyze --no-current-package lib test/ example/
   - flutter test --no-pub
   # export coverage
   - bash <(curl -s https://codecov.io/bash)
+  - set +e
   - cd -
 cache:
   directories:

@@ -12,6 +12,9 @@ before_script:
 script:
   # abort on error
   - set -e
+  - pwd
+  - ls
+  - ls packages
   - cd packages/functional_widdget_generator
   - flutter packages get
   - flutter format --set-exit-if-changed lib example test

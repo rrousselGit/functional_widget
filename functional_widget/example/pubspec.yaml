@@ -6,11 +6,11 @@ dependencies:
     sdk: flutter 
 
 dev_dependencies:
-  functional_widget_generator: 0.0.2
+  functional_widget: 0.0.2
   build_runner: 1.1.2
 
 dependency_overrides:
   functional_widget_annotation:
     path: ../../functional_widget_annotation
-  functional_widget_generator:
+  functional_widget:
     path: ../

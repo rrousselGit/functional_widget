@@ -94,7 +94,7 @@ runApp(
 There are a few separate packages you need to install:
 
 - `functional_widget_annotation`, a package containing decorators. You must install it as `dependencies`.
-- `functional_widget_generator`, a generator that uses the decorators from the previous packages to generate your widget. Install it as `dev_dependencies`
+- `functional_widget`, a generator that uses the decorators from the previous packages to generate your widget. Install it as `dev_dependencies`
 - `build_runner`, a tool that is able to run code-generators. Install it as `dev_dependencies`
 
 ```yaml
@@ -102,7 +102,7 @@ dependencies:
   functional_widget_annotation: 0.0.1
 
 dev_dependencies:
-  functional_widget_generator: 0.0.1
+  functional_widget: 0.0.1
   build_runner: 1.1.2
 ```
 

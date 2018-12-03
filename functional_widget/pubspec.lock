@@ -120,13 +120,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.6+8"
-  functional_widget:
+  functional_widget_annotation:
     dependency: "direct main"
     description:
-      name: functional_widget
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1"
+      path: "../functional_widget_annotation"
+      relative: true
+    source: path
+    version: "0.0.2"
   glob:
     dependency: transitive
     description:

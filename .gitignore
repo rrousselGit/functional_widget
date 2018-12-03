@@ -6,3 +6,5 @@
 .pub-cache/
 .pub/
 build/
+android/
+ios/

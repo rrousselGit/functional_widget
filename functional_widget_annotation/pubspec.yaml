@@ -1,8 +1,8 @@
 name: functional_widget_annotation
 description: Annotations for function_widget_generator used to generate widget classes from a function
 author: Remi Rousselet <darky12s@gmail.com>
-homepage: https://github.com/rrousselGit/functional_widget_annotation/tree/master/packages/functional_widget_annotation
-version: 0.0.3
+homepage: https://github.com/rrousselGit/functional_widget/tree/master/functional_widget_annotation
+version: 0.0.4
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"

@@ -2,13 +2,13 @@ name: functional_widget
 description: A code generator that generates widget classes from their implementation as a function.
 author: Remi Rousselet <darky12s@gmail.com>
 homepage: https://github.com/rrousselGit/functional_widget/tree/master/functional_widget
-version: 0.0.4
+version: 0.1.0
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
 
 dependencies:
-  functional_widget_annotation: '>=0.0.0 <0.1.0'
+  functional_widget_annotation: '>=0.1.0 <0.2.0'
   source_gen: ^0.9.0
   build_config: '>=0.3.0 <1.0.0'
   code_builder: '>=3.1.3 <4.0.0'

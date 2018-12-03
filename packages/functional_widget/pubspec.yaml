@@ -1,8 +1,0 @@
-name: functional_widget
-description: Decorators for function_widget_generator
-author: Remi Rousselet <darky12s@gmail.com>
-homepage: https://github.com/rrousselGit/functional_widget
-version: 0.0.1
-
-environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"

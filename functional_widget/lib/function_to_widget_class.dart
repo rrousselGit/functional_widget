@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:functional_widget/functional_widget.dart';
+import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:code_builder/code_builder.dart';
 
 String toTitle(String string) {

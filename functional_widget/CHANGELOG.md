@@ -1,6 +1,7 @@
-## 0.1.1
+## 0.2.0
 
-- Fix bug where `dart:io` incorrectly was generated as `dynamic`
+- Rename generator
+- Add documentation
 
 ## 0.1.0
 

@@ -1,3 +1,5 @@
+import 'package:analyzer/analyzer.dart';
+import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:dart_style/dart_style.dart';
@@ -21,6 +23,19 @@ class MFunctionElement extends Mock implements FunctionElement {
   }
 }
 
+class MAstNode extends Mock implements AstNode {}
+
+class MToken extends Mock implements Token {
+  final String _name;
+
+  MToken(this._name);
+
+  @override
+  String toString() {
+    return _name;
+  }
+}
+
 class MElementAnnotation extends Mock implements ElementAnnotation {}
 
 class MElement extends Mock implements Element {}
@@ -28,6 +43,7 @@ class MElement extends Mock implements Element {}
 class MDartType extends Mock implements DartType {
   MDartType();
   MDartType.valid(String displayName) {
+    when(isUndefined).thenReturn(false);
     when(this.displayName).thenReturn(displayName);
   }
 }
@@ -421,6 +437,36 @@ class Name extends StatelessWidget {
   const Name({Key key, this.foo}) : super(key: key);
 
   final foo;
+
+  @override
+  Widget build(BuildContext _context) {
+    return name(foo: foo);
+  }
+}
+''');
+  });
+  test('property documentation', () {
+    final fe = MFunctionElement.valid();
+    final parameter = MParameterElement.valid('foo', named: true);
+    final ptype = MDartType.valid('dynamic');
+    final typeElement = MElement();
+    final astNode = MAstNode();
+    final token = MToken('Color');
+
+    when(fe.parameters).thenReturn([parameter]);
+    when(parameter.type).thenReturn(ptype);
+    when(ptype.isUndefined).thenReturn(true);
+    when(ptype.element).thenReturn(typeElement);
+    when(typeElement.computeNode()).thenReturn(astNode);
+    when(astNode.beginToken).thenReturn(token);
+
+    final value = generate(fe);
+
+    expectGenerated(value, '''
+class Name extends StatelessWidget {
+  const Name({Key key, this.foo}) : super(key: key);
+
+  final Color foo;
 
   @override
   Widget build(BuildContext _context) {

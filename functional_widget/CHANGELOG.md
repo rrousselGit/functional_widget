@@ -1,3 +1,7 @@
+## 0.2.2
+
+- Readme update
+
 ## 0.2.1
 
 - Fix bug where types from `dart:ui` where generated as `dynamic`

@@ -101,10 +101,10 @@ There are a few separate packages you need to install:
 
 ```yaml
 dependencies:
-  functional_widget_annotation: 0.0.1
+  functional_widget_annotation: 0.1.0
 
 dev_dependencies:
-  functional_widget: 0.0.1
+  functional_widget: 0.2.2
   build_runner: 1.1.2
 ```
 

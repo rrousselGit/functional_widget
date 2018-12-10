@@ -409,9 +409,6 @@ class Name extends StatelessWidget {
 /// * [foo] Hello World
 ''');
     final parameter = MParameterElement.valid('foo', named: true);
-    when(parameter.documentationComment).thenReturn('''
-/// Hello World
-''');
     when(fe.parameters).thenReturn([parameter]);
     final value = generate(fe);
 
@@ -423,7 +420,6 @@ class Name extends StatelessWidget {
 class Name extends StatelessWidget {
   const Name({Key key, this.foo}) : super(key: key);
 
-  /// Hello World
   final foo;
 
   @override

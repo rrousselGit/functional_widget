@@ -163,9 +163,13 @@ Iterable<Parameter> _parseParameters(List<ParameterElement> parameters) sync* {
           return CodeExpression(Code(meta.element.displayName));
         }))
         ..named = parameter.isNamed
-        ..type = parameter.type?.displayName != null
-            ? refer(parameter.type.displayName)
-            : null,
+        ..type = parameter.type == null
+            ? null
+            : parameter.type.isUndefined
+                ? refer(parameter.computeNode().beginToken.toString())
+                : parameter.type?.displayName != null
+                    ? refer(parameter.type.displayName)
+                    : null,
     );
   }
 }

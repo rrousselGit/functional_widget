@@ -3,7 +3,7 @@ name: example
 dependencies:
   functional_widget_annotation: 0.0.2
   flutter:
-    sdk: flutter 
+    sdk: flutter
 
 dev_dependencies:
   functional_widget: 0.0.2

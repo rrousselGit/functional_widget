@@ -1,14 +1,14 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:functional_widget/function_to_widget_class.dart';
-import 'package:test/test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:dart_style/dart_style.dart';
+import 'package:functional_widget/function_to_widget_class.dart';
+import 'package:mockito/mockito.dart';
+import 'package:test/test.dart';
 
 class MFunctionElement extends Mock implements FunctionElement {
   MFunctionElement() : super();
   MFunctionElement.valid(
-      {String name = "name", List<ParameterElement> parameters = const []})
+      {String name = 'name', List<ParameterElement> parameters = const []})
       : super() {
     when(isAbstract).thenReturn(false);
     when(isAsynchronous).thenReturn(false);
@@ -37,14 +37,14 @@ class MParameterElement extends Mock implements ParameterElement {
   MParameterElement.valid(String name, {bool named = false, DartType type})
       : super() {
     when(this.name).thenReturn(name);
-    when(this.isNamed).thenReturn(named);
+    when(isNamed).thenReturn(named);
     when(this.type).thenReturn(type);
-    when(this.metadata).thenReturn([]);
+    when(metadata).thenReturn([]);
   }
 }
 
 String generate(FunctionElement fe) {
-  return MyGenerator().generateForAnnotatedElement(fe, null, null);
+  return FunctionalWidget().generateForAnnotatedElement(fe, null, null);
 }
 
 void main() {
@@ -82,15 +82,15 @@ void main() {
 
     test('name', () {
       final fe = MFunctionElement.valid();
-      when(fe.name).thenReturn("Foo");
+      when(fe.name).thenReturn('Foo');
       expect(() => generate(fe), throwsArgumentError);
-      when(fe.name).thenReturn("_Foo");
+      when(fe.name).thenReturn('_Foo');
       expect(() => generate(fe), throwsArgumentError);
     });
   });
 
   group('arguments', () {
-    test("none", () {
+    test('none', () {
       final value = generate(MFunctionElement.valid(parameters: []));
 
       expectGenerated(value, '''
@@ -104,11 +104,11 @@ class Name extends StatelessWidget {
 }
 ''');
     });
-    test("required", () {
+    test('required', () {
       final fe = MFunctionElement.valid();
       final parameters = [
-        MParameterElement.valid("foo"),
-        MParameterElement.valid("bar", type: MDartType.valid("Bar")),
+        MParameterElement.valid('foo'),
+        MParameterElement.valid('bar', type: MDartType.valid('Bar')),
       ];
       when(fe.parameters).thenReturn(parameters);
       final value = generate(fe);
@@ -129,12 +129,12 @@ class Name extends StatelessWidget {
 ''');
     });
 
-    test("named", () {
+    test('named', () {
       final fe = MFunctionElement.valid();
       final parameters = [
-        MParameterElement.valid("foo", named: true),
-        MParameterElement.valid("bar",
-            named: true, type: MDartType.valid("Bar")),
+        MParameterElement.valid('foo', named: true),
+        MParameterElement.valid('bar',
+            named: true, type: MDartType.valid('Bar')),
       ];
       when(fe.parameters).thenReturn(parameters);
       final value = generate(fe);
@@ -155,14 +155,14 @@ class Name extends StatelessWidget {
 ''');
     });
 
-    test("mixt", () {
+    test('mixt', () {
       final fe = MFunctionElement.valid();
       final parameters = [
-        MParameterElement.valid("foo"),
-        MParameterElement.valid("bar", type: MDartType.valid("Bar")),
-        MParameterElement.valid("nfoo", named: true),
-        MParameterElement.valid("nbar",
-            named: true, type: MDartType.valid("Bar")),
+        MParameterElement.valid('foo'),
+        MParameterElement.valid('bar', type: MDartType.valid('Bar')),
+        MParameterElement.valid('nfoo', named: true),
+        MParameterElement.valid('nbar',
+            named: true, type: MDartType.valid('Bar')),
       ];
       when(fe.parameters).thenReturn(parameters);
       final value = generate(fe);
@@ -189,10 +189,10 @@ class Name extends StatelessWidget {
     });
 
     group('inject parameters', () {
-      test("context", () {
+      test('context', () {
         final fe = MFunctionElement.valid();
         final parameters = [
-          MParameterElement.valid("foo", type: MDartType.valid("BuildContext")),
+          MParameterElement.valid('foo', type: MDartType.valid('BuildContext')),
         ];
         when(fe.parameters).thenReturn(parameters);
         final value = generate(fe);
@@ -209,10 +209,10 @@ class Name extends StatelessWidget {
 ''');
       });
 
-      test("key", () {
+      test('key', () {
         final fe = MFunctionElement.valid();
         final parameters = [
-          MParameterElement.valid("foo", type: MDartType.valid("Key")),
+          MParameterElement.valid('foo', type: MDartType.valid('Key')),
         ];
         when(fe.parameters).thenReturn(parameters);
         final value = generate(fe);
@@ -229,11 +229,11 @@ class Name extends StatelessWidget {
 ''');
       });
 
-      test("context then key", () {
+      test('context then key', () {
         final fe = MFunctionElement.valid();
         final parameters = [
-          MParameterElement.valid("bar", type: MDartType.valid("BuildContext")),
-          MParameterElement.valid("foo", type: MDartType.valid("Key")),
+          MParameterElement.valid('bar', type: MDartType.valid('BuildContext')),
+          MParameterElement.valid('foo', type: MDartType.valid('Key')),
         ];
         when(fe.parameters).thenReturn(parameters);
         final value = generate(fe);
@@ -250,11 +250,11 @@ class Name extends StatelessWidget {
 ''');
       });
 
-      test("key then context", () {
+      test('key then context', () {
         final fe = MFunctionElement.valid();
         final parameters = [
-          MParameterElement.valid("foo", type: MDartType.valid("Key")),
-          MParameterElement.valid("bar", type: MDartType.valid("BuildContext")),
+          MParameterElement.valid('foo', type: MDartType.valid('Key')),
+          MParameterElement.valid('bar', type: MDartType.valid('BuildContext')),
         ];
         when(fe.parameters).thenReturn(parameters);
         final value = generate(fe);
@@ -271,11 +271,11 @@ class Name extends StatelessWidget {
 ''');
       });
 
-      test("whatever then context", () {
+      test('whatever then context', () {
         final fe = MFunctionElement.valid();
         final parameters = [
-          MParameterElement.valid("foo", type: MDartType.valid("Whatever")),
-          MParameterElement.valid("bar", type: MDartType.valid("BuildContext")),
+          MParameterElement.valid('foo', type: MDartType.valid('Whatever')),
+          MParameterElement.valid('bar', type: MDartType.valid('BuildContext')),
         ];
         when(fe.parameters).thenReturn(parameters);
         final value = generate(fe);
@@ -296,11 +296,11 @@ class Name extends StatelessWidget {
 ''');
       });
 
-      test("whatever then key", () {
+      test('whatever then key', () {
         final fe = MFunctionElement.valid();
         final parameters = [
-          MParameterElement.valid("foo", type: MDartType.valid("Whatever")),
-          MParameterElement.valid("bar", type: MDartType.valid("Key")),
+          MParameterElement.valid('foo', type: MDartType.valid('Whatever')),
+          MParameterElement.valid('bar', type: MDartType.valid('Key')),
         ];
         when(fe.parameters).thenReturn(parameters);
         final value = generate(fe);
@@ -327,8 +327,8 @@ class Name extends StatelessWidget {
     test('first argument', () {
       final fe = MFunctionElement.valid();
       final parameters = [
-        MParameterElement.valid("foo",
-            named: true, type: MDartType.valid("HookContext")),
+        MParameterElement.valid('foo',
+            named: true, type: MDartType.valid('HookContext')),
       ];
       when(fe.parameters).thenReturn(parameters);
       final value = generate(fe);
@@ -347,10 +347,10 @@ class Name extends HookWidget {
     test('second argument', () {
       final fe = MFunctionElement.valid();
       final parameters = [
-        MParameterElement.valid("foo",
-            named: true, type: MDartType.valid("Key")),
-        MParameterElement.valid("bar",
-            named: true, type: MDartType.valid("HookContext")),
+        MParameterElement.valid('foo',
+            named: true, type: MDartType.valid('Key')),
+        MParameterElement.valid('bar',
+            named: true, type: MDartType.valid('HookContext')),
       ];
       when(fe.parameters).thenReturn(parameters);
       final value = generate(fe);
@@ -374,10 +374,10 @@ class Name extends HookWidget {
 /// Hello
 /// WOrld
 ''');
-    final parameter = MParameterElement.valid("foo", named: true);
+    final parameter = MParameterElement.valid('foo', named: true);
     final required = MElementAnnotation();
     final requiredElement = MElement();
-    when(requiredElement.displayName).thenReturn("required");
+    when(requiredElement.displayName).thenReturn('required');
     when(required.element).thenReturn(requiredElement);
     when(parameter.metadata).thenReturn([required]);
 
@@ -391,6 +391,39 @@ class Name extends HookWidget {
 class Name extends StatelessWidget {
   const Name({Key key, @required this.foo}) : super(key: key);
 
+  final foo;
+
+  @override
+  Widget build(BuildContext _context) {
+    return name(foo: foo);
+  }
+}
+''');
+  });
+
+  test('property documentation', () {
+    final fe = MFunctionElement.valid();
+    when(fe.documentationComment).thenReturn('''
+/// Hello
+///
+/// * [foo] Hello World
+''');
+    final parameter = MParameterElement.valid('foo', named: true);
+    when(parameter.documentationComment).thenReturn('''
+/// Hello World
+''');
+    when(fe.parameters).thenReturn([parameter]);
+    final value = generate(fe);
+
+    expectGenerated(value, '''
+/// Hello
+///
+/// * [foo] Hello World
+
+class Name extends StatelessWidget {
+  const Name({Key key, this.foo}) : super(key: key);
+
+  /// Hello World
   final foo;
 
   @override

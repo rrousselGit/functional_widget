@@ -3,11 +3,12 @@
 part of 'main.dart';
 
 // **************************************************************************
-// MyGenerator
+// Generator: FunctionalWidget
 // **************************************************************************
 
-/// Hello World
-/// World
+/// Class documentation
+///
+/// * [value] Field documentation
 class Foo extends StatelessWidget {
   const Foo(this.value, {Key key}) : super(key: key);
 

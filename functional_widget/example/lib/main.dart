@@ -9,6 +9,6 @@ void main() => runApp(const Foo(42));
 ///
 /// * [value] Field documentation
 @widget
-Widget foo(BuildContext context, int value) {
+Widget foo(BuildContext context, int value, Color color) {
   return Container();
 }

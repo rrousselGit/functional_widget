@@ -10,12 +10,14 @@ part of 'main.dart';
 ///
 /// * [value] Field documentation
 class Foo extends StatelessWidget {
-  const Foo(this.value, {Key key}) : super(key: key);
+  const Foo(this.value, this.color, {Key key}) : super(key: key);
 
   final int value;
 
+  final Color color;
+
   @override
   Widget build(BuildContext _context) {
-    return foo(_context, value);
+    return foo(_context, value, color);
   }
 }

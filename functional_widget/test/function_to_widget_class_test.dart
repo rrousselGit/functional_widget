@@ -23,7 +23,7 @@ class MFunctionElement extends Mock implements FunctionElement {
   }
 }
 
-class MAstNode extends Mock implements AstNode {}
+class MFormalParameter extends Mock implements FormalParameter {}
 
 class MToken extends Mock implements Token {
   final String _name;
@@ -445,20 +445,20 @@ class Name extends StatelessWidget {
 }
 ''');
   });
-  test('property documentation', () {
+  test('dart ui', () {
     final fe = MFunctionElement.valid();
     final parameter = MParameterElement.valid('foo', named: true);
     final ptype = MDartType.valid('dynamic');
-    final typeElement = MElement();
-    final astNode = MAstNode();
+    final node = MFormalParameter();
     final token = MToken('Color');
+
+    print(token.toString());
 
     when(fe.parameters).thenReturn([parameter]);
     when(parameter.type).thenReturn(ptype);
     when(ptype.isUndefined).thenReturn(true);
-    when(ptype.element).thenReturn(typeElement);
-    when(typeElement.computeNode()).thenReturn(astNode);
-    when(astNode.beginToken).thenReturn(token);
+    when(parameter.computeNode()).thenReturn(node);
+    when(node.beginToken).thenReturn(token);
 
     final value = generate(fe);
 

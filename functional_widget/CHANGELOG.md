@@ -1,3 +1,7 @@
+## 0.2.1
+
+- Fix bug where types from `dart:ui` where generated as `dynamic`
+
 ## 0.2.0
 
 - Rename generator

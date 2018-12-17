@@ -145,11 +145,11 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.1.0"
+    version: "0.2.2"
   functional_widget_annotation:
     dependency: "direct main"
     description:
-      path: "..\\..\\functional_widget_annotation"
+      path: "../../functional_widget_annotation"
       relative: true
     source: path
     version: "0.1.0"

@@ -10,14 +10,23 @@ part of 'main.dart';
 ///
 /// * [value] Field documentation
 class Foo extends StatelessWidget {
-  const Foo(this.value, this.color, {Key key}) : super(key: key);
+  const Foo(this.value, this.bar,
+      {Key key, this.pos, this.pos2, this.test1, this.stuff})
+      : super(key: key);
 
   final int value;
 
-  final Color color;
+  final Color bar;
+
+  final int pos;
+
+  final String pos2;
+
+  final dynamic Function(int, {String bar}) test1;
+
+  final void Function(int) stuff;
 
   @override
-  Widget build(BuildContext _context) {
-    return foo(_context, value, color);
-  }
+  Widget build(BuildContext _context) => foo(_context, key, value, bar,
+      pos: pos, pos2: pos2, test1: test1, stuff: stuff);
 }

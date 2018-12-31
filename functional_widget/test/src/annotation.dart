@@ -21,7 +21,6 @@ class ShouldGenerate {
       this.checked = false});
 }
 
-
 // fake flutter
 class Widget {}
 

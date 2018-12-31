@@ -4,18 +4,18 @@ language: dart
 jobs:
   include:
     - stage: analyzer_and_format
-      name: "SDK: stable - DIR: functional_widget - TASKS: [dartfmt -n --set-exit-if-changed ., flutter analyze --no-pub --no-preamble]"
-      script: ./tool/travis.sh dartfmt command_0
+      name: "SDK: stable - DIR: functional_widget - TASKS: [dartfmt -n --set-exit-if-changed ., dartanalyzer --fatal-infos --fatal-warnings lib test]"
+      script: ./tool/travis.sh dartfmt dartanalyzer_0
       env: PKG="functional_widget"
       dart: stable
     - stage: unit_test
-      name: "SDK: stable - DIR: functional_widget - TASKS: flutter pub pub run test"
-      script: ./tool/travis.sh command_1
+      name: "SDK: stable - DIR: functional_widget - TASKS: pub run test"
+      script: ./tool/travis.sh test
       env: PKG="functional_widget"
       dart: stable
     - stage: analyzer_and_format
       name: "SDK: stable - DIR: functional_widget_annotation - TASKS: [dartfmt -n --set-exit-if-changed ., dartanalyzer --fatal-infos --fatal-warnings lib]"
-      script: ./tool/travis.sh dartfmt dartanalyzer
+      script: ./tool/travis.sh dartfmt dartanalyzer_1
       env: PKG="functional_widget_annotation"
       dart: stable
 

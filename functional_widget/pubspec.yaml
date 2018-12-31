@@ -22,3 +22,5 @@ dev_dependencies:
     pedantic: 1.4.0
     build_runner: 1.1.2
     build_test: ^0.10.4
+    code_gen_tester:
+        path: ../code_gen_tester 

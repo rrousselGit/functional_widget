@@ -1,0 +1,13 @@
+name: code_gen_tester
+version: 0.0.1
+environment:
+    sdk: '>=2.0.0-dev.68.0 <3.0.0'
+dependencies:
+    source_gen: ^0.9.0
+    build: '>=0.12.6 <2.0.0'
+    analyzer: '>=0.32.2 <0.34.0'
+    test: 1.5.1+1
+    dart_style: 1.2.0
+    pedantic: 1.4.0
+    build_runner: 1.1.2
+    build_test: ^0.10.4

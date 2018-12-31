@@ -25,12 +25,15 @@ class FunctionalWidget extends GeneratorForAnnotation<dynamic> {
   @override
   String generateForAnnotatedElement(
       Element element, ConstantReader annotation, BuildStep buildStep) {
-    final res = _functionToWidgetClass(element as FunctionElement)
+    if (element is! FunctionElement) {
+      throw InvalidGenerationSourceError(
+        'Error, the decorated element is not a function',
+        element: element,
+      );
+    }
+    return _functionToWidgetClass(element as FunctionElement)
         .accept(_emitter)
         .toString();
-
-    print(res);
-    return res;
   }
 }
 

@@ -3,10 +3,7 @@ import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 
 part 'main.g.dart';
 
-void main() => runApp(const Foo(
-      42,
-      Colors.red,
-    ));
+void main() => runApp(const Foo(42));
 
 /// Class documentation
 ///
@@ -16,18 +13,18 @@ Widget foo(
   BuildContext context,
   Key key,
   int value,
-  Color bar, {
-  int pos,
-  String pos2,
-  Color test1(int foo, {String bar}),
-  void Function(int foo) stuff,
-}
-    // void Function() boo,
-    // void bar(),
-    // // ignore: generic_function_typed_param_unsupported
-    // T b1(),
-    // Bidule truc,
-    ) {
+//   Color bar, {
+//   int pos,
+//   String pos2,
+//   Color test1(int foo, {String bar}),
+//   void Function(int foo) stuff,
+// }
+  // void Function() boo,
+  // void bar(),
+  // // ignore: generic_function_typed_param_unsupported
+  // T b1(),
+  // Bidule truc,
+) {
   return Container();
 }
 

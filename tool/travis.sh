@@ -19,13 +19,18 @@ EXIT_CODE=0
 while (( "$#" )); do
   TASK=$1
   case $TASK in
-  dartanalyzer_0) echo
-    echo -e '\033[1mTASK: dartanalyzer_0\033[22m'
-    echo -e 'dartanalyzer --fatal-infos --fatal-warnings lib test'
-    dartanalyzer --fatal-infos --fatal-warnings lib test || EXIT_CODE=$?
+  command_0) echo
+    echo -e '\033[1mTASK: command_0\033[22m'
+    echo -e 'flutter analyze --no-pub --no-preamble'
+    flutter analyze --no-pub --no-preamble || EXIT_CODE=$?
     ;;
-  dartanalyzer_1) echo
-    echo -e '\033[1mTASK: dartanalyzer_1\033[22m'
+  command_1) echo
+    echo -e '\033[1mTASK: command_1\033[22m'
+    echo -e 'flutter pub pub run test'
+    flutter pub pub run test || EXIT_CODE=$?
+    ;;
+  dartanalyzer) echo
+    echo -e '\033[1mTASK: dartanalyzer\033[22m'
     echo -e 'dartanalyzer --fatal-infos --fatal-warnings lib'
     dartanalyzer --fatal-infos --fatal-warnings lib || EXIT_CODE=$?
     ;;
@@ -33,11 +38,6 @@ while (( "$#" )); do
     echo -e '\033[1mTASK: dartfmt\033[22m'
     echo -e 'dartfmt -n --set-exit-if-changed .'
     dartfmt -n --set-exit-if-changed . || EXIT_CODE=$?
-    ;;
-  test) echo
-    echo -e '\033[1mTASK: test\033[22m'
-    echo -e 'pub run test'
-    pub run test || EXIT_CODE=$?
     ;;
   *) echo -e "\033[31mNot expecting TASK '${TASK}'. Error!\033[0m"
     EXIT_CODE=1

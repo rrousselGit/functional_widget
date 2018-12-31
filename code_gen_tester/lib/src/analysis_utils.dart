@@ -10,19 +10,17 @@ import 'package:build_test/build_test.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
 
-Future<LibraryReader> resolveCompilationUnit(String sourceDirectory) async {
-  final files = Directory(sourceDirectory).listSync().whereType<File>().toList()
-    ..sort((a, b) => p.basename(a.path).compareTo(p.basename(b.path)));
-
-  // Sort files to ensure the "first" one is first
+Future<LibraryReader> resolveCompilationUnit(String filePath) async {
+  final assetId = AssetId.parse('a|lib/${p.basename(filePath)}');
+  final files =
+      Directory(p.dirname(filePath)).listSync().whereType<File>().toList();
 
   final fileMap = Map<String, String>.fromEntries(files.map(
       (f) => MapEntry('a|lib/${p.basename(f.path)}', f.readAsStringSync())));
 
   final library = await resolveSources(fileMap, (item) async {
-    final assetId = AssetId.parse(fileMap.keys.first);
     return await item.libraryFor(assetId);
-  });
+  }, resolverFor: 'a|lib/${p.basename(filePath)}');
 
   return LibraryReader(library);
 }

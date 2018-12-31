@@ -197,12 +197,6 @@ Iterable<Field> _paramsToFields(List<Parameter> params) sync* {
   }
 }
 
-Iterable<Parameter> _parseParameters(List<ParameterElement> parameters) sync* {
-  for (final parameter in parameters) {
-    yield _parseParameter(parameter);
-  }
-}
-
 Parameter _parseParameter(ParameterElement parameter) {
   return Parameter(
     (b) => b

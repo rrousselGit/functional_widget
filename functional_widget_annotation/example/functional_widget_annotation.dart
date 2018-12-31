@@ -3,5 +3,5 @@ import 'package:flutter/widgets.dart';
 
 @widget
 Widget foo() {
-  return Text("Hello World");
+  return Text('Hello World');
 }

@@ -141,11 +141,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.9"
-  flutter:
-    dependency: "direct dev"
-    description: flutter
-    source: sdk
-    version: "0.0.0"
   front_end:
     dependency: transitive
     description:
@@ -377,11 +372,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.2+4"
-  sky_engine:
-    dependency: transitive
-    description: flutter
-    source: sdk
-    version: "0.0.99"
   source_gen:
     dependency: "direct main"
     description:
@@ -487,13 +477,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.0+5"
-  vector_math:
-    dependency: transitive
-    description:
-      name: vector_math
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.8"
   vm_service_client:
     dependency: transitive
     description:

@@ -5,7 +5,7 @@ dart:
 stages:
   - analyzer_and_format:
     - group:
-      - dartfmt
+      - command: flutter format --set-exit-if-changed .
       - command: flutter analyze --no-pub --no-preamble
   - unit_test:
     - command:  flutter pub pub run test

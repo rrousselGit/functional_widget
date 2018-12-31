@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 //ignore_for_file: avoid_unused_constructor_parameters, prefer_initializing_formals
-import 'package:flutter/widgets.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'annotation.dart';
 

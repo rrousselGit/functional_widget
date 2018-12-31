@@ -20,7 +20,5 @@ dev_dependencies:
     mockito: 4.0.0
     dart_style: 1.2.0
     pedantic: 1.4.0
-    flutter:
-        sdk: flutter
     build_runner: 1.1.2
     build_test: ^0.10.4

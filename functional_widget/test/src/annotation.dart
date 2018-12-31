@@ -20,3 +20,9 @@ class ShouldGenerate {
       this.expectedLogItems = const [],
       this.checked = false});
 }
+
+
+// fake flutter
+class Widget {}
+
+class Container extends Widget {}

@@ -8,7 +8,7 @@ environment:
     sdk: '>=2.0.0-dev.68.0 <3.0.0'
 
 dependencies:
-    functional_widget_annotation: '>=0.1.0 <0.2.0'
+    # functional_widget_annotation: ^0.3.0
     source_gen: ^0.9.0
     build_config: '>=0.3.0 <1.0.0'
     code_builder: '>=3.1.3 <4.0.0'
@@ -25,3 +25,7 @@ dev_dependencies:
     build_test: ^0.10.4
     code_gen_tester:
         path: ../code_gen_tester
+
+dependency_overrides:
+    functional_widget_annotation:
+      path: ../functional_widget_annotation

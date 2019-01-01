@@ -180,5 +180,15 @@ class UndefinedType extends StatelessWidget {
 }
 '''));
     });
+    test('hook widget', () async {
+      await _expect('hookExample', completion('''
+class HookExample extends HookWidget {
+  const HookExample({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => hookExample();
+}
+'''));
+    });
   });
 }

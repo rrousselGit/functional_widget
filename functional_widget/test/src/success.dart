@@ -43,3 +43,6 @@ Widget annotated({@meta.required int foo}) => Container();
 @widget
 // ignore: undefined_class
 Widget undefinedType({Color foo}) => Container();
+
+@hwidget
+Widget hookExample() => Container();

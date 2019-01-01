@@ -49,7 +49,15 @@ class FunctionalWidget extends GeneratorForAnnotation<dynamic> {
       );
     }
 
-    return _functionToWidgetClass(function).accept(_emitter).toString();
+    var _widgetType = _WidgetType.stateless;
+
+    if (element.metadata.any((e) => e.element.name == 'hwidget')) {
+      _widgetType = _WidgetType.hook;
+    }
+
+    return _functionToWidgetClass(function, _widgetType)
+        .accept(_emitter)
+        .toString();
   }
 }
 
@@ -59,13 +67,12 @@ const _kHookWidgetsPath = 'package:flutter_hooks/flutter_hooks.dart';
 final _widgetRef = refer('Widget', _kFlutterWidgetsPath);
 final _statelessWidgetRef = refer('StatelessWidget', _kFlutterWidgetsPath);
 final _hookWidgetRef = refer('HookWidget', _kHookWidgetsPath);
-final _hookContextRef = refer('HookContext', _kHookWidgetsPath);
 final _keyRef = refer('Key', _kFlutterWidgetsPath);
 final _buildContextRef = refer('BuildContext', _kFlutterWidgetsPath);
 
 enum _WidgetType { stateless, hook }
 
-Spec _functionToWidgetClass(FunctionElement function) {
+Spec _functionToWidgetClass(FunctionElement function, _WidgetType widgetType) {
   final t = _functionElementToMethod(function);
   final params = List<Parameter>.from(t.requiredParameters)
     ..addAll(t
@@ -77,9 +84,6 @@ Spec _functionToWidgetClass(FunctionElement function) {
       params.length > 1 && startsWithContext && _isKey(params[1]);
   final followedByContext =
       params.length > 1 && startsWithKey && _isContext(params[1]);
-
-  final widgetType =
-      _hasHookContext(params) ? _WidgetType.hook : _WidgetType.stateless;
 
   final fields = (followedByContext || followedByKey)
       ? (List<Parameter>.from(params)..removeRange(0, 2))
@@ -106,8 +110,10 @@ Spec _functionToWidgetClass(FunctionElement function) {
       ..docs.add(function.documentationComment ?? '')
       ..extend =
           widgetType == _WidgetType.hook ? _hookWidgetRef : _statelessWidgetRef
-      ..fields.addAll(_paramsToFields(fields, doc: function.documentationComment))
-      ..constructors.add(_getConstructor(fields, doc: function.documentationComment))
+      ..fields
+          .addAll(_paramsToFields(fields, doc: function.documentationComment))
+      ..constructors
+          .add(_getConstructor(fields, doc: function.documentationComment))
       ..methods.add(
         Method(
           (b) => b
@@ -117,9 +123,7 @@ Spec _functionToWidgetClass(FunctionElement function) {
             ..requiredParameters.add(
               Parameter((b) => b
                 ..name = '_context'
-                ..type = widgetType == _WidgetType.hook
-                    ? _hookContextRef
-                    : _buildContextRef),
+                ..type = _buildContextRef),
             )
             ..body = CodeExpression(Code(t.name)).call(positional, named).code,
         ),

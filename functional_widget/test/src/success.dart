@@ -46,3 +46,23 @@ Widget undefinedType({Color foo}) => Container();
 
 @hwidget
 Widget hookExample() => Container();
+
+typedef Typedef = void Function();
+
+@widget
+Widget typedefFunction(Typedef t) => Container();
+
+@widget
+Widget inlineFunction(void t()) => Container();
+
+@widget
+Widget inlineFunction2(void Function() t) => Container();
+
+@widget
+Widget nestedFunction(void Function(void Function(int a), int b) t) =>
+    Container();
+
+@widget
+// ignore: undefined_class
+Widget unknownTypeFunction(Color Function() t) =>
+    Container();

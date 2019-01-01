@@ -190,5 +190,69 @@ class HookExample extends HookWidget {
 }
 '''));
     });
+
+    group('functions', () {
+      test('typedef', () async {
+        await _expect('typedefFunction', completion('''
+class TypedefFunction extends StatelessWidget {
+  const TypedefFunction(this.t, {Key key}) : super(key: key);
+
+  final void Function() t;
+
+  @override
+  Widget build(BuildContext _context) => typedefFunction(t);
+}
+'''));
+      });
+      test('inline', () async {
+        await _expect('inlineFunction', completion('''
+class InlineFunction extends StatelessWidget {
+  const InlineFunction(this.t, {Key key}) : super(key: key);
+
+  final void Function() t;
+
+  @override
+  Widget build(BuildContext _context) => inlineFunction(t);
+}
+'''));
+      });
+      test('inline2', () async {
+        await _expect('inlineFunction2', completion('''
+class InlineFunction2 extends StatelessWidget {
+  const InlineFunction2(this.t, {Key key}) : super(key: key);
+
+  final void Function() t;
+
+  @override
+  Widget build(BuildContext _context) => inlineFunction2(t);
+}
+'''));
+      });
+      test('nested function', () async {
+        await _expect('nestedFunction', completion('''
+class NestedFunction extends StatelessWidget {
+  const NestedFunction(this.t, {Key key}) : super(key: key);
+
+  final void Function(void Function(int), int) t;
+
+  @override
+  Widget build(BuildContext _context) => nestedFunction(t);
+}
+'''));
+      });
+      test('unknown type function', () async {
+        // currently not possible to know the type
+        await _expect('unknownTypeFunction', completion('''
+class UnknownTypeFunction extends StatelessWidget {
+  const UnknownTypeFunction(this.t, {Key key}) : super(key: key);
+
+  final dynamic Function() t;
+
+  @override
+  Widget build(BuildContext _context) => unknownTypeFunction(t);
+}
+'''));
+      });
+    });
   });
 }

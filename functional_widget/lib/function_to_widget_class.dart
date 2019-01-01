@@ -237,11 +237,6 @@ Reference _typeToReference(DartType type) {
   if (type.element is FunctionTypedElement) {
     final FunctionTypedElement functionTyped = type.element;
     final t = _functionTypedElementToFunctionType(functionTyped);
-    print('''
-${functionTyped.returnType}
-${functionTyped.name}
-${functionTyped.typeParameters.map((f) => f.name).join(',')}
-''');
     return t.type;
   }
 

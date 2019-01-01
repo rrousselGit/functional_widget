@@ -31,9 +31,25 @@ class FunctionalWidget extends GeneratorForAnnotation<dynamic> {
         element: element,
       );
     }
-    return _functionToWidgetClass(element as FunctionElement)
-        .accept(_emitter)
-        .toString();
+    var function = element as FunctionElement;
+    if (function.isAsynchronous ||
+        function.isExternal ||
+        function.isGenerator ||
+        function.returnType?.displayName != 'Widget') {
+      throw InvalidGenerationSourceError(
+        'Invalid prototype. The function must be synchronous, top level, and return a Widget',
+        element: function,
+      );
+    }
+    final className = _toTitle(function.name);
+    if (className == function.name) {
+      throw InvalidGenerationSourceError(
+        'The function name must start with a lowercase',
+        element: function,
+      );
+    }
+
+    return _functionToWidgetClass(function).accept(_emitter).toString();
   }
 }
 
@@ -50,18 +66,6 @@ final _buildContextRef = refer('BuildContext', _kFlutterWidgetsPath);
 enum _WidgetType { stateless, hook }
 
 Spec _functionToWidgetClass(FunctionElement function) {
-  if (function.isAsynchronous ||
-      function.isExternal ||
-      function.isGenerator ||
-      !function.isStatic ||
-      function.isAbstract) {
-    throw ArgumentError();
-  }
-  final className = _toTitle(function.name);
-  if (className == function.name) {
-    throw ArgumentError('The function name must start with a lowercase');
-  }
-
   final t = _functionElementToMethod(function);
   final params = List<Parameter>.from(t.requiredParameters)
     ..addAll(t

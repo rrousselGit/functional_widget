@@ -23,6 +23,20 @@ void main() async {
         throwsInvalidGenerationSourceError(),
       );
     });
+    test('dynamic', () async {
+      await expectGenerateNamed(
+        tester,
+        'dynamicTest',
+        FunctionalWidget(),
+        throwsInvalidGenerationSourceError(),
+      );
+      await expectGenerateNamed(
+        tester,
+        'implicitDynamic',
+        FunctionalWidget(),
+        throwsInvalidGenerationSourceError(),
+      );
+    });
     test('async', () async {
       await expectGenerateNamed(
         tester,

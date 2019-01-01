@@ -23,3 +23,14 @@ int notAWidget() {
 Widget TitleName() {
   return Container();
 }
+
+@widget
+dynamic dynamicTest() {
+  return Container();
+}
+
+@widget
+// ignore: strong_mode_implicit_dynamic_return
+implicitDynamic() {
+  return Container();
+}

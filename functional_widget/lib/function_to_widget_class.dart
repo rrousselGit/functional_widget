@@ -184,11 +184,6 @@ Constructor _getConstructor(List<Parameter> fields, {String doc}) {
   );
 }
 
-bool _hasHookContext(List<Parameter> params) {
-  return (params.isNotEmpty && params.first.type?.symbol == 'HookContext') ||
-      (params.length > 1 && params[1].type?.symbol == 'HookContext');
-}
-
 bool _isKey(Parameter param) => param.type?.symbol == 'Key';
 
 bool _isContext(Parameter param) =>

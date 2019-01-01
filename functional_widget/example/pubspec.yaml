@@ -1,11 +1,14 @@
 name: example
+description: A new Flutter project.
+environment:
+  sdk: ">=2.0.0-dev.68.0 <3.0.0" 
 
 dependencies:
-  functional_widget_annotation: ^0.3.0
   flutter:
     sdk: flutter
+  functional_widget_annotation: ^0.3.0
 
 dev_dependencies:
-  functional_widget:
-    path: ../
   build_runner: 1.1.2
+  functional_widget:
+    path: ../../functional_widget 

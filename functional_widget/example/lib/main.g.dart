@@ -6,14 +6,9 @@ part of 'main.dart';
 // Generator: FunctionalWidget
 // **************************************************************************
 
-/// Class documentation
-///
-/// * [value] Field documentation
 class Foo extends StatelessWidget {
-  const Foo(this.value, {Key key}) : super(key: key);
-
-  final int value;
+  const Foo({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext _context) => foo(_context, key, value);
+  Widget build(BuildContext _context) => foo();
 }

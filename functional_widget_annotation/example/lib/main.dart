@@ -6,7 +6,7 @@ part 'main.g.dart';
 // we create a widget using a widget decorated by `@widget`
 @widget
 Widget foo() {
-  return const Text('Hello World');
+  return Container();
 }
 
 void main() => runApp(

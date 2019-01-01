@@ -64,5 +64,13 @@ Widget nestedFunction(void Function(void Function(int a), int b) t) =>
 
 @widget
 // ignore: undefined_class
-Widget unknownTypeFunction(Color Function() t) =>
-    Container();
+Widget unknownTypeFunction(Color Function() t) => Container();
+
+@widget
+Widget generic<T>(T foo) => Container();
+
+@widget
+Widget genericExtends<T extends Container>(T foo) => Container();
+
+@widget
+Widget genericFunction<T>(T Function() foo) => Container();

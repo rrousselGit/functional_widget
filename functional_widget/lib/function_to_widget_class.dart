@@ -108,6 +108,7 @@ Spec _functionToWidgetClass(FunctionElement function, _WidgetType widgetType) {
     (b) => b
       ..name = _toTitle(function.name)
       ..docs.add(function.documentationComment ?? '')
+      ..types.addAll(_parseTypeParemeters(function.typeParameters))
       ..extend =
           widgetType == _WidgetType.hook ? _hookWidgetRef : _statelessWidgetRef
       ..fields
@@ -125,10 +126,28 @@ Spec _functionToWidgetClass(FunctionElement function, _WidgetType widgetType) {
                 ..name = '_context'
                 ..type = _buildContextRef),
             )
-            ..body = CodeExpression(Code(t.name)).call(positional, named).code,
+            ..body = CodeExpression(Code(t.name))
+                .call(
+                    positional,
+                    named,
+                    function.typeParameters
+                        ?.map((p) => refer(p.displayName))
+                        ?.toList())
+                .code,
         ),
       ),
   );
+}
+
+Iterable<Reference> _parseTypeParemeters(
+  List<TypeParameterElement> typeParameters,
+) {
+  return typeParameters?.map((e) {
+        return e.bound?.displayName != null
+            ? refer('${e.displayName} extends ${e.bound.displayName}')
+            : refer(e.displayName);
+      }) ??
+      [];
 }
 
 Method _functionElementToMethod(FunctionElement element) {

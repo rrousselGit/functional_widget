@@ -191,6 +191,33 @@ class HookExample extends HookWidget {
 '''));
     });
 
+    test('generic widget', () async {
+      // currently not possible to know the type
+      await _expect('generic', completion('''
+class Generic<T> extends StatelessWidget {
+  const Generic(this.foo, {Key key}) : super(key: key);
+
+  final T foo;
+
+  @override
+  Widget build(BuildContext _context) => generic<T>(foo);
+}
+'''));
+    });
+    test('generic widget extends', () async {
+      // currently not possible to know the type
+      await _expect('genericExtends', completion('''
+class GenericExtends<T extends Container> extends StatelessWidget {
+  const GenericExtends(this.foo, {Key key}) : super(key: key);
+
+  final T foo;
+
+  @override
+  Widget build(BuildContext _context) => genericExtends<T>(foo);
+}
+'''));
+    });
+
     group('functions', () {
       test('typedef', () async {
         await _expect('typedefFunction', completion('''
@@ -250,6 +277,19 @@ class UnknownTypeFunction extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => unknownTypeFunction(t);
+}
+'''));
+      });
+      test('generic function', () async {
+        // currently not possible to know the type
+        await _expect('genericFunction', completion('''
+class GenericFunction<T> extends StatelessWidget {
+  const GenericFunction(this.foo, {Key key}) : super(key: key);
+
+  final T Function() foo;
+
+  @override
+  Widget build(BuildContext _context) => genericFunction<T>(foo);
 }
 '''));
       });

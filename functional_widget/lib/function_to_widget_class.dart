@@ -106,8 +106,8 @@ Spec _functionToWidgetClass(FunctionElement function) {
       ..docs.add(function.documentationComment ?? '')
       ..extend =
           widgetType == _WidgetType.hook ? _hookWidgetRef : _statelessWidgetRef
-      ..fields.addAll(_paramsToFields(fields))
-      ..constructors.add(_getConstructor(fields))
+      ..fields.addAll(_paramsToFields(fields, doc: function.documentationComment))
+      ..constructors.add(_getConstructor(fields, doc: function.documentationComment))
       ..methods.add(
         Method(
           (b) => b
@@ -156,7 +156,7 @@ FunctionType _functionTypedElementToFunctionType(FunctionTypedElement element) {
         .map((p) => p.type)));
 }
 
-Constructor _getConstructor(List<Parameter> fields) {
+Constructor _getConstructor(List<Parameter> fields, {String doc}) {
   return Constructor(
     (b) => b
       ..constant = true
@@ -165,6 +165,7 @@ Constructor _getConstructor(List<Parameter> fields) {
         ..name = 'key'
         ..docs.clear()
         ..type = _keyRef))
+      ..docs.add(doc ?? '')
       ..requiredParameters
           .addAll(fields.where((p) => !p.named).map((p) => p.rebuild((b) => b
             ..toThis = true
@@ -189,13 +190,13 @@ bool _isKey(Parameter param) => param.type?.symbol == 'Key';
 bool _isContext(Parameter param) =>
     param.type?.symbol == 'BuildContext' || param.type?.symbol == 'HookContext';
 
-Iterable<Field> _paramsToFields(List<Parameter> params) sync* {
+Iterable<Field> _paramsToFields(List<Parameter> params, {String doc}) sync* {
   for (final param in params) {
     yield Field(
       (b) => b
         ..name = param.name
         ..modifier = FieldModifier.final$
-        ..docs.addAll(param.docs)
+        ..docs.add(doc ?? '')
         ..type = param.type,
     );
   }

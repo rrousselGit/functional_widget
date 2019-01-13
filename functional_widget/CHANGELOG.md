@@ -1,5 +1,8 @@
 ## 0.4.0
 
+- Overrides `debugFillProperties` for an integration with the widget inspector.
+This requires adding a new import in your dart files:
+`import 'package:flutter/foundation.dart'`;
 - Now overrides `operator==` and `hashCode` on the generated class.
 
 The behavior is that the following function:

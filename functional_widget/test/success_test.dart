@@ -36,6 +36,12 @@ class Required extends StatelessWidget {
   @override
   bool operator ==(Object o) =>
       identical(o, this) || (o is Required && foo == o.foo && bar == o.bar);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<dynamic>('foo', foo));
+    properties.add(IntProperty('bar', bar));
+  }
 }
 '''));
     });
@@ -56,6 +62,12 @@ class Named extends StatelessWidget {
   @override
   bool operator ==(Object o) =>
       identical(o, this) || (o is Named && foo == o.foo && bar == o.bar);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<dynamic>('foo', foo));
+    properties.add(IntProperty('bar', bar));
+  }
 }
 '''));
     });
@@ -86,6 +98,14 @@ class Mixt extends StatelessWidget {
           bar == o.bar &&
           nfoo == o.nfoo &&
           nbar == o.nbar);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<dynamic>('foo', foo));
+    properties.add(IntProperty('bar', bar));
+    properties.add(DiagnosticsProperty<dynamic>('nfoo', nfoo));
+    properties.add(IntProperty('nbar', nbar));
+  }
 }
 '''));
     });
@@ -147,6 +167,12 @@ class WhateverThenContext extends StatelessWidget {
   bool operator ==(Object o) =>
       identical(o, this) ||
       (o is WhateverThenContext && foo == o.foo && bar == o.bar);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IntProperty('foo', foo));
+    properties.add(DiagnosticsProperty<BuildContext>('bar', bar));
+  }
 }
 '''));
     });
@@ -167,6 +193,12 @@ class WhateverThenKey extends StatelessWidget {
   bool operator ==(Object o) =>
       identical(o, this) ||
       (o is WhateverThenKey && foo == o.foo && bar == o.bar);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IntProperty('foo', foo));
+    properties.add(DiagnosticsProperty<Key>('bar', bar));
+  }
 }
 '''));
     });
@@ -190,6 +222,11 @@ class Documentation extends StatelessWidget {
   @override
   bool operator ==(Object o) =>
       identical(o, this) || (o is Documentation && foo == o.foo);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IntProperty('foo', foo));
+  }
 }
 '''));
     });
@@ -207,6 +244,11 @@ class Annotated extends StatelessWidget {
   @override
   bool operator ==(Object o) =>
       identical(o, this) || (o is Annotated && foo == o.foo);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IntProperty('foo', foo));
+  }
 }
 '''));
     });
@@ -224,6 +266,11 @@ class UndefinedType extends StatelessWidget {
   @override
   bool operator ==(Object o) =>
       identical(o, this) || (o is UndefinedType && foo == o.foo);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Color>('foo', foo));
+  }
 }
 '''));
     });
@@ -253,6 +300,11 @@ class Generic<T> extends StatelessWidget {
   @override
   bool operator ==(Object o) =>
       identical(o, this) || (o is Generic<T> && foo == o.foo);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<T>('foo', foo));
+  }
 }
 '''));
     });
@@ -271,6 +323,11 @@ class GenericExtends<T extends Container> extends StatelessWidget {
   @override
   bool operator ==(Object o) =>
       identical(o, this) || (o is GenericExtends<T> && foo == o.foo);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<T>('foo', foo));
+  }
 }
 '''));
     });
@@ -290,6 +347,11 @@ class TypedefFunction extends StatelessWidget {
   @override
   bool operator ==(Object o) =>
       identical(o, this) || (o is TypedefFunction && t == o.t);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<dynamic>.has('t', t));
+  }
 }
 '''));
       });
@@ -307,6 +369,11 @@ class InlineFunction extends StatelessWidget {
   @override
   bool operator ==(Object o) =>
       identical(o, this) || (o is InlineFunction && t == o.t);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<dynamic>.has('t', t));
+  }
 }
 '''));
       });
@@ -324,6 +391,11 @@ class InlineFunction2 extends StatelessWidget {
   @override
   bool operator ==(Object o) =>
       identical(o, this) || (o is InlineFunction2 && t == o.t);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<dynamic>.has('t', t));
+  }
 }
 '''));
       });
@@ -341,6 +413,11 @@ class NestedFunction extends StatelessWidget {
   @override
   bool operator ==(Object o) =>
       identical(o, this) || (o is NestedFunction && t == o.t);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<dynamic>.has('t', t));
+  }
 }
 '''));
       });
@@ -359,6 +436,11 @@ class UnknownTypeFunction extends StatelessWidget {
   @override
   bool operator ==(Object o) =>
       identical(o, this) || (o is UnknownTypeFunction && t == o.t);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<dynamic>.has('t', t));
+  }
 }
 '''));
       });
@@ -377,6 +459,11 @@ class GenericFunction<T> extends StatelessWidget {
   @override
   bool operator ==(Object o) =>
       identical(o, this) || (o is GenericFunction<T> && foo == o.foo);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<dynamic>.has('foo', foo));
+  }
 }
 '''));
       });
@@ -397,6 +484,12 @@ class GenericMultiple<T, S> extends StatelessWidget {
   bool operator ==(Object o) =>
       identical(o, this) ||
       (o is GenericMultiple<T, S> && foo == o.foo && bar == o.bar);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<T>('foo', foo));
+    properties.add(DiagnosticsProperty<S>('bar', bar));
+  }
 }
 '''));
       });

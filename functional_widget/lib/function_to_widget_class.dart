@@ -11,6 +11,8 @@ String _toTitle(String string) {
   });
 }
 
+const _kOverrideDecorator = CodeExpression(Code('override'));
+
 /// A generator that outputs widgets from a function
 ///
 /// The function must be decorated by `@widget` and be a top level function.
@@ -122,9 +124,72 @@ Spec _functionToWidgetClass(
         _createBuildMethod(function, positional, named, functionElement),
         _overrideHashCode(userFields),
         _overrideOperatorEqual(userFields, _toTitle(functionElement.name),
-            functionElement.typeParameters)
+            functionElement.typeParameters),
+        _overrideDebugFillProperties(userFields, functionElement.parameters),
       ].where((f) => f != null)),
   );
+}
+
+Method _overrideDebugFillProperties(
+    List<Parameter> userFields, List<ParameterElement> elements) {
+  return userFields.isEmpty
+      ? null
+      : Method((b) => b
+        ..annotations.add(_kOverrideDecorator)
+        ..name = 'debugFillProperties'
+        ..requiredParameters.add(
+          Parameter((b) => b
+            ..name = 'properties'
+            ..type = refer('DiagnosticPropertiesBuilder')),
+        )
+        ..returns = refer('void')
+        ..lambda = false
+        ..body = Block.of(
+          [const Code('super.debugFillProperties(properties);')]..addAll(
+              userFields.map((f) => _parameterToDiagnostic(
+                  f, elements.firstWhere((e) => e.name == f.name)))),
+        ));
+}
+
+Code _parameterToDiagnostic(Parameter parameter, ParameterElement element) {
+  String propertyType;
+  switch (parameter.type.symbol) {
+    case 'int':
+      propertyType = 'IntProperty';
+      break;
+    case 'double':
+      propertyType = 'DoubleProperty';
+      break;
+    case 'String':
+      propertyType = 'StringProperty';
+      break;
+    default:
+      if (element.type != null) {
+        if (element.type.element is ClassElement) {
+          final clasElement = element.type.element as ClassElement;
+          if (clasElement.isEnum) {
+            propertyType = 'EnumProperty<${element.type.displayName}>';
+            break;
+          }
+        }
+        final kind = element.type.element?.kind;
+        if (kind == ElementKind.FUNCTION ||
+            kind == ElementKind.FUNCTION_TYPE_ALIAS ||
+            kind == ElementKind.GENERIC_FUNCTION_TYPE) {
+          // TODO: find a way to remove this dynamic
+          propertyType = 'ObjectFlagProperty<dynamic>.has';
+          break;
+        }
+
+        propertyType =
+            'DiagnosticsProperty<${element.type.isUndefined ? element.computeNode().beginToken : element.type.displayName}>';
+        break;
+      }
+      propertyType = 'DiagnosticsProperty';
+  }
+
+  return Code(
+      "properties.add($propertyType('${parameter.name}', ${parameter.name}));");
 }
 
 Method _overrideOperatorEqual(List<Parameter> userFields, String className,
@@ -133,7 +198,7 @@ Method _overrideOperatorEqual(List<Parameter> userFields, String className,
       ? null
       : Method(
           (b) => b
-            ..annotations.add(const CodeExpression(Code('override')))
+            ..annotations.add(_kOverrideDecorator)
             ..returns = refer('bool')
             ..name = 'operator=='
             ..lambda = true
@@ -153,7 +218,7 @@ Method _overrideHashCode(List<Parameter> userFields) {
   return userFields.isEmpty
       ? null
       : Method((b) => b
-        ..annotations.add(const CodeExpression(Code('override')))
+        ..annotations.add(_kOverrideDecorator)
         ..returns = refer('int')
         ..name = 'hashCode'
         ..type = MethodType.getter
@@ -168,7 +233,7 @@ Method _createBuildMethod(Method t, List<Expression> positional,
   return Method(
     (b) => b
       ..name = 'build'
-      ..annotations.add(const CodeExpression(Code('override')))
+      ..annotations.add(_kOverrideDecorator)
       ..returns = _widgetRef
       ..requiredParameters.add(
         Parameter((b) => b
@@ -206,24 +271,6 @@ Method _functionElementToMethod(FunctionElement element) {
         element.parameters.where((p) => p.isNotOptional).map(_parseParameter))
     ..optionalParameters.addAll(
         element.parameters.where((p) => p.isOptional).map(_parseParameter)));
-}
-
-FunctionType _functionTypedElementToFunctionType(FunctionTypedElement element) {
-  return FunctionType((b) => b
-    ..returnType = _typeToReference(element.returnType)
-    ..types.addAll(element.typeParameters.map((f) => _typeToReference(f.type)))
-    ..requiredParameters.addAll(element.parameters
-        .where((p) => p.isNotOptional)
-        .map(_parseParameter)
-        .map((p) => p.type))
-    ..namedParameters.addEntries(element.parameters
-        .where((p) => p.isNamed)
-        .map(_parseParameter)
-        .map((p) => MapEntry(p.name, p.type)))
-    ..optionalParameters.addAll(element.parameters
-        .where((p) => p.isOptionalPositional)
-        .map(_parseParameter)
-        .map((p) => p.type)));
 }
 
 Constructor _getConstructor(List<Parameter> fields, {String doc}) {
@@ -302,4 +349,22 @@ Reference _typeToReference(DartType type) {
   }
 
   return type.displayName != null ? refer(type.displayName) : null;
+}
+
+FunctionType _functionTypedElementToFunctionType(FunctionTypedElement element) {
+  return FunctionType((b) => b
+    ..returnType = _typeToReference(element.returnType)
+    ..types.addAll(element.typeParameters.map((f) => _typeToReference(f.type)))
+    ..requiredParameters.addAll(element.parameters
+        .where((p) => p.isNotOptional)
+        .map(_parseParameter)
+        .map((p) => p.type))
+    ..namedParameters.addEntries(element.parameters
+        .where((p) => p.isNamed)
+        .map(_parseParameter)
+        .map((p) => MapEntry(p.name, p.type)))
+    ..optionalParameters.addAll(element.parameters
+        .where((p) => p.isOptionalPositional)
+        .map(_parseParameter)
+        .map((p) => p.type)));
 }

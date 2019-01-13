@@ -67,14 +67,19 @@ It generates:
 
 ```dart
 class Foo extends StatelessWidget {
-  final int value;
-
   const Foo(this.value, {Key key}) : super(key: key);
 
+  final int value;
+
   @override
-  Widget build(BuildContext context) {
-    return foo(context, value);
-  }
+  Widget build(BuildContext _context) => foo(_context, value);
+
+  @override
+  int get hashCode => value.hashCode;
+
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) || (o is Foo && value == o.value);
 }
 ```
 

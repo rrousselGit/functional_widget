@@ -72,10 +72,11 @@ final _buildContextRef = refer('BuildContext', _kFlutterWidgetsPath);
 
 enum _WidgetType { stateless, hook }
 
-Spec _functionToWidgetClass(FunctionElement function, _WidgetType widgetType) {
-  final t = _functionElementToMethod(function);
-  final params = List<Parameter>.from(t.requiredParameters)
-    ..addAll(t
+Spec _functionToWidgetClass(
+    FunctionElement functionElement, _WidgetType widgetType) {
+  final function = _functionElementToMethod(functionElement);
+  final params = List<Parameter>.from(function.requiredParameters)
+    ..addAll(function
         .optionalParameters); // _parseParameters(function.parameters).toList();
 
   final startsWithKey = params.isNotEmpty && _isKey(params.first);
@@ -85,7 +86,7 @@ Spec _functionToWidgetClass(FunctionElement function, _WidgetType widgetType) {
   final followedByContext =
       params.length > 1 && startsWithKey && _isContext(params[1]);
 
-  final fields = (followedByContext || followedByKey)
+  final userFields = (followedByContext || followedByKey)
       ? (List<Parameter>.from(params)..removeRange(0, 2))
       : (startsWithContext || startsWithKey)
           ? (List<Parameter>.from(params)..removeRange(0, 1))
@@ -96,46 +97,92 @@ Spec _functionToWidgetClass(FunctionElement function, _WidgetType widgetType) {
   if (startsWithKey) positional.add(const CodeExpression(Code('key')));
   if (followedByContext) positional.add(const CodeExpression(Code('_context')));
   if (followedByKey) positional.add(const CodeExpression(Code('key')));
-  positional.addAll(
-      fields.where((p) => !p.named).map((p) => CodeExpression(Code(p.name))));
+  positional.addAll(userFields
+      .where((p) => !p.named)
+      .map((p) => CodeExpression(Code(p.name))));
 
   final named = <String, Expression>{};
-  for (final p in fields.where((p) => p.named)) {
+  for (final p in userFields.where((p) => p.named)) {
     named[p.name] = CodeExpression(Code(p.name));
   }
 
   return Class(
     (b) => b
-      ..name = _toTitle(function.name)
-      ..docs.add(function.documentationComment ?? '')
-      ..types.addAll(_parseTypeParemeters(function.typeParameters))
+      ..name = _toTitle(functionElement.name)
+      ..docs.add(functionElement.documentationComment ?? '')
+      ..types
+          .addAll(_parseTypeParemeters(functionElement.typeParameters).toList())
       ..extend =
           widgetType == _WidgetType.hook ? _hookWidgetRef : _statelessWidgetRef
-      ..fields
-          .addAll(_paramsToFields(fields, doc: function.documentationComment))
-      ..constructors
-          .add(_getConstructor(fields, doc: function.documentationComment))
-      ..methods.add(
-        Method(
+      ..fields.addAll(_paramsToFields(userFields,
+          doc: functionElement.documentationComment))
+      ..constructors.add(_getConstructor(userFields,
+          doc: functionElement.documentationComment))
+      ..methods.addAll([
+        _createBuildMethod(function, positional, named, functionElement),
+        _overrideHashCode(userFields),
+        _overrideOperatorEqual(userFields, _toTitle(functionElement.name),
+            functionElement.typeParameters)
+      ].where((f) => f != null)),
+  );
+}
+
+Method _overrideOperatorEqual(List<Parameter> userFields, String className,
+    List<TypeParameterElement> typeParameters) {
+  return userFields.isEmpty
+      ? null
+      : Method(
           (b) => b
-            ..name = 'build'
             ..annotations.add(const CodeExpression(Code('override')))
-            ..returns = _widgetRef
+            ..returns = refer('bool')
+            ..name = 'operator=='
+            ..lambda = true
             ..requiredParameters.add(
-              Parameter((b) => b
-                ..name = '_context'
-                ..type = _buildContextRef),
+              Parameter(
+                (b) => b
+                  ..name = 'o'
+                  ..type = refer('Object'),
+              ),
             )
-            ..body = CodeExpression(Code(t.name))
-                .call(
-                    positional,
-                    named,
-                    function.typeParameters
-                        ?.map((p) => refer(p.displayName))
-                        ?.toList())
-                .code,
-        ),
-      ),
+            ..body = Code(
+                'identical(o, this) || (o is $className${typeParameters.isEmpty ? '' : '<${typeParameters.map((t) => t.displayName).join(', ')}>'} && ${userFields.map((f) => f.name).map((name) => '$name == o.$name').join(' &&')})'),
+        );
+}
+
+Method _overrideHashCode(List<Parameter> userFields) {
+  return userFields.isEmpty
+      ? null
+      : Method((b) => b
+        ..annotations.add(const CodeExpression(Code('override')))
+        ..returns = refer('int')
+        ..name = 'hashCode'
+        ..type = MethodType.getter
+        ..lambda = true
+        ..body = userFields.length == 1
+            ? Code('${userFields.first.name}.hashCode')
+            : Code('hashValues(${userFields.map((f) => f.name).join(', ')})'));
+}
+
+Method _createBuildMethod(Method t, List<Expression> positional,
+    Map<String, Expression> named, FunctionElement function) {
+  return Method(
+    (b) => b
+      ..name = 'build'
+      ..annotations.add(const CodeExpression(Code('override')))
+      ..returns = _widgetRef
+      ..requiredParameters.add(
+        Parameter((b) => b
+          ..name = '_context'
+          ..type = _buildContextRef),
+      )
+      ..body = CodeExpression(Code(t.name))
+          .call(
+              positional,
+              named,
+              function.typeParameters
+                  ?.map((p) => refer(p.displayName))
+                  ?.toList())
+          .code,
   );
 }
 

@@ -70,6 +70,9 @@ Widget unknownTypeFunction(Color Function() t) => Container();
 Widget generic<T>(T foo) => Container();
 
 @widget
+Widget genericMultiple<T, S>(T foo, S bar) => Container();
+
+@widget
 Widget genericExtends<T extends Container>(T foo) => Container();
 
 @widget

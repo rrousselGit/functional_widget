@@ -31,6 +31,11 @@ class Required extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => required(foo, bar);
+  @override
+  int get hashCode => hashValues(foo, bar);
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) || (o is Required && foo == o.foo && bar == o.bar);
 }
 '''));
     });
@@ -46,6 +51,11 @@ class Named extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => named(foo: foo, bar: bar);
+  @override
+  int get hashCode => hashValues(foo, bar);
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) || (o is Named && foo == o.foo && bar == o.bar);
 }
 '''));
     });
@@ -66,6 +76,16 @@ class Mixt extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => mixt(foo, bar, nfoo: nfoo, nbar: nbar);
+  @override
+  int get hashCode => hashValues(foo, bar, nfoo, nbar);
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) ||
+      (o is Mixt &&
+          foo == o.foo &&
+          bar == o.bar &&
+          nfoo == o.nfoo &&
+          nbar == o.nbar);
 }
 '''));
     });
@@ -121,6 +141,12 @@ class WhateverThenContext extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => whateverThenContext(foo, bar);
+  @override
+  int get hashCode => hashValues(foo, bar);
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) ||
+      (o is WhateverThenContext && foo == o.foo && bar == o.bar);
 }
 '''));
     });
@@ -135,6 +161,12 @@ class WhateverThenKey extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => whateverThenKey(foo, bar);
+  @override
+  int get hashCode => hashValues(foo, bar);
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) ||
+      (o is WhateverThenKey && foo == o.foo && bar == o.bar);
 }
 '''));
     });
@@ -153,6 +185,11 @@ class Documentation extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => documentation(foo);
+  @override
+  int get hashCode => foo.hashCode;
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) || (o is Documentation && foo == o.foo);
 }
 '''));
     });
@@ -165,6 +202,11 @@ class Annotated extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => annotated(foo: foo);
+  @override
+  int get hashCode => foo.hashCode;
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) || (o is Annotated && foo == o.foo);
 }
 '''));
     });
@@ -177,6 +219,11 @@ class UndefinedType extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => undefinedType(foo: foo);
+  @override
+  int get hashCode => foo.hashCode;
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) || (o is UndefinedType && foo == o.foo);
 }
 '''));
     });
@@ -201,6 +248,11 @@ class Generic<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => generic<T>(foo);
+  @override
+  int get hashCode => foo.hashCode;
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) || (o is Generic<T> && foo == o.foo);
 }
 '''));
     });
@@ -214,6 +266,11 @@ class GenericExtends<T extends Container> extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => genericExtends<T>(foo);
+  @override
+  int get hashCode => foo.hashCode;
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) || (o is GenericExtends<T> && foo == o.foo);
 }
 '''));
     });
@@ -228,6 +285,11 @@ class TypedefFunction extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => typedefFunction(t);
+  @override
+  int get hashCode => t.hashCode;
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) || (o is TypedefFunction && t == o.t);
 }
 '''));
       });
@@ -240,6 +302,11 @@ class InlineFunction extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => inlineFunction(t);
+  @override
+  int get hashCode => t.hashCode;
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) || (o is InlineFunction && t == o.t);
 }
 '''));
       });
@@ -252,6 +319,11 @@ class InlineFunction2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => inlineFunction2(t);
+  @override
+  int get hashCode => t.hashCode;
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) || (o is InlineFunction2 && t == o.t);
 }
 '''));
       });
@@ -264,6 +336,11 @@ class NestedFunction extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => nestedFunction(t);
+  @override
+  int get hashCode => t.hashCode;
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) || (o is NestedFunction && t == o.t);
 }
 '''));
       });
@@ -277,6 +354,11 @@ class UnknownTypeFunction extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => unknownTypeFunction(t);
+  @override
+  int get hashCode => t.hashCode;
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) || (o is UnknownTypeFunction && t == o.t);
 }
 '''));
       });
@@ -290,6 +372,31 @@ class GenericFunction<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => genericFunction<T>(foo);
+  @override
+  int get hashCode => foo.hashCode;
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) || (o is GenericFunction<T> && foo == o.foo);
+}
+'''));
+      });
+      test('multiple generic function', () async {
+        await _expect('genericMultiple', completion('''
+class GenericMultiple<T, S> extends StatelessWidget {
+  const GenericMultiple(this.foo, this.bar, {Key key}) : super(key: key);
+
+  final T foo;
+
+  final S bar;
+
+  @override
+  Widget build(BuildContext _context) => genericMultiple<T, S>(foo, bar);
+  @override
+  int get hashCode => hashValues(foo, bar);
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) ||
+      (o is GenericMultiple<T, S> && foo == o.foo && bar == o.bar);
 }
 '''));
       });

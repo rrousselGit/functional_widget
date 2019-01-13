@@ -1,3 +1,28 @@
+## 0.4.0
+
+- Now overrides `operator==` and `hashCode` on the generated class.
+
+The behavior is that the following function:
+```dart
+@widget
+Widget foo(int foo, int bar) {
+    return Container();
+}
+```
+
+now generates the following overides:
+
+```dart
+@override
+int get hashCode => hashValues(foo, bar);
+
+@override
+bool operator ==(Object o) =>
+    identical(o, this) || (o is Foo && foo == o.foo && bar == o.bar);
+```
+
+This is useful because overriding `operator==` prevents pointless rebuild when no parameter change.
+
 ## 0.3.0
 
 -   Support function callbacks and generic functions:

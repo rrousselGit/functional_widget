@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/rrousselGit/functional_widget.svg?branch=master)](https://travis-ci.org/rrousselGit/functional_widget)
 [![pub package](https://img.shields.io/pub/v/functional_widget.svg)](https://pub.dartlang.org/packages/functional_widget)
 
-
 Widgets are cool. But classes are quite verbose:
 
 ```dart
@@ -18,8 +17,9 @@ class Foo extends StatelessWidget {
 }
 ```
 
+Worse than that, we also likely want to override `operator==` and `debugFillProperties` too!
 
-So much code for something that could be done much better using a plain function: 
+So much code for something that could be done much better using a plain function:
 
 ```dart
 Widget foo(BuildContext context, { int value, int value2 }) {
@@ -27,43 +27,36 @@ Widget foo(BuildContext context, { int value, int value2 }) {
 }
 ```
 
-
-
 The problem is, using functions instead of classes is not recommended:
 
-- https://stackoverflow.com/questions/53234825/what-is-the-difference-between-functions-and-classes-to-create-widgets/53234826#53234826
-- https://github.com/flutter/flutter/issues/19269
-
-
-
+-   https://stackoverflow.com/questions/53234825/what-is-the-difference-between-functions-and-classes-to-create-widgets/53234826#53234826
+-   https://github.com/flutter/flutter/issues/19269
 
 ... Or is it?
 
+---
 
-____
-
-
-Introducing _functional_widgets_, a code generator that generates widget classes from functions.
+Here comes _functional_widgets_, a code generator that generates widget classes from functions.
 
 Simply write your widget as a function, decorate it with a `@widget`, and then this library will generate a class for you to use.
 
-
-
-
 ## Example
 
-
-You write: 
+-   You write:
 
 ```dart
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+
 @widget
 Widget foo(BuildContext context, int value) {
   return Text('$value');
 }
 ```
 
+Make sure to include `import 'package:flutter/foundation.dart';`. This is a requirement for `debugFillProperties` to work.
 
-It generates:
+-   It generates:
 
 ```dart
 class Foo extends StatelessWidget {
@@ -72,19 +65,22 @@ class Foo extends StatelessWidget {
   final int value;
 
   @override
-  Widget build(BuildContext _context) => foo(_context, value);
-
+  Widget build(BuildContext _context) => foo(value);
   @override
   int get hashCode => value.hashCode;
-
   @override
   bool operator ==(Object o) =>
       identical(o, this) || (o is Foo && value == o.value);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IntProperty('value', value));
+  }
 }
+
 ```
 
-
-And then you use it:
+-   You use it:
 
 ```dart
 runApp(
@@ -92,7 +88,7 @@ runApp(
 );
 ```
 
-
+Notice that we use `Foo` and not `foo`. `Foo` is the generated class while `foo` is the function you wrote.
 
 ## How to use
 
@@ -100,25 +96,22 @@ runApp(
 
 There are a few separate packages you need to install:
 
-- `functional_widget_annotation`, a package containing decorators. You must install it as `dependencies`.
-- `functional_widget`, a generator that uses the decorators from the previous packages to generate your widget. Install it as `dev_dependencies`
-- `build_runner`, a tool that is able to run code-generators. Install it as `dev_dependencies`
+-   `functional_widget_annotation`, a package containing decorators. You must install it as `dependencies`.
+-   `functional_widget`, a generator that uses the decorators from the previous packages to generate your widget. Install it as `dev_dependencies`
+-   `build_runner`, a tool that is able to run code-generators. Install it as `dev_dependencies`
 
 ```yaml
 dependencies:
-  functional_widget_annotation: ^0.3.0
+    functional_widget_annotation: ^0.3.0
 
 dev_dependencies:
-  functional_widget: ^0.4.0
-  build_runner: ^1.1.2
+    functional_widget: ^0.4.0
+    build_runner: ^1.1.2
 ```
-
-
 
 ### Run the generator
 
 To run the generator, you must use `build_runner` cli:
-
 
 ```sh
 flutter pub pub run build_runner watch
@@ -141,7 +134,8 @@ You can also replace `BuildContext` by `HookContext` from https://github.com/rro
 
 You can then add however many arguments you like **after** the previously defined arguments. They will then be added to the class constructor and as a widget field:
 
-- positional
+-   positional
+
 ```dart
 @widget
 Widget foo(int value) => Text(value.toString());
@@ -151,7 +145,7 @@ Widget foo(int value) => Text(value.toString());
 new Foo(42);
 ```
 
-- named:
+-   named:
 
 ```dart
 @widget
@@ -162,7 +156,7 @@ Widget foo({int value}) => Text(value.toString());
 new Foo(value: 42);
 ```
 
-- A bit of everything:
+-   A bit of everything:
 
 ```dart
 @widget
@@ -174,4 +168,3 @@ Widget foo(BuildContext context, int value, { int value2 }) {
 
 new Foo(42, value2: 24);
 ```
-

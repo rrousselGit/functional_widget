@@ -7,8 +7,20 @@ part of 'main.dart';
 // **************************************************************************
 
 class Foo extends StatelessWidget {
-  const Foo({Key key}) : super(key: key);
+  const Foo(this.value, {Key key}) : super(key: key);
+
+  final int value;
 
   @override
-  Widget build(BuildContext _context) => foo();
+  Widget build(BuildContext _context) => foo(value);
+  @override
+  int get hashCode => value.hashCode;
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) || (o is Foo && value == o.value);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IntProperty('value', value));
+  }
 }

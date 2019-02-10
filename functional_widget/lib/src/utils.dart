@@ -1,10 +1,14 @@
 import 'package:analyzer/dart/constant/value.dart';
+import 'package:build/build.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
+FunctionalWidget parseOptions(BuilderOptions options) {}
+
 FunctionalWidget parseFunctionalWidetAnnotation(ConstantReader reader) {
   return FunctionalWidget(
-    widgetType: _parseEnum(reader.read('widgetType'), FunctionalWidgetType.values),
+    widgetType:
+        _parseEnum(reader.read('widgetType'), FunctionalWidgetType.values),
     equality:
         _parseEnum(reader.read('equality'), FunctionalWidgetEquality.values),
   );

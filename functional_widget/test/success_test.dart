@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() async {
   final tester = await SourceGenTester.fromPath('test/src/success.dart');
 
-  final _generator = FunctionalWidget();
+  final _generator = FunctionalWidgetGenerator();
   _expect(String name, Matcher matcher) =>
       expectGenerateNamed(tester, name, _generator, matcher);
   group('success', () {

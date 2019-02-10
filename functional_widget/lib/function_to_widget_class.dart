@@ -2,8 +2,18 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart' show DartType;
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
+import 'package:functional_widget/src/utils.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:source_gen/source_gen.dart';
+
+const _kFlutterWidgetsPath = 'package:flutter/material.dart';
+const _kHookWidgetsPath = 'package:flutter_hooks/flutter_hooks.dart';
+
+final _widgetRef = refer('Widget', _kFlutterWidgetsPath);
+final _statelessWidgetRef = refer('StatelessWidget', _kFlutterWidgetsPath);
+final _hookWidgetRef = refer('HookWidget', _kHookWidgetsPath);
+final _keyRef = refer('Key', _kFlutterWidgetsPath);
+final _buildContextRef = refer('BuildContext', _kFlutterWidgetsPath);
 
 String _toTitle(String string) {
   return string.replaceFirstMapped(RegExp('[a-zA-Z]'), (match) {
@@ -18,11 +28,9 @@ const _kOverrideDecorator = CodeExpression(Code('override'));
 /// The function must be decorated by `@widget` and be a top level function.
 /// The type of the widget is infered by the arguments of the function and defaults
 /// to `StatelessWidget`
-class FunctionalWidget extends GeneratorForAnnotation<dynamic> {
+class FunctionalWidgetGenerator
+    extends GeneratorForAnnotation<FunctionalWidget> {
   final _emitter = DartEmitter();
-
-  @override
-  TypeChecker get typeChecker => TypeChecker.fromRuntime(widget.runtimeType);
 
   @override
   String generateForAnnotatedElement(
@@ -51,31 +59,14 @@ class FunctionalWidget extends GeneratorForAnnotation<dynamic> {
       );
     }
 
-    var _widgetType = _WidgetType.stateless;
+    final type = parseFunctionalWidetAnnotation(annotation);
 
-    if (element.metadata.any((e) => e.element.name == 'hwidget')) {
-      _widgetType = _WidgetType.hook;
-    }
-
-    return _functionToWidgetClass(function, _widgetType)
-        .accept(_emitter)
-        .toString();
+    return _functionToWidgetClass(function, type).accept(_emitter).toString();
   }
 }
 
-const _kFlutterWidgetsPath = 'package:flutter/material.dart';
-const _kHookWidgetsPath = 'package:flutter_hooks/flutter_hooks.dart';
-
-final _widgetRef = refer('Widget', _kFlutterWidgetsPath);
-final _statelessWidgetRef = refer('StatelessWidget', _kFlutterWidgetsPath);
-final _hookWidgetRef = refer('HookWidget', _kHookWidgetsPath);
-final _keyRef = refer('Key', _kFlutterWidgetsPath);
-final _buildContextRef = refer('BuildContext', _kFlutterWidgetsPath);
-
-enum _WidgetType { stateless, hook }
-
 Spec _functionToWidgetClass(
-    FunctionElement functionElement, _WidgetType widgetType) {
+    FunctionElement functionElement, FunctionalWidget annotation) {
   final function = _functionElementToMethod(functionElement);
   final params = List<Parameter>.from(function.requiredParameters)
     ..addAll(function
@@ -114,8 +105,9 @@ Spec _functionToWidgetClass(
       ..docs.add(functionElement.documentationComment ?? '')
       ..types
           .addAll(_parseTypeParemeters(functionElement.typeParameters).toList())
-      ..extend =
-          widgetType == _WidgetType.hook ? _hookWidgetRef : _statelessWidgetRef
+      ..extend = annotation.widgetType == FunctionalWidgetType.hook
+          ? _hookWidgetRef
+          : _statelessWidgetRef
       ..fields.addAll(_paramsToFields(userFields,
           doc: functionElement.documentationComment))
       ..constructors.add(_getConstructor(userFields,
@@ -163,7 +155,7 @@ Code _parameterToDiagnostic(Parameter parameter, ParameterElement element) {
     case 'String':
       propertyType = 'StringProperty';
       break;
-      // TODO: Duration
+    // TODO: Duration
     default:
       if (element.type != null) {
         if (element.type.element is ClassElement) {
@@ -344,7 +336,7 @@ Reference _typeToReference(DartType type) {
     return null;
   }
   if (type.element is FunctionTypedElement) {
-    final FunctionTypedElement functionTyped = type.element;
+    final functionTyped = type.element as FunctionTypedElement;
     final t = _functionTypedElementToFunctionType(functionTyped);
     return t.type;
   }

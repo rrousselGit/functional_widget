@@ -3,10 +3,14 @@ enum FunctionalWidgetType {
   stateless,
 }
 
-class FunctionalWidget {
-  const FunctionalWidget({this.type});
+enum FunctionalWidgetEquality { none, equal, identical, smart }
 
-  final FunctionalWidgetType type;
+class FunctionalWidget {
+  const FunctionalWidget(
+      {this.widgetType, this.equality = FunctionalWidgetEquality.smart});
+
+  final FunctionalWidgetType widgetType;
+  final FunctionalWidgetEquality equality;
 }
 
 /// A decorator for functions to generate a `StatelessWidget`.
@@ -14,7 +18,7 @@ class FunctionalWidget {
 /// The name of the generated widget is the name of the decorated function,
 /// with an uppercase as first letter.
 const FunctionalWidget widget = FunctionalWidget(
-  type: FunctionalWidgetType.stateless,
+  widgetType: FunctionalWidgetType.stateless,
 );
 
 /// A decorator for functions to generate a `HookWidget`.
@@ -28,5 +32,5 @@ const FunctionalWidget widget = FunctionalWidget(
 /// The name of the generated widget is the name of the decorated function,
 /// with an uppercase as first letter.
 const FunctionalWidget hwidget = FunctionalWidget(
-  type: FunctionalWidgetType.hook,
+  widgetType: FunctionalWidgetType.hook,
 );

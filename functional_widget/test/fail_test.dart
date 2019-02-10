@@ -10,7 +10,7 @@ void main() async {
       await expectGenerateNamed(
         tester,
         'closure',
-        FunctionalWidget(),
+        FunctionalWidgetGenerator(),
         throwsInvalidGenerationSourceError(
             'Error, the decorated element is not a function'),
       );
@@ -19,7 +19,7 @@ void main() async {
       await expectGenerateNamed(
         tester,
         'externalTest',
-        FunctionalWidget(),
+        FunctionalWidgetGenerator(),
         throwsInvalidGenerationSourceError(),
       );
     });
@@ -27,13 +27,13 @@ void main() async {
       await expectGenerateNamed(
         tester,
         'dynamicTest',
-        FunctionalWidget(),
+        FunctionalWidgetGenerator(),
         throwsInvalidGenerationSourceError(),
       );
       await expectGenerateNamed(
         tester,
         'implicitDynamic',
-        FunctionalWidget(),
+        FunctionalWidgetGenerator(),
         throwsInvalidGenerationSourceError(),
       );
     });
@@ -41,7 +41,7 @@ void main() async {
       await expectGenerateNamed(
         tester,
         'asyncTest',
-        FunctionalWidget(),
+        FunctionalWidgetGenerator(),
         throwsInvalidGenerationSourceError(),
       );
     });
@@ -49,7 +49,7 @@ void main() async {
       await expectGenerateNamed(
         tester,
         'notAWidget',
-        FunctionalWidget(),
+        FunctionalWidgetGenerator(),
         throwsInvalidGenerationSourceError(),
       );
     });
@@ -58,7 +58,7 @@ void main() async {
       await expectGenerateNamed(
         tester,
         'TitleName',
-        FunctionalWidget(),
+        FunctionalWidgetGenerator(),
         throwsInvalidGenerationSourceError(),
       );
     });

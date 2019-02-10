@@ -39,7 +39,9 @@ class FunctionalWidgetGenerator
     final function = _checkValidElement(element);
     final type = parseFunctionalWidetAnnotation(annotation);
 
-    return _functionToWidgetClass(function, type).accept(_emitter).toString();
+    return _makeClassFromFunctionElement(function, type)
+        .accept(_emitter)
+        .toString();
   }
 
   FunctionElement _checkValidElement(Element element) {
@@ -69,7 +71,7 @@ class FunctionalWidgetGenerator
     return function;
   }
 
-  Spec _functionToWidgetClass(
+  Spec _makeClassFromFunctionElement(
       FunctionElement functionElement, FunctionalWidget annotation) {
     final parameters = FunctionParameters.parseFunctionElement(functionElement);
 
@@ -78,26 +80,36 @@ class FunctionalWidgetGenerator
     final named = _computeBuildNamedParametersExpression(parameters);
 
     return Class(
-      (b) => b
-        ..name = _toTitle(functionElement.name)
-        ..docs.add(functionElement.documentationComment ?? '')
-        ..types.addAll(
-            _parseTypeParemeters(functionElement.typeParameters).toList())
-        ..extend = annotation.widgetType == FunctionalWidgetType.hook
-            ? _hookWidgetRef
-            : _statelessWidgetRef
-        ..fields.addAll(_paramsToFields(userDefined,
-            doc: functionElement.documentationComment))
-        ..constructors.add(_getConstructor(userDefined,
-            doc: functionElement.documentationComment))
-        ..methods.addAll([
-          _createBuildMethod(
-              functionElement.displayName, positional, named, functionElement),
-          _overrideHashCode(userDefined),
-          _overrideOperatorEqual(userDefined, _toTitle(functionElement.name),
-              functionElement.typeParameters),
-          _overrideDebugFillProperties(userDefined, functionElement.parameters),
-        ].where((f) => f != null)),
+      (b) {
+        b
+          ..name = _toTitle(functionElement.name)
+          ..types.addAll(
+              _parseTypeParemeters(functionElement.typeParameters).toList())
+          ..extend = annotation.widgetType == FunctionalWidgetType.hook
+              ? _hookWidgetRef
+              : _statelessWidgetRef
+          ..fields.addAll(_paramsToFields(userDefined,
+              doc: functionElement.documentationComment))
+          ..constructors.add(_getConstructor(userDefined,
+              doc: functionElement.documentationComment))
+          ..methods.add(_createBuildMethod(
+              functionElement.displayName, positional, named, functionElement));
+        if (functionElement.documentationComment != null) {
+          b.docs.add(functionElement.documentationComment);
+        }
+
+        final overrideHashCode = _overrideHashCode(userDefined);
+        if (overrideHashCode != null) b.methods.add(overrideHashCode);
+
+        final operatorEqual = _overrideOperatorEqual(userDefined,
+            _toTitle(functionElement.name), functionElement.typeParameters);
+        if (operatorEqual != null) b.methods.add(operatorEqual);
+
+        final overrideDebugFillProperties = _overrideDebugFillProperties(
+            userDefined, functionElement.parameters);
+        if (overrideDebugFillProperties != null)
+          b.methods.add(overrideDebugFillProperties);
+      },
     );
   }
 
@@ -162,32 +174,41 @@ class FunctionalWidgetGenerator
         break;
       // TODO: Duration
       default:
-        if (element.type != null) {
-          if (element.type.element is ClassElement) {
-            final clasElement = element.type.element as ClassElement;
-            if (clasElement.isEnum) {
-              propertyType = 'EnumProperty<${element.type.displayName}>';
-              break;
-            }
-          }
-          final kind = element.type.element?.kind;
-          if (kind == ElementKind.FUNCTION ||
-              kind == ElementKind.FUNCTION_TYPE_ALIAS ||
-              kind == ElementKind.GENERIC_FUNCTION_TYPE) {
-            // TODO: find a way to remove this dynamic
-            propertyType = 'ObjectFlagProperty<dynamic>.has';
-            break;
-          }
-
-          propertyType =
-              'DiagnosticsProperty<${element.type.isUndefined ? element.computeNode().beginToken : element.type.displayName}>';
-          break;
-        }
-        propertyType = 'DiagnosticsProperty';
+        propertyType = element.type != null
+            ? _tryParseClassToEnumDiagnostic(element, propertyType) ??
+                _tryParseFunctionToDiagnostic(element, propertyType) ??
+                _getFallbackElementDiagnostic(element)
+            : 'DiagnosticsProperty';
     }
 
     return Code(
         "properties.add($propertyType('${parameter.name}', ${parameter.name}));");
+  }
+
+  String _getFallbackElementDiagnostic(ParameterElement element) =>
+      'DiagnosticsProperty<${element.type.isUndefined ? element.computeNode().beginToken : element.type.displayName}>';
+
+  String _tryParseFunctionToDiagnostic(
+      ParameterElement element, String propertyType) {
+    final kind = element.type.element?.kind;
+    if (kind == ElementKind.FUNCTION ||
+        kind == ElementKind.FUNCTION_TYPE_ALIAS ||
+        kind == ElementKind.GENERIC_FUNCTION_TYPE) {
+      // TODO: find a way to remove this dynamic
+      propertyType = 'ObjectFlagProperty<dynamic>.has';
+    }
+    return propertyType;
+  }
+
+  String _tryParseClassToEnumDiagnostic(
+      ParameterElement element, String propertyType) {
+    if (element.type.element is ClassElement) {
+      final classElement = element.type.element as ClassElement;
+      if (classElement.isEnum) {
+        propertyType = 'EnumProperty<${element.type.displayName}>';
+      }
+    }
+    return propertyType;
   }
 
   Method _overrideOperatorEqual(List<Parameter> userFields, String className,

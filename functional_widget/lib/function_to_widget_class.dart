@@ -72,29 +72,10 @@ class FunctionalWidgetGenerator
   Spec _functionToWidgetClass(
       FunctionElement functionElement, FunctionalWidget annotation) {
     final parameters = FunctionParameters.parseFunctionElement(functionElement);
-    // final method = _parseMethod(functionElement);
-    // final params = List<Parameter>.from(method.requiredParameters)
-    //   ..addAll(method.optionalParameters);
 
     final userDefined = parameters.userDefined;
-
-    final positional = <Expression>[];
-    if (parameters.startsWithContext)
-      positional.add(const CodeExpression(Code('_context')));
-    if (parameters.startsWithKey)
-      positional.add(const CodeExpression(Code('key')));
-    if (parameters.followedByContext)
-      positional.add(const CodeExpression(Code('_context')));
-    if (parameters.followedByKey)
-      positional.add(const CodeExpression(Code('key')));
-    positional.addAll(userDefined
-        .where((p) => !p.named)
-        .map((p) => CodeExpression(Code(p.name))));
-
-    final named = <String, Expression>{};
-    for (final p in userDefined.where((p) => p.named)) {
-      named[p.name] = CodeExpression(Code(p.name));
-    }
+    final positional = _computeBuildPositionalParametersExpression(parameters);
+    final named = _computeBuildNamedParametersExpression(parameters);
 
     return Class(
       (b) => b
@@ -118,6 +99,32 @@ class FunctionalWidgetGenerator
           _overrideDebugFillProperties(userDefined, functionElement.parameters),
         ].where((f) => f != null)),
     );
+  }
+
+  Map<String, Expression> _computeBuildNamedParametersExpression(
+      FunctionParameters parameters) {
+    final named = <String, Expression>{};
+    for (final p in parameters.userDefined.where((p) => p.named)) {
+      named[p.name] = CodeExpression(Code(p.name));
+    }
+    return named;
+  }
+
+  List<Expression> _computeBuildPositionalParametersExpression(
+      FunctionParameters parameters) {
+    final positional = <Expression>[];
+    if (parameters.startsWithContext)
+      positional.add(const CodeExpression(Code('_context')));
+    if (parameters.startsWithKey)
+      positional.add(const CodeExpression(Code('key')));
+    if (parameters.followedByContext)
+      positional.add(const CodeExpression(Code('_context')));
+    if (parameters.followedByKey)
+      positional.add(const CodeExpression(Code('key')));
+    positional.addAll(parameters.userDefined
+        .where((p) => !p.named)
+        .map((p) => CodeExpression(Code(p.name))));
+    return positional;
   }
 
   Method _overrideDebugFillProperties(
@@ -253,18 +260,6 @@ class FunctionalWidgetGenerator
         }) ??
         [];
   }
-
-  // Method _parseMethod(FunctionElement element) {
-  //   return Method((b) => b
-  //     ..name = element.name
-  //     ..returns = _typeToReference(element.returnType)
-  //     ..types
-  //         .addAll(element.typeParameters.map((f) => _typeToReference(f.type)))
-  //     ..requiredParameters.addAll(
-  //         element.parameters.where((p) => p.isNotOptional).map(_parseParameter))
-  //     ..optionalParameters.addAll(
-  //         element.parameters.where((p) => p.isOptional).map(_parseParameter)));
-  // }
 
   Constructor _getConstructor(List<Parameter> fields, {String doc}) {
     return Constructor(

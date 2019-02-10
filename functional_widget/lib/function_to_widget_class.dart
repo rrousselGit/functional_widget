@@ -163,6 +163,7 @@ Code _parameterToDiagnostic(Parameter parameter, ParameterElement element) {
     case 'String':
       propertyType = 'StringProperty';
       break;
+      // TODO: Duration
     default:
       if (element.type != null) {
         if (element.type.element is ClassElement) {

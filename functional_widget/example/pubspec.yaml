@@ -1,4 +1,4 @@
-name: example
+name: functional_widget_example
 description: A new Flutter project.
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0" 

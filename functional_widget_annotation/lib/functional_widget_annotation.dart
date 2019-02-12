@@ -6,11 +6,15 @@ enum FunctionalWidgetType {
 enum FunctionalWidgetEquality { none, equal, identical, smart }
 
 class FunctionalWidget {
-  const FunctionalWidget(
-      {this.widgetType, this.equality = FunctionalWidgetEquality.smart});
+  const FunctionalWidget({
+    this.widgetType,
+    this.equality = FunctionalWidgetEquality.smart,
+    this.debugFillProperties,
+  });
 
   final FunctionalWidgetType widgetType;
   final FunctionalWidgetEquality equality;
+  final bool debugFillProperties;
 }
 
 /// A decorator for functions to generate a `StatelessWidget`.

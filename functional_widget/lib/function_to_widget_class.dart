@@ -1,5 +1,4 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/type.dart' show DartType;
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:functional_widget/src/parameters.dart';
@@ -31,6 +30,9 @@ const _kOverrideDecorator = CodeExpression(Code('override'));
 /// to `StatelessWidget`
 class FunctionalWidgetGenerator
     extends GeneratorForAnnotation<FunctionalWidget> {
+  FunctionalWidgetGenerator([this._defaultOptions]);
+
+  final FunctionalWidget _defaultOptions;
   final _emitter = DartEmitter();
 
   @override

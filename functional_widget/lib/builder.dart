@@ -5,6 +5,6 @@ import 'package:source_gen/source_gen.dart';
 
 /// Builds generators for `build_runner` to run
 Builder functionalWidget(BuilderOptions options) {
-  final parse = parseOptions(options);
-  return SharedPartBuilder([FunctionalWidgetGenerator()], 'functional_widget');
+  final parse = parseBuilderOptions(options);
+  return SharedPartBuilder([FunctionalWidgetGenerator(parse)], 'functional_widget');
 }

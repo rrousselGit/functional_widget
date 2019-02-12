@@ -3,7 +3,7 @@
 part of 'main.dart';
 
 // **************************************************************************
-// Generator: FunctionalWidget
+// FunctionalWidgetGenerator
 // **************************************************************************
 
 class Foo extends StatelessWidget {

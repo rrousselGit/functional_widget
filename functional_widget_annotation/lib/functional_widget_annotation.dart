@@ -3,7 +3,7 @@ enum FunctionalWidgetType {
   stateless,
 }
 
-enum FunctionalWidgetEquality { none, equal, identical, smart }
+enum FunctionalWidgetEquality { none, equal, identical }
 
 class FunctionalWidget {
   const FunctionalWidget({

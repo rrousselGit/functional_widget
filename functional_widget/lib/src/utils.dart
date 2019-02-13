@@ -49,12 +49,10 @@ FunctionalWidgetEquality _parseEquality(dynamic value) {
         return FunctionalWidgetEquality.equal;
       case 'identical':
         return FunctionalWidgetEquality.identical;
-      case 'smart':
-        return FunctionalWidgetEquality.smart;
     }
   }
   throw ArgumentError.value(value, 'widgetType',
-      'Invalid value. Potential values are `none`/`equal`/`identical`/`smart`');
+      'Invalid value. Potential values are `none`/`equal`/`identical`');
 }
 
 FunctionalWidgetType _parseWidgetType(dynamic value) {

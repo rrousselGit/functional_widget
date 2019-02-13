@@ -124,7 +124,6 @@ class FunctionalWidgetGenerator
   ) {
     if ((annotation.equality ?? _defaultOptions.equality) !=
         FunctionalWidgetEquality.none) {
-      print(annotation.equality ?? _defaultOptions.equality);
       final overrideHashCode = _overrideHashCode(userDefined);
       if (overrideHashCode != null) classBuilder.methods.add(overrideHashCode);
 

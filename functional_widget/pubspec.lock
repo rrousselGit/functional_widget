@@ -102,7 +102,7 @@ packages:
   code_gen_tester:
     dependency: "direct dev"
     description:
-      path: "../code_gen_tester"
+      path: "..\\code_gen_tester"
       relative: true
     source: path
     version: "0.0.1"
@@ -165,7 +165,7 @@ packages:
   functional_widget_annotation:
     dependency: "direct main"
     description:
-      path: "../functional_widget_annotation"
+      path: "..\\functional_widget_annotation"
       relative: true
     source: path
     version: "0.5.0"

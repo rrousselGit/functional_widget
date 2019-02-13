@@ -129,7 +129,7 @@ targets:
 Widget foo() => Container();
 ```
 
-## debugFillProperties
+### debugFillProperties override
 
 Widgets can be override `debugFillProperties` to display custom fields on the widget inspector. `functional_widget` offer to generate these bits for your, by enabling `debugFillProperties` option.
 
@@ -153,7 +153,7 @@ Widget example(int foo, String bar) => Container();
 (It generates)
 
 ```dart
-class Example extends HookWidget {
+class Example extends StatelessWidget {
   const Example(this.foo, this.bar, {Key key}) : super(key: key);
 
   final int foo;
@@ -171,19 +171,97 @@ class Example extends HookWidget {
 }
 ```
 
-## Generate different type of widgets
+### Generate different type of widgets
 
 By default, the generated widget is a `StatelessWidget`.
 
 It is possible to generate a `HookWidget` instead (from https://github.com/rrousselGit/flutter_hooks)
 
+There are a few ways to do so:
+
+- Through `build.yaml`:
+
+```yaml
+# build.yaml
+targets:
+  $default:
+    builders:
+      functional_widget:
+        options:
+          widgetType: hook
+```
+
+- With `@FunctionalWidget` decorator:
+
+```dart
+@FunctionalWidget(widgetType: FunctionalWidgetType.hook)
+Widget example(int foo, String bar) => Container();
+```
+
+- With the shorthand `@hwidget` decorator:
+
+```dart
+@hwidget
+Widget example(int foo, String bar) => Container();
+```
+
+```dart
+class Example extends HookWidget {
+  const Example(this.foo, this.bar, {Key key}) : super(key: key);
+
+  final int foo;
+
+  final String bar;
+
+  @override
+  Widget build(BuildContext _context) => example(foo, bar);
+}
+```
+
+---
+
+In any cases, `flutter_hooks` must be added as a separate dependency in the `pubspec.yaml`
+
+```yaml
+dependencies:
+  flutter_hooks: # some version number
+```
+
+### operator== override
+
+It can be interesting for `Widget` to override `operator==` for performance optimizations.
+
+`functional_widget` optionally allows overriding both `operator==` and `hashCode` based on the field used. 
+
+There are two different configurations:
+
+- `none` (default): Don't override anything
+- `identical`, overrides `hashCode` and `operator==` with the latter being implemented using `identical` to compare fields.
+- `equal`, similar to `identical`, but using `==` to compare fields.
 
 
+It can be configured both through `build.yaml`:
+
+```yaml
+# build.yaml
+targets:
+  $default:
+    builders:
+      functional_widget:
+        options:
+          equility: identical
+```
 
 
+or using `@FunctionalWidget` decorator:
+
+```dart
+@FunctionalWidget(equality: FunctionalWidgetEquality.identical)
+Widget example(int foo, String bar) => Container();
+```
 
 
-### All the potential syntaxes
+### All the potential function prototypes
 
 _functional_widget_ will inject widget specific parameters if you ask for them.
 You can potentially write any of the following:

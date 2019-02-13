@@ -63,7 +63,7 @@ enum FunctionalWidgetEquality {
   identical
 }
 
-/// Decorates a function to specify how
+/// Decorates a function to customize the generated class
 class FunctionalWidget {
   const FunctionalWidget({
     this.widgetType,
@@ -71,8 +71,16 @@ class FunctionalWidget {
     this.debugFillProperties,
   });
 
+
+  /// Configures which types of widget is generated.
+  /// 
+  /// Defaults to [FunctionalWidgetType.stateless].
   final FunctionalWidgetType widgetType;
+  /// Configures how [operator==] and [hashCode] behaves
+  /// 
+  /// Defaults to [FunctionalWidgetEquality.none].
   final FunctionalWidgetEquality equality;
+  /// Defines if the generated widget should emit diagnostics informations.
   final bool debugFillProperties;
 }
 

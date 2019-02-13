@@ -18,10 +18,10 @@ void main() {
       );
     });
     group('debugFillProperties', () {
-      test('default to false', () {
+      test('default to null', () {
         expect(
           parseBuilderOptions(const BuilderOptions({})).debugFillProperties,
-          false,
+          null,
         );
       });
 
@@ -48,14 +48,12 @@ void main() {
       });
     });
     group('equality', () {
-      test('default to none', () {
-        expect(parseBuilderOptions(const BuilderOptions({})).equality,
-            FunctionalWidgetEquality.none);
+      test('default to null', () {
+        expect(parseBuilderOptions(const BuilderOptions({})).equality, null);
       });
       test('throws if string but not valid', () {
         expect(
-          () =>
-              parseBuilderOptions(const BuilderOptions({'equality': 'foo'})),
+          () => parseBuilderOptions(const BuilderOptions({'equality': 'foo'})),
           throwsArgumentError,
         );
       });
@@ -92,9 +90,8 @@ void main() {
       });
     });
     group('widgetType', () {
-      test('default to stateless', () {
-        expect(parseBuilderOptions(const BuilderOptions({})).widgetType,
-            FunctionalWidgetType.stateless);
+      test('default to null', () {
+        expect(parseBuilderOptions(const BuilderOptions({})).widgetType, null);
       });
       test('throws if string but not valid', () {
         expect(

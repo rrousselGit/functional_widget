@@ -8,3 +8,7 @@
 build/
 android/
 ios/
+
+# test_coverage generated main file
+.test_coverage.dart
+coverage/

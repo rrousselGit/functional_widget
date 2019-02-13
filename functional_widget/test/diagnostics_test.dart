@@ -1,13 +1,17 @@
 import 'package:code_gen_tester/code_gen_tester.dart';
 import 'package:functional_widget/function_to_widget_class.dart';
+import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:test/test.dart';
 
-void main() async {
-  final tester = await SourceGenTester.fromPath('test/src/diagnostics.dart');
+void main() {
+  final tester = SourceGenTester.fromPath('test/src/diagnostics.dart');
 
-  final _generator = FunctionalWidgetGenerator();
-  _expect(String name, Matcher matcher) =>
-      expectGenerateNamed(tester, name, _generator, matcher);
+  final _generator = FunctionalWidgetGenerator(
+      const FunctionalWidget(debugFillProperties: true));
+  Future<void> _expect(String name, Matcher matcher) async {
+    return expectGenerateNamed(await tester, name, _generator, matcher);
+  }
+
   group('diagnostics', () {
     test('int', () async {
       await _expect('intTest', completion('''
@@ -18,11 +22,6 @@ class IntTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => intTest(a);
-  @override
-  int get hashCode => a.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is IntTest && a == o.a);
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -41,11 +40,6 @@ class DoubleTest extends StatelessWidget {
   @override
   Widget build(BuildContext _context) => doubleTest(a);
   @override
-  int get hashCode => a.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is DoubleTest && a == o.a);
-  @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DoubleProperty('a', a));
@@ -62,11 +56,6 @@ class StringTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => stringTest(a);
-  @override
-  int get hashCode => a.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is StringTest && a == o.a);
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -85,11 +74,6 @@ class EnumTest extends StatelessWidget {
   @override
   Widget build(BuildContext _context) => enumTest(a);
   @override
-  int get hashCode => a.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is EnumTest && a == o.a);
-  @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(EnumProperty<_Foo>('a', a));
@@ -106,11 +90,6 @@ class ObjectTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => objectTest(a);
-  @override
-  int get hashCode => a.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is ObjectTest && a == o.a);
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -129,11 +108,6 @@ class ColorTest extends StatelessWidget {
   @override
   Widget build(BuildContext _context) => colorTest(a);
   @override
-  int get hashCode => a.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is ColorTest && a == o.a);
-  @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Color>('a', a));
@@ -151,11 +125,6 @@ class FunctionTest extends StatelessWidget {
   @override
   Widget build(BuildContext _context) => functionTest(a);
   @override
-  int get hashCode => a.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is FunctionTest && a == o.a);
-  @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(ObjectFlagProperty<dynamic>.has('a', a));
@@ -172,11 +141,6 @@ class DynamicTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => dynamicTest(a);
-  @override
-  int get hashCode => a.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is DynamicTest && a == o.a);
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);

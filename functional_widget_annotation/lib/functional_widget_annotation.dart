@@ -8,7 +8,7 @@ enum FunctionalWidgetEquality { none, equal, identical, smart }
 class FunctionalWidget {
   const FunctionalWidget({
     this.widgetType,
-    this.equality = FunctionalWidgetEquality.smart,
+    this.equality,
     this.debugFillProperties,
   });
 

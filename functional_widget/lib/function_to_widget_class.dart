@@ -30,7 +30,12 @@ const _kOverrideDecorator = CodeExpression(Code('override'));
 /// to `StatelessWidget`
 class FunctionalWidgetGenerator
     extends GeneratorForAnnotation<FunctionalWidget> {
-  FunctionalWidgetGenerator([this._defaultOptions]);
+  FunctionalWidgetGenerator([FunctionalWidget options])
+      : _defaultOptions = FunctionalWidget(
+          debugFillProperties: options?.debugFillProperties ?? false,
+          equality: options?.equality ?? FunctionalWidgetEquality.none,
+          widgetType: options?.widgetType ?? FunctionalWidgetType.stateless,
+        );
 
   final FunctionalWidget _defaultOptions;
   final _emitter = DartEmitter();
@@ -99,20 +104,34 @@ class FunctionalWidgetGenerator
         if (functionElement.documentationComment != null) {
           b.docs.add(functionElement.documentationComment);
         }
-
-        final overrideHashCode = _overrideHashCode(userDefined);
-        if (overrideHashCode != null) b.methods.add(overrideHashCode);
-
-        final operatorEqual = _overrideOperatorEqual(userDefined,
-            _toTitle(functionElement.name), functionElement.typeParameters);
-        if (operatorEqual != null) b.methods.add(operatorEqual);
-
-        final overrideDebugFillProperties = _overrideDebugFillProperties(
-            userDefined, functionElement.parameters);
-        if (overrideDebugFillProperties != null)
-          b.methods.add(overrideDebugFillProperties);
+        _generateEquality(annotation, userDefined, b, functionElement);
+        if (annotation.debugFillProperties ??
+            _defaultOptions.debugFillProperties) {
+          final overrideDebugFillProperties = _overrideDebugFillProperties(
+              userDefined, functionElement.parameters);
+          if (overrideDebugFillProperties != null)
+            b.methods.add(overrideDebugFillProperties);
+        }
       },
     );
+  }
+
+  void _generateEquality(
+    FunctionalWidget annotation,
+    List<Parameter> userDefined,
+    ClassBuilder classBuilder,
+    FunctionElement functionElement,
+  ) {
+    if ((annotation.equality ?? _defaultOptions.equality) !=
+        FunctionalWidgetEquality.none) {
+      print(annotation.equality ?? _defaultOptions.equality);
+      final overrideHashCode = _overrideHashCode(userDefined);
+      if (overrideHashCode != null) classBuilder.methods.add(overrideHashCode);
+
+      final operatorEqual = _overrideOperatorEqual(userDefined,
+          _toTitle(functionElement.name), functionElement.typeParameters);
+      if (operatorEqual != null) classBuilder.methods.add(operatorEqual);
+    }
   }
 
   Map<String, Expression> _computeBuildNamedParametersExpression(
@@ -276,12 +295,11 @@ class FunctionalWidgetGenerator
   Iterable<Reference> _parseTypeParemeters(
     List<TypeParameterElement> typeParameters,
   ) {
-    return typeParameters?.map((e) {
-          return e.bound?.displayName != null
-              ? refer('${e.displayName} extends ${e.bound.displayName}')
-              : refer(e.displayName);
-        }) ??
-        [];
+    return typeParameters.map((e) {
+      return e.bound?.displayName != null
+          ? refer('${e.displayName} extends ${e.bound.displayName}')
+          : refer(e.displayName);
+    });
   }
 
   Constructor _getConstructor(List<Parameter> fields, {String doc}) {

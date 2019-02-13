@@ -88,11 +88,12 @@ class FunctionalWidgetGenerator
 
     return Class(
       (b) {
+        final widgetType = annotation.widgetType ?? _defaultOptions.widgetType;
         b
           ..name = _toTitle(functionElement.name)
           ..types.addAll(
               _parseTypeParemeters(functionElement.typeParameters).toList())
-          ..extend = annotation.widgetType == FunctionalWidgetType.hook
+          ..extend = widgetType == FunctionalWidgetType.hook
               ? _hookWidgetRef
               : _statelessWidgetRef
           ..fields.addAll(_paramsToFields(userDefined,

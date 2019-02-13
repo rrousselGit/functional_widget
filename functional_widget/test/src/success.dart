@@ -2,6 +2,15 @@ import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:meta/meta.dart' as meta;
 import 'fake_flutter.dart';
 
+@swidget
+Widget sWidget() => Container();
+
+@hwidget
+Widget hWidget() => Container();
+
+@widget
+Widget adaptiveWidget() => Container();
+
 @widget
 Widget noArgument() => Container();
 

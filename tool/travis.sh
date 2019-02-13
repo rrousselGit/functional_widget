@@ -19,6 +19,16 @@ EXIT_CODE=0
 while (( "$#" )); do
   TASK=$1
   case $TASK in
+  command_0) echo
+    echo -e '\033[1mTASK: command_0\033[22m'
+    echo -e 'pub run test_coverage'
+    pub run test_coverage || EXIT_CODE=$?
+    ;;
+  command_1) echo
+    echo -e '\033[1mTASK: command_1\033[22m'
+    echo -e 'bash <(curl -s https://codecov.io/bash)'
+    bash <(curl -s https://codecov.io/bash) || EXIT_CODE=$?
+    ;;
   dartanalyzer_0) echo
     echo -e '\033[1mTASK: dartanalyzer_0\033[22m'
     echo -e 'dartanalyzer --fatal-infos --fatal-warnings lib test'

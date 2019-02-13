@@ -9,6 +9,8 @@ stages:
       - dartanalyzer: --fatal-infos --fatal-warnings lib test
   - unit_test:
     - test
+    - command: pub run test_coverage
+    - command: bash <(curl -s https://codecov.io/bash)
 
 cache:
   directories:

@@ -145,14 +145,14 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.4.0"
+    version: "0.5.0"
   functional_widget_annotation:
     dependency: "direct main"
     description:
-      name: functional_widget_annotation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0"
+      path: "..\\..\\functional_widget_annotation"
+      relative: true
+    source: path
+    version: "0.5.0"
   glob:
     dependency: transitive
     description:
@@ -411,4 +411,4 @@ packages:
     source: hosted
     version: "2.1.15"
 sdks:
-  dart: ">=2.1.0-dev.5.0 <3.0.0"
+  dart: ">=2.1.0 <3.0.0"

@@ -2,13 +2,13 @@ import 'package:code_gen_tester/code_gen_tester.dart';
 import 'package:functional_widget/function_to_widget_class.dart';
 import 'package:test/test.dart';
 
-void main() async {
-  final tester = await SourceGenTester.fromPath('test/src/fail.dart');
+void main() {
+  final tester = SourceGenTester.fromPath('test/src/fail.dart');
 
   group('fail', () {
     test('closure', () async {
       await expectGenerateNamed(
-        tester,
+        await tester,
         'closure',
         FunctionalWidgetGenerator(),
         throwsInvalidGenerationSourceError(
@@ -17,7 +17,7 @@ void main() async {
     });
     test('external', () async {
       await expectGenerateNamed(
-        tester,
+        await tester,
         'externalTest',
         FunctionalWidgetGenerator(),
         throwsInvalidGenerationSourceError(),
@@ -25,13 +25,13 @@ void main() async {
     });
     test('dynamic', () async {
       await expectGenerateNamed(
-        tester,
+        await tester,
         'dynamicTest',
         FunctionalWidgetGenerator(),
         throwsInvalidGenerationSourceError(),
       );
       await expectGenerateNamed(
-        tester,
+        await tester,
         'implicitDynamic',
         FunctionalWidgetGenerator(),
         throwsInvalidGenerationSourceError(),
@@ -39,7 +39,7 @@ void main() async {
     });
     test('async', () async {
       await expectGenerateNamed(
-        tester,
+        await tester,
         'asyncTest',
         FunctionalWidgetGenerator(),
         throwsInvalidGenerationSourceError(),
@@ -47,7 +47,7 @@ void main() async {
     });
     test('return type not widget', () async {
       await expectGenerateNamed(
-        tester,
+        await tester,
         'notAWidget',
         FunctionalWidgetGenerator(),
         throwsInvalidGenerationSourceError(),
@@ -56,7 +56,7 @@ void main() async {
 
     test('name must start with a lowercase', () async {
       await expectGenerateNamed(
-        tester,
+        await tester,
         'TitleName',
         FunctionalWidgetGenerator(),
         throwsInvalidGenerationSourceError(),

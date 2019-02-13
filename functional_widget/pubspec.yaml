@@ -22,6 +22,6 @@ dev_dependencies:
     dart_style: 1.2.0
     pedantic: 1.4.0
     build_runner: 1.1.2
-    build_test: ^0.10.4
+    test_coverage: ^0.2.0
     code_gen_tester:
         path: ../code_gen_tester

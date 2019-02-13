@@ -65,7 +65,7 @@ packages:
     source: hosted
     version: "1.1.2"
   build_test:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: build_test
       url: "https://pub.dartlang.org"
@@ -120,6 +120,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  coverage:
+    dependency: transitive
+    description:
+      name: coverage
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.12.4"
   crypto:
     dependency: transitive
     description:
@@ -158,10 +165,10 @@ packages:
   functional_widget_annotation:
     dependency: "direct main"
     description:
-      name: functional_widget_annotation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0"
+      path: "../functional_widget_annotation"
+      relative: true
+    source: path
+    version: "0.5.0"
   glob:
     dependency: transitive
     description:
@@ -239,6 +246,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.6+9"
+  lcov:
+    dependency: transitive
+    description:
+      name: lcov
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.5.0"
   logging:
     dependency: transitive
     description:
@@ -463,6 +477,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0+1"
+  test_coverage:
+    dependency: "direct dev"
+    description:
+      name: test_coverage
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.3"
   timing:
     dependency: transitive
     description:

@@ -27,7 +27,8 @@ FunctionalWidget parseBuilderOptions(BuilderOptions options) {
 
 bool _parseDebugFillProperties(dynamic value) {
   if (value == null) {
-    return false;
+    // ignore: avoid_returning_null
+    return null;
   }
   if (value is bool) {
     return value;
@@ -38,7 +39,7 @@ bool _parseDebugFillProperties(dynamic value) {
 
 FunctionalWidgetEquality _parseEquality(dynamic value) {
   if (value == null) {
-    return FunctionalWidgetEquality.none;
+    return null;
   }
   if (value is String) {
     switch (value) {
@@ -58,7 +59,7 @@ FunctionalWidgetEquality _parseEquality(dynamic value) {
 
 FunctionalWidgetType _parseWidgetType(dynamic value) {
   if (value == null) {
-    return FunctionalWidgetType.stateless;
+    return null;
   }
   if (value is String) {
     switch (value) {

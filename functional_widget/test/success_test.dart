@@ -2,12 +2,12 @@ import 'package:code_gen_tester/code_gen_tester.dart';
 import 'package:functional_widget/function_to_widget_class.dart';
 import 'package:test/test.dart';
 
-void main() async {
-  final tester = await SourceGenTester.fromPath('test/src/success.dart');
+void main() {
+  final tester = SourceGenTester.fromPath('test/src/success.dart');
 
   final _generator = FunctionalWidgetGenerator();
-  _expect(String name, Matcher matcher) =>
-      expectGenerateNamed(tester, name, _generator, matcher);
+  _expect(String name, Matcher matcher) async =>
+      expectGenerateNamed(await tester, name, _generator, matcher);
   group('success', () {
     test('noArgument', () async {
       await _expect('noArgument', completion('''
@@ -31,17 +31,6 @@ class Required extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => required(foo, bar);
-  @override
-  int get hashCode => hashValues(foo, bar);
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is Required && foo == o.foo && bar == o.bar);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<dynamic>('foo', foo));
-    properties.add(IntProperty('bar', bar));
-  }
 }
 '''));
     });
@@ -57,17 +46,6 @@ class Named extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => named(foo: foo, bar: bar);
-  @override
-  int get hashCode => hashValues(foo, bar);
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is Named && foo == o.foo && bar == o.bar);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<dynamic>('foo', foo));
-    properties.add(IntProperty('bar', bar));
-  }
 }
 '''));
     });
@@ -88,24 +66,6 @@ class Mixt extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => mixt(foo, bar, nfoo: nfoo, nbar: nbar);
-  @override
-  int get hashCode => hashValues(foo, bar, nfoo, nbar);
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) ||
-      (o is Mixt &&
-          foo == o.foo &&
-          bar == o.bar &&
-          nfoo == o.nfoo &&
-          nbar == o.nbar);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<dynamic>('foo', foo));
-    properties.add(IntProperty('bar', bar));
-    properties.add(DiagnosticsProperty<dynamic>('nfoo', nfoo));
-    properties.add(IntProperty('nbar', nbar));
-  }
 }
 '''));
     });
@@ -161,18 +121,6 @@ class WhateverThenContext extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => whateverThenContext(foo, bar);
-  @override
-  int get hashCode => hashValues(foo, bar);
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) ||
-      (o is WhateverThenContext && foo == o.foo && bar == o.bar);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(IntProperty('foo', foo));
-    properties.add(DiagnosticsProperty<BuildContext>('bar', bar));
-  }
 }
 '''));
     });
@@ -187,18 +135,6 @@ class WhateverThenKey extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => whateverThenKey(foo, bar);
-  @override
-  int get hashCode => hashValues(foo, bar);
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) ||
-      (o is WhateverThenKey && foo == o.foo && bar == o.bar);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(IntProperty('foo', foo));
-    properties.add(DiagnosticsProperty<Key>('bar', bar));
-  }
 }
 '''));
     });
@@ -217,16 +153,6 @@ class Documentation extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => documentation(foo);
-  @override
-  int get hashCode => foo.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is Documentation && foo == o.foo);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(IntProperty('foo', foo));
-  }
 }
 '''));
     });
@@ -239,16 +165,6 @@ class Annotated extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => annotated(foo: foo);
-  @override
-  int get hashCode => foo.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is Annotated && foo == o.foo);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(IntProperty('foo', foo));
-  }
 }
 '''));
     });
@@ -261,16 +177,6 @@ class UndefinedType extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => undefinedType(foo: foo);
-  @override
-  int get hashCode => foo.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is UndefinedType && foo == o.foo);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Color>('foo', foo));
-  }
 }
 '''));
     });
@@ -295,16 +201,6 @@ class Generic<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => generic<T>(foo);
-  @override
-  int get hashCode => foo.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is Generic<T> && foo == o.foo);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<T>('foo', foo));
-  }
 }
 '''));
     });
@@ -318,16 +214,6 @@ class GenericExtends<T extends Container> extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => genericExtends<T>(foo);
-  @override
-  int get hashCode => foo.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is GenericExtends<T> && foo == o.foo);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<T>('foo', foo));
-  }
 }
 '''));
     });
@@ -342,16 +228,6 @@ class TypedefFunction extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => typedefFunction(t);
-  @override
-  int get hashCode => t.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is TypedefFunction && t == o.t);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<dynamic>.has('t', t));
-  }
 }
 '''));
       });
@@ -364,16 +240,6 @@ class InlineFunction extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => inlineFunction(t);
-  @override
-  int get hashCode => t.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is InlineFunction && t == o.t);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<dynamic>.has('t', t));
-  }
 }
 '''));
       });
@@ -386,16 +252,6 @@ class InlineFunction2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => inlineFunction2(t);
-  @override
-  int get hashCode => t.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is InlineFunction2 && t == o.t);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<dynamic>.has('t', t));
-  }
 }
 '''));
       });
@@ -408,16 +264,6 @@ class NestedFunction extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => nestedFunction(t);
-  @override
-  int get hashCode => t.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is NestedFunction && t == o.t);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<dynamic>.has('t', t));
-  }
 }
 '''));
       });
@@ -431,16 +277,6 @@ class UnknownTypeFunction extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => unknownTypeFunction(t);
-  @override
-  int get hashCode => t.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is UnknownTypeFunction && t == o.t);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<dynamic>.has('t', t));
-  }
 }
 '''));
       });
@@ -454,16 +290,6 @@ class GenericFunction<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => genericFunction<T>(foo);
-  @override
-  int get hashCode => foo.hashCode;
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) || (o is GenericFunction<T> && foo == o.foo);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<dynamic>.has('foo', foo));
-  }
 }
 '''));
       });
@@ -478,18 +304,6 @@ class GenericMultiple<T, S> extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => genericMultiple<T, S>(foo, bar);
-  @override
-  int get hashCode => hashValues(foo, bar);
-  @override
-  bool operator ==(Object o) =>
-      identical(o, this) ||
-      (o is GenericMultiple<T, S> && foo == o.foo && bar == o.bar);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<T>('foo', foo));
-    properties.add(DiagnosticsProperty<S>('bar', bar));
-  }
 }
 '''));
       });

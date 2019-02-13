@@ -1,4 +1,4 @@
-# Created with package:mono_repo v1.2.1
+# Created with package:mono_repo v1.2.2-dev
 language: dart
 
 jobs:
@@ -9,18 +9,8 @@ jobs:
       env: PKG="functional_widget"
       dart: stable
     - stage: unit_test
-      name: "SDK: stable - DIR: functional_widget - TASKS: pub run test"
-      script: ./tool/travis.sh test
-      env: PKG="functional_widget"
-      dart: stable
-    - stage: unit_test
-      name: "SDK: stable - DIR: functional_widget - TASKS: pub run test_coverage"
-      script: ./tool/travis.sh command_0
-      env: PKG="functional_widget"
-      dart: stable
-    - stage: unit_test
-      name: "SDK: stable - DIR: functional_widget - TASKS: bash <(curl -s https://codecov.io/bash)"
-      script: ./tool/travis.sh command_1
+      name: "SDK: stable - DIR: functional_widget - TASKS: [pub run test, pub run test_coverage, bash <(curl -s https://codecov.io/bash)]"
+      script: ./tool/travis.sh test command_0 command_1
       env: PKG="functional_widget"
       dart: stable
     - stage: analyzer_and_format

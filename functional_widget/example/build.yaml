@@ -4,5 +4,5 @@ targets:
       functional_widget:
         options:
           debugFillProperties: true
-          widgetType: hook
+          widgetType: stateless
           equality: equal

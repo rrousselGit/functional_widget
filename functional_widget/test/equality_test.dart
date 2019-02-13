@@ -7,12 +7,6 @@ void main() {
   final tester = SourceGenTester.fromPath('test/src/success.dart');
 
   group('equality', () {
-    // test('TODO', () {
-    //   // TODO: document
-    //   // TODO: update readme
-    //   throw UnimplementedError();
-    // });
-
     group('none', () {
       final _generator = FunctionalWidgetGenerator(
           const FunctionalWidget(equality: FunctionalWidgetEquality.none));

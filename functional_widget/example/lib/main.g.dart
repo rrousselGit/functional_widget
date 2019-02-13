@@ -6,7 +6,7 @@ part of 'main.dart';
 // FunctionalWidgetGenerator
 // **************************************************************************
 
-class Foo extends HookWidget {
+class Foo extends StatelessWidget {
   const Foo(this.value, {Key key}) : super(key: key);
 
   final int value;
@@ -25,7 +25,7 @@ class Foo extends HookWidget {
   }
 }
 
-class Example extends HookWidget {
+class Example extends StatelessWidget {
   const Example(this.foo, this.bar, {Key key}) : super(key: key);
 
   final int foo;

@@ -1,3 +1,8 @@
+## 0.5.0
+
+- Allows enabling/disable features though both `build.yaml` and a new decorator: `FunctionalWidget`
+- `operator==` and `debugFillProperties` overrides are now turned off by default.
+
 ## 0.4.0
 
 - Overrides `debugFillProperties` for an integration with the widget inspector.

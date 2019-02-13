@@ -81,12 +81,6 @@ void main() {
               .equality,
           FunctionalWidgetEquality.identical,
         );
-
-        expect(
-          parseBuilderOptions(const BuilderOptions({'equality': 'smart'}))
-              .equality,
-          FunctionalWidgetEquality.smart,
-        );
       });
     });
     group('widgetType', () {

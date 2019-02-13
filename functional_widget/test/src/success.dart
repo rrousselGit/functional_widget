@@ -33,13 +33,15 @@ Widget withKeyThenOneArg(Key key, int foo) => Container();
 Widget withContextThenKey(BuildContext context, Key key) => Container();
 
 @widget
-Widget withContextThenKeyThenOneArg(BuildContext context, Key key, int foo) => Container();
+Widget withContextThenKeyThenOneArg(BuildContext context, Key key, int foo) =>
+    Container();
 
 @widget
 Widget withKeyThenContext(Key key, BuildContext context) => Container();
 
 @widget
-Widget withKeyThenContextThenOneArg(Key key, BuildContext context, int foo) => Container();
+Widget withKeyThenContextThenOneArg(Key key, BuildContext context, int foo) =>
+    Container();
 
 @widget
 Widget whateverThenContext(int foo, BuildContext bar) => Container();

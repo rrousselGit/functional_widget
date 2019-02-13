@@ -122,13 +122,17 @@ class FunctionalWidgetGenerator
     ClassBuilder classBuilder,
     FunctionElement functionElement,
   ) {
-    if ((annotation.equality ?? _defaultOptions.equality) !=
-        FunctionalWidgetEquality.none) {
+    final equality = annotation.equality ?? _defaultOptions.equality;
+    if (equality != FunctionalWidgetEquality.none) {
       final overrideHashCode = _overrideHashCode(userDefined);
       if (overrideHashCode != null) classBuilder.methods.add(overrideHashCode);
 
-      final operatorEqual = _overrideOperatorEqual(userDefined,
-          _toTitle(functionElement.name), functionElement.typeParameters);
+      final operatorEqual = _overrideOperatorEqual(
+        userDefined,
+        _toTitle(functionElement.name),
+        functionElement.typeParameters,
+        equality,
+      );
       if (operatorEqual != null) classBuilder.methods.add(operatorEqual);
     }
   }
@@ -231,26 +235,52 @@ class FunctionalWidgetGenerator
     return propertyType;
   }
 
-  Method _overrideOperatorEqual(List<Parameter> userFields, String className,
-      List<TypeParameterElement> typeParameters) {
+  Method _overrideOperatorEqual(
+    List<Parameter> userFields,
+    String className,
+    List<TypeParameterElement> typeParameters,
+    FunctionalWidgetEquality equality,
+  ) {
     return userFields.isEmpty
         ? null
         : Method(
-            (b) => b
-              ..annotations.add(_kOverrideDecorator)
-              ..returns = refer('bool')
-              ..name = 'operator=='
-              ..lambda = true
-              ..requiredParameters.add(
-                Parameter(
-                  (b) => b
-                    ..name = 'o'
-                    ..type = refer('Object'),
-                ),
-              )
-              ..body = Code(
-                  'identical(o, this) || (o is $className${typeParameters.isEmpty ? '' : '<${typeParameters.map((t) => t.displayName).join(', ')}>'} && ${userFields.map((f) => f.name).map((name) => '$name == o.$name').join(' &&')})'),
+            (b) {
+              final serializedTypeParameters = typeParameters.isEmpty
+                  ? ''
+                  : '<${typeParameters.map((t) => t.displayName).join(', ')}>';
+              return b
+                ..annotations.add(_kOverrideDecorator)
+                ..returns = refer('bool')
+                ..name = 'operator=='
+                ..lambda = true
+                ..requiredParameters.add(
+                  Parameter(
+                    (b) => b
+                      ..name = 'o'
+                      ..type = refer('Object'),
+                  ),
+                )
+                ..body = Code(
+                    'identical(o, this) || (o is $className$serializedTypeParameters && ${_serializeEquality(userFields, equality)})');
+            },
           );
+  }
+
+  String _serializeEquality(
+      List<Parameter> userFields, FunctionalWidgetEquality equality) {
+    switch (equality) {
+      case FunctionalWidgetEquality.identical:
+        return userFields
+            .map((f) => f.name)
+            .map((name) => 'identical($name, o.$name)')
+            .join(' &&');
+      case FunctionalWidgetEquality.equal:
+      default:
+        return userFields
+            .map((f) => f.name)
+            .map((name) => '$name == o.$name')
+            .join(' &&');
+    }
   }
 
   Method _overrideHashCode(List<Parameter> userFields) {

@@ -5,4 +5,4 @@ targets:
         options:
           debugFillProperties: true
           widgetType: hook
-          equality: smart
+          equality: equal

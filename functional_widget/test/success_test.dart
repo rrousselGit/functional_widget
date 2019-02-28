@@ -1,6 +1,6 @@
 import 'package:code_gen_tester/code_gen_tester.dart';
 import 'package:functional_widget/function_to_widget_class.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   final tester = SourceGenTester.fromPath('test/src/success.dart');
@@ -304,6 +304,36 @@ class GenericMultiple<T, S> extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => genericMultiple<T, S>(foo, bar);
+}
+'''));
+      });
+      test('dynamic function', () async {
+        await _expect('dynamicTest', completion('''
+class DynamicTest extends StatelessWidget {
+  const DynamicTest({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => dynamicTest();
+}
+'''));
+      });
+      test('implicit dynamic function', () async {
+        await _expect('implicitDynamic', completion('''
+class ImplicitDynamic extends StatelessWidget {
+  const ImplicitDynamic({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => implicitDynamic();
+}
+'''));
+      });
+      test('text subclass function', () async {
+        await _expect('widgetSubclass', completion('''
+class WidgetSubclass extends StatelessWidget {
+  const WidgetSubclass({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => widgetSubclass();
 }
 '''));
       });

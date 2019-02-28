@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
-import 'fake_flutter.dart';
 
 @widget
 final closure = () => Container();
@@ -21,16 +21,5 @@ int notAWidget() {
 @widget
 // ignore: non_constant_identifier_names
 Widget TitleName() {
-  return Container();
-}
-
-@widget
-dynamic dynamicTest() {
-  return Container();
-}
-
-@widget
-// ignore: strong_mode_implicit_dynamic_return
-implicitDynamic() {
   return Container();
 }

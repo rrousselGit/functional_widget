@@ -15,6 +15,11 @@ Widget example(int foo, String bar) {
   return Container();
 }
 
+@widget
+dynamicReturn(int foo, String bar) {
+  return Container();
+}
+
 void main() => runApp(
       // we use the generated class
       const Foo(42),

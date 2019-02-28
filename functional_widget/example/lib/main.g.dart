@@ -46,3 +46,26 @@ class Example extends StatelessWidget {
     properties.add(StringProperty('bar', bar));
   }
 }
+
+class DynamicReturn extends StatelessWidget {
+  const DynamicReturn(this.foo, this.bar, {Key key}) : super(key: key);
+
+  final int foo;
+
+  final String bar;
+
+  @override
+  Widget build(BuildContext _context) => dynamicReturn(foo, bar);
+  @override
+  int get hashCode => hashValues(foo, bar);
+  @override
+  bool operator ==(Object o) =>
+      identical(o, this) ||
+      (o is DynamicReturn && foo == o.foo && bar == o.bar);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IntProperty('foo', foo));
+    properties.add(StringProperty('bar', bar));
+  }
+}

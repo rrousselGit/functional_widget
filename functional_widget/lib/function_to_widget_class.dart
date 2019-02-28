@@ -44,7 +44,7 @@ class FunctionalWidgetGenerator
   String generateForAnnotatedElement(
       Element element, ConstantReader annotation, BuildStep buildStep) {
     final function = _checkValidElement(element);
-    final type = parseFunctionalWidetAnnotation(annotation);
+    final type = parseFunctionalWidgetAnnotation(annotation);
 
     return _makeClassFromFunctionElement(function, type)
         .accept(_emitter)
@@ -61,10 +61,18 @@ class FunctionalWidgetGenerator
     var function = element as FunctionElement;
     if (function.isAsynchronous ||
         function.isExternal ||
-        function.isGenerator ||
-        function.returnType?.displayName != 'Widget') {
+        function.isGenerator) {
       throw InvalidGenerationSourceError(
         'Invalid prototype. The function must be synchronous, top level, and return a Widget',
+        element: function,
+      );
+    }
+    if (function.returnType != null &&
+        !function.returnType.isDynamic &&
+        !function.returnType.isUndefined &&
+        function.returnType?.displayName != 'Widget') {
+      throw InvalidGenerationSourceError(
+        'Invalid prototype. The function must return a Widget or be dynamic',
         element: function,
       );
     }

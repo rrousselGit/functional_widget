@@ -1,8 +1,9 @@
 import 'package:build/build.dart';
 import 'package:code_gen_tester/src/analysis_utils.dart';
 import 'package:dart_style/dart_style.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:matcher/matcher.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:test/test.dart';
 import 'dart:async';
 
 Future<void> expectGenerate(

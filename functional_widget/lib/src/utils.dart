@@ -71,7 +71,7 @@ FunctionalWidgetType _parseWidgetType(dynamic value) {
       'Invalid value. Potential values are `hook` or `stateless`');
 }
 
-FunctionalWidget parseFunctionalWidetAnnotation(ConstantReader reader) {
+FunctionalWidget parseFunctionalWidgetAnnotation(ConstantReader reader) {
   return FunctionalWidget(
     widgetType:
         _parseEnum(reader.read('widgetType'), FunctionalWidgetType.values),

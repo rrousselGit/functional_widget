@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:meta/meta.dart' as meta;
-import 'fake_flutter.dart';
 
 @swidget
 Widget sWidget() => Container();
@@ -103,3 +103,19 @@ Widget genericExtends<T extends Container>(T foo) => Container();
 
 @widget
 Widget genericFunction<T>(T Function() foo) => Container();
+
+@widget
+dynamic dynamicTest() {
+  return Container();
+}
+
+@widget
+// ignore: strong_mode_implicit_dynamic_return
+implicitDynamic() {
+  return Container();
+}
+
+@widget
+Text widgetSubclass() {
+  return Text('It works');
+}

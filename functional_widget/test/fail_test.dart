@@ -1,6 +1,6 @@
 import 'package:code_gen_tester/code_gen_tester.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:functional_widget/function_to_widget_class.dart';
-import 'package:test/test.dart';
 
 void main() {
   final tester = SourceGenTester.fromPath('test/src/fail.dart');
@@ -19,20 +19,6 @@ void main() {
       await expectGenerateNamed(
         await tester,
         'externalTest',
-        FunctionalWidgetGenerator(),
-        throwsInvalidGenerationSourceError(),
-      );
-    });
-    test('dynamic', () async {
-      await expectGenerateNamed(
-        await tester,
-        'dynamicTest',
-        FunctionalWidgetGenerator(),
-        throwsInvalidGenerationSourceError(),
-      );
-      await expectGenerateNamed(
-        await tester,
-        'implicitDynamic',
         FunctionalWidgetGenerator(),
         throwsInvalidGenerationSourceError(),
       );

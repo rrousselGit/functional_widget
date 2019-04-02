@@ -88,7 +88,7 @@ dependencies:
 
 dev_dependencies:
   functional_widget: ^0.4.0
-  build_runner: ^1.1.2
+  build_runner: ^1.3.1
 ```
 
 ### Run the generator

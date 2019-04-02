@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
+import 'package:functional_widget/findBeginToken.dart';
 import 'package:functional_widget/src/parameters.dart';
 import 'package:functional_widget/src/utils.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
@@ -51,31 +52,31 @@ class FunctionalWidgetGenerator
         .toString();
   }
 
-  FunctionElement _checkValidElement(Element element) {
-    if (element is! FunctionElement) {
-      throw InvalidGenerationSourceError(
-        'Error, the decorated element is not a function',
-        element: element,
-      );
+  FunctionElement _checkValidElement(Element function) {
+    if (function is FunctionElement) {
+      if (function.isAsynchronous ||
+          function.isExternal ||
+          function.isGenerator ||
+          function.returnType?.displayName != 'Widget') {
+        throw InvalidGenerationSourceError(
+          'Invalid prototype. The function must be synchronous, top level, and return a Widget',
+          element: function,
+        );
+      }
+      final className = _toTitle(function.name);
+      if (className == function.name) {
+        throw InvalidGenerationSourceError(
+          'The function name must start with a lowercase',
+          element: function,
+        );
+      }
+      return function;
     }
-    var function = element as FunctionElement;
-    if (function.isAsynchronous ||
-        function.isExternal ||
-        function.isGenerator ||
-        function.returnType?.displayName != 'Widget') {
-      throw InvalidGenerationSourceError(
-        'Invalid prototype. The function must be synchronous, top level, and return a Widget',
-        element: function,
-      );
-    }
-    final className = _toTitle(function.name);
-    if (className == function.name) {
-      throw InvalidGenerationSourceError(
-        'The function name must start with a lowercase',
-        element: function,
-      );
-    }
-    return function;
+
+    throw InvalidGenerationSourceError(
+      'Error, the decorated element is not a function',
+      element: function,
+    );
   }
 
   Spec _makeClassFromFunctionElement(
@@ -211,7 +212,7 @@ class FunctionalWidgetGenerator
   }
 
   String _getFallbackElementDiagnostic(ParameterElement element) =>
-      'DiagnosticsProperty<${element.type.isUndefined ? element.computeNode().beginToken : element.type.displayName}>';
+      'DiagnosticsProperty<${element.type.isUndefined ? findBeginToken(element) : element.type.displayName}>';
 
   String _tryParseFunctionToDiagnostic(
       ParameterElement element, String propertyType) {

@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart' show DartType;
 import 'package:code_builder/code_builder.dart';
+import 'package:functional_widget/findBeginToken.dart';
 
 class FunctionParameters {
   FunctionParameters._(this._parameters);
@@ -50,7 +51,8 @@ Reference _parameterToReference(ParameterElement element) {
     return null;
   }
   if (element.type.isUndefined) {
-    return refer(element.computeNode().beginToken.toString());
+    var token = findBeginToken(element);
+    return refer(token.toString());
   }
 
   return _typeToReference(element.type);

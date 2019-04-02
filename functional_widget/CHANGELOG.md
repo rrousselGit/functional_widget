@@ -1,3 +1,7 @@
+## 0.5.1
+
+- Updated analyzer version
+
 ## 0.5.0
 
 - Allows enabling/disable features though both `build.yaml` and a new decorator: `FunctionalWidget`

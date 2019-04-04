@@ -52,31 +52,31 @@ class FunctionalWidgetGenerator
         .toString();
   }
 
-  FunctionElement _checkValidElement(Element function) {
-    if (function is FunctionElement) {
-      if (function.isAsynchronous ||
-          function.isExternal ||
-          function.isGenerator ||
-          function.returnType?.displayName != 'Widget') {
-        throw InvalidGenerationSourceError(
-          'Invalid prototype. The function must be synchronous, top level, and return a Widget',
-          element: function,
-        );
-      }
-      final className = _toTitle(function.name);
-      if (className == function.name) {
-        throw InvalidGenerationSourceError(
-          'The function name must start with a lowercase',
-          element: function,
-        );
-      }
-      return function;
+  FunctionElement _checkValidElement(Element element) {
+    if (element is! FunctionElement) {
+      throw InvalidGenerationSourceError(
+        'Error, the decorated element is not a function',
+        element: element,
+      );
     }
-
-    throw InvalidGenerationSourceError(
-      'Error, the decorated element is not a function',
-      element: function,
-    );
+    var function = element as FunctionElement;
+    if (function.isAsynchronous ||
+        function.isExternal ||
+        function.isGenerator ||
+        function.returnType?.displayName != 'Widget') {
+      throw InvalidGenerationSourceError(
+        'Invalid prototype. The function must be synchronous, top level, and return a Widget',
+        element: function,
+      );
+    }
+    final className = _toTitle(function.name);
+    if (className == function.name) {
+      throw InvalidGenerationSourceError(
+        'The function name must start with a lowercase',
+        element: function,
+      );
+    }
+    return function;
   }
 
   Spec _makeClassFromFunctionElement(

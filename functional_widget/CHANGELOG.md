@@ -1,6 +1,6 @@
-## 0.5.1
+## 0.6.0
 
-- Updated analyzer version
+- Updated analyzer version to work with `flutter generate` & co
 
 ## 0.5.0
 

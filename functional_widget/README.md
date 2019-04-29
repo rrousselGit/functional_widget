@@ -74,32 +74,51 @@ runApp(
 
 ## How to use
 
-### Install
+### Install (builder)
 
 There are a few separate packages you need to install:
 
 - `functional_widget_annotation`, a package containing decorators. You must install it as `dependencies`.
-- `functional_widget`, a generator that uses the decorators from the previous packages to generate your widget. Install it as `dev_dependencies`
-- `build_runner`, a tool that is able to run code-generators. Install it as `dev_dependencies`
+- `functional_widget`, a code-generator that uses the decorators from the previous packages to generate your widget.
+Install it inside `builders`, a Flutter specific field on your `pubspec.yaml` made for code-generators.
+
+Your `pubspec.yaml` should looks like:
 
 ```yaml
 dependencies:
-  functional_widget_annotation: ^0.3.0
+  functional_widget_annotation: ^0.5.0
+
+builders:
+  functional_widget: ^0.6.0
+```
+
+That's it! Flutter will automatically run the code generator when executing `flutter build`, `flutter run` or similar.
+
+### Install (build_runner)
+
+If your version of Flutter is too old, the previous installation method may not work.
+In that case it is possible to work with `functional_widget` by using `build_runner` package.
+
+First add the following to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  functional_widget_annotation: ^0.5.0
 
 dev_dependencies:
-  functional_widget: ^0.4.0
+  functional_widget: ^0.6.0
   build_runner: ^1.3.1
 ```
 
-### Run the generator
-
-To run the generator, you must use `build_runner` cli:
+Then to run the generator, you must use `build_runner`:
 
 ```sh
 flutter pub pub run build_runner watch
 ```
 
-### Customize the output
+This will watch your source folder and run the code-generator whenever something changes.
+
+## Customize the output
 
 It is possible to customize the output of the generator by using different decorators or configuring default values in `build.yaml` file.
 
@@ -231,14 +250,13 @@ dependencies:
 
 It can be interesting for `Widget` to override `operator==` for performance optimizations.
 
-`functional_widget` optionally allows overriding both `operator==` and `hashCode` based on the field used. 
+`functional_widget` optionally allows overriding both `operator==` and `hashCode` based on the field used.
 
 There are two different configurations:
 
 - `none` (default): Don't override anything
 - `identical`, overrides `hashCode` and `operator==` with the latter being implemented using `identical` to compare fields.
 - `equal`, similar to `identical`, but using `==` to compare fields.
-
 
 It can be configured both through `build.yaml`:
 
@@ -252,14 +270,12 @@ targets:
           equility: identical
 ```
 
-
 or using `@FunctionalWidget` decorator:
 
 ```dart
 @FunctionalWidget(equality: FunctionalWidgetEquality.identical)
 Widget example(int foo, String bar) => Container();
 ```
-
 
 ### All the potential function prototypes
 

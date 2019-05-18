@@ -102,4 +102,14 @@ Widget genericMultiple<T, S>(T foo, S bar) => Container();
 Widget genericExtends<T extends Container>(T foo) => Container();
 
 @widget
-Widget genericFunction<T>(T Function() foo) => Container();
+Widget genericClass<T>(T Function() foo) => Container();
+
+typedef T _GenericFunction<T>(T foo);
+
+@widget
+Widget genericFunction(_GenericFunction<int> foo) => Container();
+
+typedef _GenericFunction2 = T Function<T>(T foo);
+
+@widget
+Widget genericFunction2(_GenericFunction2 foo) => Container();

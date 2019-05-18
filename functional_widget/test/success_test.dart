@@ -280,20 +280,20 @@ class UnknownTypeFunction extends StatelessWidget {
 }
 '''));
       });
-      test('generic function', () async {
+      test('generic class', () async {
         // currently not possible to know the type
-        await _expect('genericFunction', completion('''
-class GenericFunction<T> extends StatelessWidget {
-  const GenericFunction(this.foo, {Key key}) : super(key: key);
+        await _expect('genericClass', completion('''
+class GenericClass<T> extends StatelessWidget {
+  const GenericClass(this.foo, {Key key}) : super(key: key);
 
   final T Function() foo;
 
   @override
-  Widget build(BuildContext _context) => genericFunction<T>(foo);
+  Widget build(BuildContext _context) => genericClass<T>(foo);
 }
 '''));
       });
-      test('multiple generic function', () async {
+      test('multiple generic class', () async {
         await _expect('genericMultiple', completion('''
 class GenericMultiple<T, S> extends StatelessWidget {
   const GenericMultiple(this.foo, this.bar, {Key key}) : super(key: key);
@@ -304,6 +304,30 @@ class GenericMultiple<T, S> extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => genericMultiple<T, S>(foo, bar);
+}
+'''));
+      });
+      test('generic function', () async {
+        await _expect('genericFunction', completion('''
+class GenericFunction extends StatelessWidget {
+  const GenericFunction(this.foo, {Key key}) : super(key: key);
+
+  final int Function(int) foo;
+
+  @override
+  Widget build(BuildContext _context) => genericFunction(foo);
+}
+'''));
+      });
+      test('generic function #2', () async {
+        await _expect('genericFunction2', completion('''
+class GenericFunction2 extends StatelessWidget {
+  const GenericFunction2(this.foo, {Key key}) : super(key: key);
+
+  final T Function<T>(T) foo;
+
+  @override
+  Widget build(BuildContext _context) => genericFunction2(foo);
 }
 '''));
       });

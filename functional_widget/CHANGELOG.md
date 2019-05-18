@@ -1,3 +1,7 @@
+## 0.6.1
+
+- fixes invalid generation with generic functions
+
 ## 0.6.0
 
 - Updated analyzer version to work with `flutter generate` & co

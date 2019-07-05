@@ -180,6 +180,18 @@ class UndefinedType extends StatelessWidget {
 }
 '''));
     });
+    test('annotated undefined type', () async {
+      await _expect('annotatedUndefinedType', completion('''
+class AnnotatedUndefinedType extends StatelessWidget {
+  const AnnotatedUndefinedType({Key key, @required this.foo}) : super(key: key);
+
+  final Color foo;
+
+  @override
+  Widget build(BuildContext _context) => annotatedUndefinedType(foo: foo);
+}
+'''));
+    });
     test('hook widget', () async {
       await _expect('hookExample', completion('''
 class HookExample extends HookWidget {

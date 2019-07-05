@@ -7,5 +7,10 @@ Token findBeginToken(ParameterElement element) {
       element.session.getParsedLibraryByElement(element.library);
   final declaration = parsedLibrary.getElementDeclaration(element);
   final parameter = declaration.node as FormalParameter;
-  return parameter.beginToken;
+  if (parameter is DefaultFormalParameter &&
+      parameter.parameter is SimpleFormalParameter) {
+    return (parameter.parameter as SimpleFormalParameter).type.beginToken;
+  } else {
+    return parameter.beginToken;
+  }
 }

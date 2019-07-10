@@ -1,3 +1,7 @@
+## 0.7.0
+
+- support `@required` for `Color` and other `dart:ui` types
+
 ## 0.6.1
 
 - fixes invalid generation with generic functions

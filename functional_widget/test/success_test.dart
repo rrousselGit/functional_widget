@@ -38,7 +38,7 @@ class Required extends StatelessWidget {
     test('named', () async {
       await _expect('named', completion('''
 class Named extends StatelessWidget {
-  const Named({Key key, this.foo, this.bar}) : super(key: key);
+  const Named({Key key, this.foo, this.bar = 42}) : super(key: key);
 
   final dynamic foo;
 

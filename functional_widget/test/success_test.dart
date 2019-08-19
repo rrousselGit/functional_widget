@@ -230,6 +230,27 @@ class GenericExtends<T extends Container> extends StatelessWidget {
 '''));
     });
 
+    test('with underscore', () async {
+      await _expect('_withUnderscore', completion('''
+class _WithUnderscore extends StatelessWidget {
+  const _WithUnderscore({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => _withUnderscore();
+}
+'''));
+    });
+    test('with underscore removed', () async {
+      await _expect('_withUnderscoreRemoved', completion('''
+class WithUnderscoreRemoved extends StatelessWidget {
+  const WithUnderscoreRemoved({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => _withUnderscoreRemoved();
+}
+'''));
+    });
+
     group('functions', () {
       test('typedef', () async {
         await _expect('typedefFunction', completion('''

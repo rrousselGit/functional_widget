@@ -65,11 +65,11 @@ enum FunctionalWidgetEquality {
 
 /// Decorates a function to customize the generated class
 class FunctionalWidget {
-  const FunctionalWidget({
-    this.widgetType,
-    this.equality,
-    this.debugFillProperties,
-  });
+  const FunctionalWidget(
+      {this.widgetType,
+      this.equality,
+      this.debugFillProperties,
+      this.removeLeadingUnderscore});
 
   /// Configures which types of widget is generated.
   ///
@@ -83,6 +83,13 @@ class FunctionalWidget {
 
   /// Defines if the generated widget should emit diagnostics informations.
   final bool debugFillProperties;
+
+  /// If true the leading underscore of the function is removed. This way,
+  /// a private function can be used to create a public widget class. If the
+  /// function does not have a leading underscore, this option is ignored.
+  ///
+  /// For example, the function `_foo` would generate class `Foo`.
+  final bool removeLeadingUnderscore;
 }
 
 /// A decorator for functions to generate a `Widget`.

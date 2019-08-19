@@ -117,3 +117,11 @@ typedef _GenericFunction2 = T Function<T>(T foo);
 
 @widget
 Widget genericFunction2(_GenericFunction2 foo) => Container();
+
+@widget
+// ignore: unused_element
+Widget _withUnderscore() => Container();
+
+@FunctionalWidget(removeLeadingUnderscore: true)
+// ignore: unused_element
+Widget _withUnderscoreRemoved() => Container();

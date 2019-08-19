@@ -16,10 +16,13 @@ final _hookWidgetRef = refer('HookWidget', _kHookWidgetsPath);
 final _keyRef = refer('Key', _kFlutterWidgetsPath);
 final _buildContextRef = refer('BuildContext', _kFlutterWidgetsPath);
 
-String _toTitle(String string) {
-  return string.replaceFirstMapped(RegExp('[a-zA-Z]'), (match) {
+String _toTitle(String string, bool removeLeadingUnderscore) {
+  final title = string.replaceFirstMapped(RegExp('[a-zA-Z]'), (match) {
     return match.group(0).toUpperCase();
   });
+  return title.startsWith('_') && removeLeadingUnderscore
+      ? title.substring(1)
+      : title;
 }
 
 const _kOverrideDecorator = CodeExpression(Code('override'));
@@ -33,10 +36,10 @@ class FunctionalWidgetGenerator
     extends GeneratorForAnnotation<FunctionalWidget> {
   FunctionalWidgetGenerator([FunctionalWidget options])
       : _defaultOptions = FunctionalWidget(
-          debugFillProperties: options?.debugFillProperties ?? false,
-          equality: options?.equality ?? FunctionalWidgetEquality.none,
-          widgetType: options?.widgetType ?? FunctionalWidgetType.stateless,
-        );
+            debugFillProperties: options?.debugFillProperties ?? false,
+            equality: options?.equality ?? FunctionalWidgetEquality.none,
+            widgetType: options?.widgetType ?? FunctionalWidgetType.stateless,
+            removeLeadingUnderscore: options?.removeLeadingUnderscore ?? false);
 
   final FunctionalWidget _defaultOptions;
   final _emitter = DartEmitter();
@@ -69,7 +72,7 @@ class FunctionalWidgetGenerator
         element: function,
       );
     }
-    final className = _toTitle(function.name);
+    final className = _toTitle(function.name, false);
     if (className == function.name) {
       throw InvalidGenerationSourceError(
         'The function name must start with a lowercase',
@@ -91,7 +94,10 @@ class FunctionalWidgetGenerator
       (b) {
         final widgetType = annotation.widgetType ?? _defaultOptions.widgetType;
         b
-          ..name = _toTitle(functionElement.name)
+          ..name = _toTitle(
+              functionElement.name,
+              annotation.removeLeadingUnderscore ??
+                  _defaultOptions.removeLeadingUnderscore)
           ..types.addAll(
               _parseTypeParemeters(functionElement.typeParameters).toList())
           ..extend = widgetType == FunctionalWidgetType.hook
@@ -131,7 +137,10 @@ class FunctionalWidgetGenerator
 
       final operatorEqual = _overrideOperatorEqual(
         userDefined,
-        _toTitle(functionElement.name),
+        _toTitle(
+            functionElement.name,
+            annotation.removeLeadingUnderscore ??
+                _defaultOptions.removeLeadingUnderscore),
         functionElement.typeParameters,
         equality,
       );

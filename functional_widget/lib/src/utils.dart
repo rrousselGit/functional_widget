@@ -3,7 +3,12 @@ import 'package:build/build.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
-const _kKnownOptionsName = ['widgetType', 'equality', 'debugFillProperties'];
+const _kKnownOptionsName = [
+  'widgetType',
+  'equality',
+  'debugFillProperties',
+  'removeLeadingUnderscore'
+];
 
 FunctionalWidget parseBuilderOptions(BuilderOptions options) {
   final unknownOption = options?.config?.keys?.firstWhere(
@@ -18,11 +23,14 @@ FunctionalWidget parseBuilderOptions(BuilderOptions options) {
   final debugFillProperties =
       _parseDebugFillProperties(options.config['debugFillProperties']);
   final equality = _parseEquality(options.config['equality']);
+  final removeLeadingUnderscore =
+      _parseRemoveLeadingUnderscore(options.config['removeLeadingUnderscore']);
+
   return FunctionalWidget(
-    widgetType: widgetType,
-    debugFillProperties: debugFillProperties,
-    equality: equality,
-  );
+      widgetType: widgetType,
+      debugFillProperties: debugFillProperties,
+      equality: equality,
+      removeLeadingUnderscore: removeLeadingUnderscore);
 }
 
 bool _parseDebugFillProperties(dynamic value) {
@@ -71,13 +79,26 @@ FunctionalWidgetType _parseWidgetType(dynamic value) {
       'Invalid value. Potential values are `hook` or `stateless`');
 }
 
+bool _parseRemoveLeadingUnderscore(dynamic value) {
+  if (value == null) {
+    // ignore: avoid_returning_null
+    return null;
+  }
+  if (value is bool) {
+    return value;
+  }
+  throw ArgumentError.value(value, 'removeLeadingUnderscore',
+      'Invalid value. Potential values are `true` or `false`');
+}
+
 FunctionalWidget parseFunctionalWidetAnnotation(ConstantReader reader) {
   return FunctionalWidget(
-    widgetType:
-        _parseEnum(reader.read('widgetType'), FunctionalWidgetType.values),
-    equality:
-        _parseEnum(reader.read('equality'), FunctionalWidgetEquality.values),
-  );
+      widgetType:
+          _parseEnum(reader.read('widgetType'), FunctionalWidgetType.values),
+      equality:
+          _parseEnum(reader.read('equality'), FunctionalWidgetEquality.values),
+      removeLeadingUnderscore:
+          _parseBool(reader.read('removeLeadingUnderscore')));
 }
 
 T _parseEnum<T>(ConstantReader reader, List<T> values) => reader.isNull
@@ -91,3 +112,6 @@ T _enumValueForDartObject<T>(
     items.singleWhere(
       (v) => source.getField(name(v)) != null,
     );
+
+bool _parseBool(ConstantReader reader) =>
+    reader.isNull ? null : reader.boolValue;

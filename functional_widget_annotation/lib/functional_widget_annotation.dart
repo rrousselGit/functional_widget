@@ -84,7 +84,7 @@ class FunctionalWidget {
   /// Defines if the generated widget should emit diagnostics informations.
   final bool debugFillProperties;
 
-  /// If true the leading underscore of the function is removed. This way,
+  /// If `true` the leading underscore of the function is removed. This way,
   /// a private function can be used to create a public widget class. If the
   /// function does not have a leading underscore, this option is ignored.
   ///

@@ -175,7 +175,7 @@ packages:
       path: "../functional_widget_annotation"
       relative: true
     source: path
-    version: "0.5.2"
+    version: "0.5.1"
   glob:
     dependency: transitive
     description:

@@ -1,7 +1,6 @@
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/type.dart' as element_type;
 import 'package:code_builder/code_builder.dart';
-import 'package:functional_widget/findBeginToken.dart';
 
 class FunctionParameters {
   FunctionParameters._(this._parameters);
@@ -49,49 +48,45 @@ Parameter _parseParameter(ParameterElement parameter) {
   );
 }
 
-Reference _parameterToReference(ParameterElement element) {
-  if (element.type == null) {
-    return null;
-  }
-  if (element.type.isUndefined) {
-    var token = findBeginToken(element);
-    return refer(token.toString());
-  }
+Reference _parameterToReference(ParameterElement element) =>
+    _astFormalParameterToReference(findParameterNode(element));
 
-  return _typeToReference(element.type);
+Reference _astFormalParameterToReference(FormalParameter node) {
+  if (node is SimpleFormalParameter) {
+    return node.type == null ? refer('dynamic') : refer(node.type.toSource());
+  }
+  if (node is DefaultFormalParameter) {
+    return _astFormalParameterToReference(node.parameter);
+  }
+  return _astFunctionTypedFormalParameterToFunctionType(
+      node as FunctionTypedFormalParameter);
 }
 
-Reference _typeToReference(element_type.DartType type) {
-  if (type == null) {
-    return null;
-  }
-  if (type is element_type.FunctionType) {
-    // final functionTyped = type.element as FunctionTypedElement;
-    final t = _functionTypedElementToFunctionType(type);
-    return t.type;
-  }
-
-  return type.displayName != null ? refer(type.displayName) : null;
-}
-
-FunctionType _functionTypedElementToFunctionType(
-  element_type.FunctionType element,
+FunctionType _astFunctionTypedFormalParameterToFunctionType(
+  FunctionTypedFormalParameter node,
 ) {
   return FunctionType((b) {
     return b
-      ..returnType = _typeToReference(element.returnType)
-      ..types.addAll(element.typeFormals.map((f) => _typeToReference(f.type)))
-      ..requiredParameters.addAll(element.parameters
-          .where((p) => p.isNotOptional)
-          .map(_parseParameter)
-          .map((p) => p.type))
-      ..namedParameters.addEntries(element.parameters
+      ..returnType = refer(node.returnType.toSource())
+      ..types.addAll(node.typeParameters?.typeParameters
+              ?.map((f) => refer(f.toSource())) ??
+          [])
+      ..requiredParameters.addAll(node.parameters.parameters
+          .where((p) => !p.isOptional)
+          .map(_astFormalParameterToReference))
+      ..namedParameters.addEntries(node.parameters.parameters
           .where((p) => p.isNamed)
-          .map(_parseParameter)
-          .map((p) => MapEntry(p.name, p.type)))
-      ..optionalParameters.addAll(element.parameters
+          .map((p) =>
+              MapEntry(p.identifier.name, _astFormalParameterToReference(p))))
+      ..optionalParameters.addAll(node.parameters.parameters
           .where((p) => p.isOptionalPositional)
-          .map(_parseParameter)
-          .map((p) => p.type));
+          .map(_astFormalParameterToReference));
   });
+}
+
+FormalParameter findParameterNode(ParameterElement element) {
+  final parsedLibrary =
+      element.session.getParsedLibraryByElement(element.library);
+  final declaration = parsedLibrary.getElementDeclaration(element);
+  return declaration.node as FormalParameter;
 }

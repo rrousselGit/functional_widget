@@ -257,7 +257,7 @@ class WithUnderscoreRemoved extends StatelessWidget {
 class TypedefFunction extends StatelessWidget {
   const TypedefFunction(this.t, {Key key}) : super(key: key);
 
-  final void Function() t;
+  final Typedef t;
 
   @override
   Widget build(BuildContext _context) => typedefFunction(t);
@@ -293,7 +293,7 @@ class InlineFunction2 extends StatelessWidget {
 class NestedFunction extends StatelessWidget {
   const NestedFunction(this.t, {Key key}) : super(key: key);
 
-  final void Function(void Function(int), int) t;
+  final void Function(void Function(int a), int b) t;
 
   @override
   Widget build(BuildContext _context) => nestedFunction(t);
@@ -306,7 +306,7 @@ class NestedFunction extends StatelessWidget {
 class UnknownTypeFunction extends StatelessWidget {
   const UnknownTypeFunction(this.t, {Key key}) : super(key: key);
 
-  final dynamic Function() t;
+  final Color Function() t;
 
   @override
   Widget build(BuildContext _context) => unknownTypeFunction(t);
@@ -345,7 +345,7 @@ class GenericMultiple<T, S> extends StatelessWidget {
 class GenericFunction extends StatelessWidget {
   const GenericFunction(this.foo, {Key key}) : super(key: key);
 
-  final int Function(int) foo;
+  final _GenericFunction<int> foo;
 
   @override
   Widget build(BuildContext _context) => genericFunction(foo);
@@ -357,7 +357,7 @@ class GenericFunction extends StatelessWidget {
 class GenericFunction2 extends StatelessWidget {
   const GenericFunction2(this.foo, {Key key}) : super(key: key);
 
-  final T Function<T>(T) foo;
+  final _GenericFunction2 foo;
 
   @override
   Widget build(BuildContext _context) => genericFunction2(foo);

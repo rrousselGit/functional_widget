@@ -69,7 +69,8 @@ class FunctionalWidget {
       {this.widgetType,
       this.equality,
       this.debugFillProperties,
-      this.removeLeadingUnderscore});
+    this.removeLeadingUnderscore,
+  });
 
   /// Configures which types of widget is generated.
   ///

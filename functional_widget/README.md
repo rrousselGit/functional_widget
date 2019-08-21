@@ -135,6 +135,7 @@ targets:
           debugFillProperties: false
           widgetType: stateless # or 'hook'
           equality: none # or 'identical'/'equal'
+          removeLeadingUnderscore: false
 ```
 
 `FunctionalWidget` decorator will override the default behavior for one specific widget.
@@ -275,6 +276,31 @@ or using `@FunctionalWidget` decorator:
 ```dart
 @FunctionalWidget(equality: FunctionalWidgetEquality.identical)
 Widget example(int foo, String bar) => Container();
+```
+
+### Making public widgets from private functions
+
+Quite often, you don't want to export the function itself, but only the generated widget so that users do not accidently use the function. For this, we have the option `removeLeadingUnderscore` to remove the first leading underscore (if any) of the function name when creating the class name.
+
+For example, with the option turned on, a function `_foo` would be translated to a class `Foo`. However `bar` (no leading underscore) would still be `Bar`.
+
+This option can be enabled through `build.yaml`:
+
+```yaml
+# build.yaml
+targets:
+  $default:
+    builders:
+      functional_widget:
+        options:
+          removeLeadingUnderscore: true
+```
+
+or using `@FunctionalWidget` decorator:
+
+```dart
+@FunctionalWidget(removeLeadingUnderscore: true)
+Widget _example(int foo, String bar) => Container();
 ```
 
 ### All the potential function prototypes

@@ -65,10 +65,10 @@ enum FunctionalWidgetEquality {
 
 /// Decorates a function to customize the generated class
 class FunctionalWidget {
-  const FunctionalWidget(
-      {this.widgetType,
-      this.equality,
-      this.debugFillProperties,
+  const FunctionalWidget({
+    this.widgetType,
+    this.equality,
+    this.debugFillProperties,
     this.removeLeadingUnderscore,
   });
 

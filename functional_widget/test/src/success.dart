@@ -18,7 +18,10 @@ Widget noArgument() => Container();
 Widget required(foo, int bar) => Container();
 
 @widget
-Widget named({foo, int bar = 42}) => Container();
+Widget named({foo, int bar}) => Container();
+
+@widget
+Widget namedDefault({int foo = 42}) => Container();
 
 @widget
 Widget mixt(foo, int bar, {nfoo, int nbar}) => Container();

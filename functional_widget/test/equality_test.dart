@@ -16,7 +16,7 @@ void main() {
       test('never generate hashcode/operator==', () async {
         await _expect('named', completion('''
 class Named extends StatelessWidget {
-  const Named({Key key, this.foo, this.bar = 42}) : super(key: key);
+  const Named({Key key, this.foo, this.bar}) : super(key: key);
 
   final dynamic foo;
 

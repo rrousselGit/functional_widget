@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element.dart';
+timport 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:functional_widget/findBeginToken.dart';
@@ -24,16 +24,6 @@ String _toTitle(String string, bool removeLeadingUnderscore) {
       ? title.substring(1)
       : title;
 }
-
-String _toPublic(String string, bool removeLeadingUnderscore) {
-  final title = string.replaceFirstMapped(RegExp('[a-zA-Z]'), (match) {
-    return match.group(0).toUpperCase();
-  });
-  return title.startsWith('_') && removeLeadingUnderscore
-      ? title.substring(1)
-      : title;
-}
-
 
 const _kOverrideDecorator = CodeExpression(Code('override'));
 

@@ -1,4 +1,4 @@
-timport 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:functional_widget/findBeginToken.dart';
@@ -36,9 +36,9 @@ class FunctionalWidgetGenerator
     extends GeneratorForAnnotation<FunctionalWidget> {
   FunctionalWidgetGenerator([FunctionalWidget options])
       : _defaultOptions = FunctionalWidget(
-            debugFillProperties: options?.debugFillProperties ?? false,
-            equality: options?.equality ?? FunctionalWidgetEquality.none,
-            widgetType: options?.widgetType ?? FunctionalWidgetType.stateless,
+          debugFillProperties: options?.debugFillProperties ?? false,
+          equality: options?.equality ?? FunctionalWidgetEquality.none,
+          widgetType: options?.widgetType ?? FunctionalWidgetType.stateless,
           removeLeadingUnderscore: options?.removeLeadingUnderscore ?? false,
         );
 

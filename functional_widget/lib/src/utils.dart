@@ -27,9 +27,9 @@ FunctionalWidget parseBuilderOptions(BuilderOptions options) {
       _parseRemoveLeadingUnderscore(options.config['removeLeadingUnderscore']);
 
   return FunctionalWidget(
-      widgetType: widgetType,
-      debugFillProperties: debugFillProperties,
-      equality: equality,
+    widgetType: widgetType,
+    debugFillProperties: debugFillProperties,
+    equality: equality,
     removeLeadingUnderscore: removeLeadingUnderscore,
   );
 }
@@ -42,8 +42,11 @@ bool _parseDebugFillProperties(dynamic value) {
   if (value is bool) {
     return value;
   }
-  throw ArgumentError.value(value, 'debugFillProperties',
-      'Invalid value. Potential values are `true` or `false`');
+  throw ArgumentError.value(
+    value,
+    'debugFillProperties',
+    'Invalid value. Potential values are `true` or `false`',
+  );
 }
 
 FunctionalWidgetEquality _parseEquality(dynamic value) {
@@ -94,12 +97,12 @@ bool _parseRemoveLeadingUnderscore(dynamic value) {
 
 FunctionalWidget parseFunctionalWidetAnnotation(ConstantReader reader) {
   return FunctionalWidget(
-      widgetType:
-          _parseEnum(reader.read('widgetType'), FunctionalWidgetType.values),
-      equality:
-          _parseEnum(reader.read('equality'), FunctionalWidgetEquality.values),
-      removeLeadingUnderscore:
-          _parseBool(reader.read('removeLeadingUnderscore')));
+    widgetType:
+        _parseEnum(reader.read('widgetType'), FunctionalWidgetType.values),
+    equality:
+        _parseEnum(reader.read('equality'), FunctionalWidgetEquality.values),
+    removeLeadingUnderscore: _parseBool(reader.read('removeLeadingUnderscore')),
+  );
 }
 
 T _parseEnum<T>(ConstantReader reader, List<T> values) => reader.isNull

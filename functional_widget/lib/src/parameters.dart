@@ -38,7 +38,7 @@ Parameter _parseParameter(ParameterElement parameter) {
     (b) => b
       ..name = parameter.name
       ..defaultTo = parameter.defaultValueCode != null
-          ? Code.scope((_) => parameter.defaultValueCode)
+          ? Code(parameter.defaultValueCode)
           : null
       ..docs.add(parameter.documentationComment ?? '')
       ..annotations.addAll(parameter.metadata.map((meta) {

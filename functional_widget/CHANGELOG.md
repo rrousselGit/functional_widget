@@ -1,5 +1,6 @@
 ## 0.7.1
 
+- support for default values of optional parameters
 - added option `removeLeadingUnderscore`
 
 ## 0.7.0

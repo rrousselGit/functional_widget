@@ -1,3 +1,7 @@
+## 0.7.1
+
+- support for default values of optional parameters
+
 ## 0.7.0
 
 - support `@required` for `Color` and other `dart:ui` types

@@ -30,7 +30,8 @@ FunctionalWidget parseBuilderOptions(BuilderOptions options) {
       widgetType: widgetType,
       debugFillProperties: debugFillProperties,
       equality: equality,
-      removeLeadingUnderscore: removeLeadingUnderscore);
+    removeLeadingUnderscore: removeLeadingUnderscore,
+  );
 }
 
 bool _parseDebugFillProperties(dynamic value) {

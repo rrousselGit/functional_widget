@@ -37,6 +37,9 @@ Parameter _parseParameter(ParameterElement parameter) {
   return Parameter(
     (b) => b
       ..name = parameter.name
+      ..defaultTo = parameter.defaultValueCode != null
+          ? Code(parameter.defaultValueCode)
+          : null
       ..docs.add(parameter.documentationComment ?? '')
       ..annotations.addAll(parameter.metadata.map((meta) {
         return CodeExpression(Code(meta.element.displayName));

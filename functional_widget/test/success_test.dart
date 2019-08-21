@@ -50,6 +50,19 @@ class Named extends StatelessWidget {
 '''));
     });
 
+    test('namedDefault', () async {
+      await _expect('namedDefault', completion('''
+class NamedDefault extends StatelessWidget {
+  const NamedDefault({Key key, this.foo = 42}) : super(key: key);
+
+  final int foo;
+
+  @override
+  Widget build(BuildContext _context) => namedDefault(foo: foo);
+}
+'''));
+    });
+
     test('mixt', () async {
       await _expect('mixt', completion('''
 class Mixt extends StatelessWidget {

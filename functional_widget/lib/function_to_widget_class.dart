@@ -39,7 +39,8 @@ class FunctionalWidgetGenerator
             debugFillProperties: options?.debugFillProperties ?? false,
             equality: options?.equality ?? FunctionalWidgetEquality.none,
             widgetType: options?.widgetType ?? FunctionalWidgetType.stateless,
-            removeLeadingUnderscore: options?.removeLeadingUnderscore ?? false);
+          removeLeadingUnderscore: options?.removeLeadingUnderscore ?? false,
+        );
 
   final FunctionalWidget _defaultOptions;
   final _emitter = DartEmitter();

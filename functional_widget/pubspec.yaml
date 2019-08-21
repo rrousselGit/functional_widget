@@ -9,10 +9,6 @@ environment:
 
 dependencies:
     functional_widget_annotation: ^0.5.1
-<<<<<<< HEAD
-=======
-        #path: ../functional_widget_annotation
->>>>>>> 5e581f5... - remove path from yaml
     source_gen: ^0.9.4+1
     build_config: '>=0.3.1+4 <1.0.0'
     code_builder: '>=3.2.0 <4.0.0'
@@ -29,3 +25,7 @@ dev_dependencies:
     test_coverage: ^0.2.0
     code_gen_tester:
         path: ../code_gen_tester
+
+dependency_overrides:
+    functional_widget_annotation:
+        path: ../functional_widget_annotation

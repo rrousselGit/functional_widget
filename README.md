@@ -92,6 +92,20 @@ builders:
   functional_widget: ^0.6.0
 ```
 
+Then indicate that you are using generated file using Dart's `part` keyword. For example, **my_file.dart** might look like this
+```dart
+import 'package:flutter/material.dart';
+
+part 'my_file.g.dart';
+
+@widget
+Widget foo(BuildContext context, int value) {
+  return Text('$value');
+}
+
+// now you can use Foo(42)
+```
+
 That's it! Flutter will automatically run the code generator when executing `flutter build`, `flutter run` or similar.
 
 ### Install (build_runner)

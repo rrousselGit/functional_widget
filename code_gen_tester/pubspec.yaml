@@ -5,7 +5,7 @@ environment:
 dependencies:
     source_gen: ^0.9.4+1
     build: '>=1.1.2 <2.0.0'
-    analyzer: '>=0.35.4 <0.36.0'
+    analyzer: '>=0.38.5 <0.40.0'
     test: ^1.5.3
     dart_style: '>=1.2.4 <1.2.5'
     pedantic: 1.4.0

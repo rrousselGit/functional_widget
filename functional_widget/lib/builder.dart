@@ -7,5 +7,7 @@ import 'package:source_gen/source_gen.dart';
 Builder functionalWidget(BuilderOptions options) {
   final parse = parseBuilderOptions(options);
   return SharedPartBuilder(
-      [FunctionalWidgetGenerator(parse)], 'functional_widget');
+    [FunctionalWidgetGenerator(parse)],
+    'functional_widget',
+  );
 }

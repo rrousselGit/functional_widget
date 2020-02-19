@@ -42,6 +42,7 @@ Parameter _parseParameter(ParameterElement parameter) {
           : null
       ..docs.add(parameter.documentationComment ?? '')
       ..annotations.addAll(parameter.metadata.map((meta) {
+        // ignore: invalid_use_of_visible_for_testing_member
         return CodeExpression(Code(meta.element.displayName));
       }))
       ..named = parameter.isNamed

@@ -1,3 +1,4 @@
+// ignore_for_file: unused_field
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'fake_flutter.dart';
 

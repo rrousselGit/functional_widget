@@ -7,12 +7,12 @@ void main() {
   group('parseOptions', () {
     test('fails for anything unknown', () {
       expect(
-        () => parseBuilderOptions(const BuilderOptions({'foo': 42})),
+        () => parseBuilderOptions(const BuilderOptions(<String, dynamic>{'foo': 42})),
         throwsA(const TypeMatcher<ArgumentError>()
             .having((f) => f.message, 'message', 'Unknown option `foo`: 42')),
       );
       expect(
-        () => parseBuilderOptions(const BuilderOptions({'bar': 'foo'})),
+        () => parseBuilderOptions(const BuilderOptions(<String, dynamic>{'bar': 'foo'})),
         throwsA(const TypeMatcher<ArgumentError>()
             .having((f) => f.message, 'message', 'Unknown option `bar`: foo')),
       );
@@ -20,7 +20,7 @@ void main() {
     group('debugFillProperties', () {
       test('default to null', () {
         expect(
-          parseBuilderOptions(const BuilderOptions({})).debugFillProperties,
+          parseBuilderOptions(const BuilderOptions(<String, dynamic>{})).debugFillProperties,
           null,
         );
       });
@@ -28,20 +28,20 @@ void main() {
       test('throws if not bool', () {
         expect(
           () => parseBuilderOptions(
-              const BuilderOptions({'debugFillProperties': 42})),
+              const BuilderOptions(<String, dynamic>{'debugFillProperties': 42})),
           throwsArgumentError,
         );
       });
       test('parses valid value', () {
         expect(
           parseBuilderOptions(
-                  const BuilderOptions({'debugFillProperties': true}))
+                  const BuilderOptions(<String, dynamic>{'debugFillProperties': true}))
               .debugFillProperties,
           true,
         );
         expect(
           parseBuilderOptions(
-                  const BuilderOptions({'debugFillProperties': false}))
+                  const BuilderOptions(<String, dynamic>{'debugFillProperties': false}))
               .debugFillProperties,
           false,
         );
@@ -49,35 +49,35 @@ void main() {
     });
     group('equality', () {
       test('default to null', () {
-        expect(parseBuilderOptions(const BuilderOptions({})).equality, null);
+        expect(parseBuilderOptions(const BuilderOptions(<String, dynamic>{})).equality, null);
       });
       test('throws if string but not valid', () {
         expect(
-          () => parseBuilderOptions(const BuilderOptions({'equality': 'foo'})),
+          () => parseBuilderOptions(const BuilderOptions(<String, dynamic>{'equality': 'foo'})),
           throwsArgumentError,
         );
       });
       test('throws if not string', () {
         expect(
-          () => parseBuilderOptions(const BuilderOptions({'equality': 42})),
+          () => parseBuilderOptions(const BuilderOptions(<String, dynamic>{'equality': 42})),
           throwsArgumentError,
         );
       });
       test('parses valid value', () {
         expect(
-          parseBuilderOptions(const BuilderOptions({'equality': 'none'}))
+          parseBuilderOptions(const BuilderOptions(<String, dynamic>{'equality': 'none'}))
               .equality,
           FunctionalWidgetEquality.none,
         );
 
         expect(
-          parseBuilderOptions(const BuilderOptions({'equality': 'equal'}))
+          parseBuilderOptions(const BuilderOptions(<String, dynamic>{'equality': 'equal'}))
               .equality,
           FunctionalWidgetEquality.equal,
         );
 
         expect(
-          parseBuilderOptions(const BuilderOptions({'equality': 'identical'}))
+          parseBuilderOptions(const BuilderOptions(<String, dynamic>{'equality': 'identical'}))
               .equality,
           FunctionalWidgetEquality.identical,
         );
@@ -85,29 +85,29 @@ void main() {
     });
     group('widgetType', () {
       test('default to null', () {
-        expect(parseBuilderOptions(const BuilderOptions({})).widgetType, null);
+        expect(parseBuilderOptions(const BuilderOptions(<String, dynamic>{})).widgetType, null);
       });
       test('throws if string but not valid', () {
         expect(
           () =>
-              parseBuilderOptions(const BuilderOptions({'widgetType': 'foo'})),
+              parseBuilderOptions(const BuilderOptions(<String, dynamic>{'widgetType': 'foo'})),
           throwsArgumentError,
         );
       });
       test('throws if not string', () {
         expect(
-          () => parseBuilderOptions(const BuilderOptions({'widgetType': 42})),
+          () => parseBuilderOptions(const BuilderOptions(<String, dynamic>{'widgetType': 42})),
           throwsArgumentError,
         );
       });
       test('parses valid value', () {
         expect(
-          parseBuilderOptions(const BuilderOptions({'widgetType': 'hook'}))
+          parseBuilderOptions(const BuilderOptions(<String, dynamic>{'widgetType': 'hook'}))
               .widgetType,
           FunctionalWidgetType.hook,
         );
         expect(
-          parseBuilderOptions(const BuilderOptions({'widgetType': 'stateless'}))
+          parseBuilderOptions(const BuilderOptions(<String, dynamic>{'widgetType': 'stateless'}))
               .widgetType,
           FunctionalWidgetType.stateless,
         );

@@ -127,7 +127,7 @@ class FunctionTest extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<dynamic>.has('a', a));
+    properties.add(DiagnosticsProperty<void Function()>('a', a));
   }
 }
 '''));

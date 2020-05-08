@@ -30,3 +30,7 @@ Widget functionTest(void Function() a) => Container();
 
 @widget
 Widget dynamicTest(dynamic a) => Container();
+
+@widget
+// ignore: implicit_dynamic_parameter
+Widget inferredTest(a) => Container();

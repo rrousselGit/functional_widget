@@ -149,5 +149,22 @@ class DynamicTest extends StatelessWidget {
 }
 '''));
     });
+    test('inferred type', () async {
+      await _expect('inferredTest', completion('''
+class InferredTest extends StatelessWidget {
+  const InferredTest(this.a, {Key key}) : super(key: key);
+
+  final dynamic a;
+
+  @override
+  Widget build(BuildContext _context) => inferredTest(a);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<dynamic>('a', a));
+  }
+}
+'''));
+    });
   });
 }

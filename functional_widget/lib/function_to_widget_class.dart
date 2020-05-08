@@ -213,7 +213,7 @@ class FunctionalWidgetGenerator
   }
 
   String _getFallbackElementDiagnostic(ParameterElement element) =>
-      'DiagnosticsProperty<${element.type.isDynamic ? findBeginToken(element) ?? 'dynamic' : element.type.displayName}>';
+      'DiagnosticsProperty<${element.type.isDynamic ? findBeginToken(element) : element.type.displayName}>';
 
   String _tryParseFunctionToDiagnostic(
       ParameterElement element, String propertyType) {

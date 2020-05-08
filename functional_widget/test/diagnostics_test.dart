@@ -132,6 +132,23 @@ class FunctionTest extends StatelessWidget {
 }
 '''));
     });
+    test('typedef type', () async {
+      await _expect('typedefTest', completion('''
+class TypedefTest extends StatelessWidget {
+  const TypedefTest(this.a, {Key key}) : super(key: key);
+
+  final void Function(int) a;
+
+  @override
+  Widget build(BuildContext _context) => typedefTest(a);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Function<int>>('a', a));
+  }
+}
+'''));
+    });
     test('dynamic type', () async {
       await _expect('dynamicTest', completion('''
 class DynamicTest extends StatelessWidget {

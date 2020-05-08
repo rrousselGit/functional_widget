@@ -19,7 +19,10 @@ Widget enumTest(_Foo a) => Container();
 @widget
 Widget objectTest(Object a) => Container();
 
-typedef Foo<T> = void Function(T);
+typedef Typedef<T> = void Function(T);
+
+@widget
+Widget typedefTest(Typedef<int> a) => Container();
 
 @widget
 // ignore: undefined_class

@@ -246,13 +246,13 @@ class GenericExtends<T extends Container> extends StatelessWidget {
     group('functions', () {
       test('typedef', () async {
         await _expect('typedefFunction', completion('''
-class TypedefFunction extends StatelessWidget {
+class TypedefFunction<T> extends StatelessWidget {
   const TypedefFunction(this.t, {Key key}) : super(key: key);
 
-  final void Function() t;
+  final void Function(T) t;
 
   @override
-  Widget build(BuildContext _context) => typedefFunction(t);
+  Widget build(BuildContext _context) => typedefFunction<T>(t);
 }
 '''));
       });

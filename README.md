@@ -86,10 +86,11 @@ Your `pubspec.yaml` should looks like:
 
 ```yaml
 dependencies:
-  functional_widget_annotation: ^0.5.0
+  functional_widget_annotation: ^0.5.1
 
-builders:
-  functional_widget: ^0.6.0
+dev_dependencies:
+  functional_widget: ^0.7.2
+  build_runner: ^1.9.0
 ```
 
 Then indicate that you are using generated file using Dart's `part` keyword. For example, **my_file.dart** might look like this
@@ -117,17 +118,17 @@ First add the following to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  functional_widget_annotation: ^0.5.0
+  functional_widget_annotation: ^0.5.1
 
 dev_dependencies:
-  functional_widget: ^0.6.0
-  build_runner: ^1.3.1
+  functional_widget: ^0.7.2
+  build_runner: ^1.9.0
 ```
 
 Then to run the generator, you must use `build_runner`:
 
 ```sh
-flutter pub pub run build_runner watch
+flutter pub run build_runner watch
 ```
 
 This will watch your source folder and run the code-generator whenever something changes.

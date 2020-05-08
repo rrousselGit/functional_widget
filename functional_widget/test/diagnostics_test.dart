@@ -127,7 +127,24 @@ class FunctionTest extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<dynamic>.has('a', a));
+    properties.add(DiagnosticsProperty<void Function()>('a', a));
+  }
+}
+'''));
+    });
+    test('typedef type', () async {
+      await _expect('typedefTest', completion('''
+class TypedefTest extends StatelessWidget {
+  const TypedefTest(this.a, {Key key}) : super(key: key);
+
+  final void Function(int) a;
+
+  @override
+  Widget build(BuildContext _context) => typedefTest(a);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Function<int>>('a', a));
   }
 }
 '''));
@@ -141,6 +158,23 @@ class DynamicTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => dynamicTest(a);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<dynamic>('a', a));
+  }
+}
+'''));
+    });
+    test('inferred type', () async {
+      await _expect('inferredTest', completion('''
+class InferredTest extends StatelessWidget {
+  const InferredTest(this.a, {Key key}) : super(key: key);
+
+  final dynamic a;
+
+  @override
+  Widget build(BuildContext _context) => inferredTest(a);
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);

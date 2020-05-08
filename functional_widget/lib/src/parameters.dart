@@ -54,9 +54,8 @@ Reference _parameterToReference(ParameterElement element) {
   if (element.type == null) {
     return null;
   }
-  if (element.type.isUndefined) {
-    var token = findBeginToken(element);
-    return refer(token.toString());
+  if (element.type.isDynamic) {
+    return refer(findBeginToken(element));
   }
 
   return _typeToReference(element.type);

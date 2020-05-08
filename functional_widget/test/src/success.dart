@@ -82,10 +82,10 @@ Widget annotatedUndefinedType({@meta.required Color foo}) => Container();
 @hwidget
 Widget hookExample() => Container();
 
-typedef Typedef = void Function();
+typedef Typedef<T> = void Function(T);
 
 @widget
-Widget typedefFunction(Typedef t) => Container();
+Widget typedefFunction<T>(Typedef<T> t) => Container();
 
 @widget
 Widget inlineFunction(void t()) => Container();

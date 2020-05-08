@@ -181,7 +181,7 @@ class Annotated extends StatelessWidget {
 }
 '''));
     });
-    test('undefined type', () async {
+    test('unknown type', () async {
       await _expect('undefinedType', completion('''
 class UndefinedType extends StatelessWidget {
   const UndefinedType({Key key, this.foo}) : super(key: key);
@@ -193,7 +193,7 @@ class UndefinedType extends StatelessWidget {
 }
 '''));
     });
-    test('annotated undefined type', () async {
+    test('annotated unknown type', () async {
       await _expect('annotatedUndefinedType', completion('''
 class AnnotatedUndefinedType extends StatelessWidget {
   const AnnotatedUndefinedType({Key key, @required this.foo}) : super(key: key);

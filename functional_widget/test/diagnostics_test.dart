@@ -133,18 +133,22 @@ class FunctionTest extends StatelessWidget {
 '''));
     });
     test('typedef type', () async {
+      // @todo should be `final void Function(T) a;` instead of
+      // `final void Function(dynamic) a;`
+      // and `DiagnosticsProperty<void Function(T)>` instead of
+      // `ObjectFlagProperty<dynamic>.has`
       await _expect('typedefTest', completion('''
-class TypedefTest extends StatelessWidget {
+class TypedefTest<T> extends StatelessWidget {
   const TypedefTest(this.a, {Key key}) : super(key: key);
 
-  final void Function(int) a;
+  final void Function(dynamic) a;
 
   @override
-  Widget build(BuildContext _context) => typedefTest(a);
+  Widget build(BuildContext _context) => typedefTest<T>(a);
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Function<int>>('a', a));
+    properties.add(ObjectFlagProperty<dynamic>.has('a', a));
   }
 }
 '''));

@@ -5,6 +5,9 @@ String findBeginToken(ParameterElement element) {
   final parsedLibrary =
       element.session.getParsedLibraryByElement(element.library);
   final declaration = parsedLibrary.getElementDeclaration(element);
-  final parameter = declaration.node as SimpleFormalParameter;
-  return parameter.type?.beginToken?.toString() ?? 'dynamic';
+  final parameter = declaration.node;
+  if (parameter is SimpleFormalParameter && parameter.type != null) {
+    return parameter.type.beginToken.toString();
+  }
+  return 'dynamic';
 }

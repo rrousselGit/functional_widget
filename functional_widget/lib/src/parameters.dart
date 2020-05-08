@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart' as element_type;
 import 'package:code_builder/code_builder.dart';
-import 'package:functional_widget/findBeginToken.dart';
+import 'package:analyzer/dart/ast/ast.dart';
 
 class FunctionParameters {
   FunctionParameters._(this._parameters);
@@ -94,4 +94,15 @@ FunctionType _functionTypedElementToFunctionType(
           .map(_parseParameter)
           .map((p) => p.type));
   });
+}
+
+String findBeginToken(ParameterElement element) {
+  final parsedLibrary =
+      element.session.getParsedLibraryByElement(element.library);
+  final node = parsedLibrary.getElementDeclaration(element).node;
+  final parameter = node is DefaultFormalParameter ? node.parameter : node;
+  if (parameter is SimpleFormalParameter && parameter.type != null) {
+    return parameter.type.beginToken.toString();
+  }
+  return 'dynamic';
 }

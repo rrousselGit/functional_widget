@@ -22,7 +22,7 @@ Widget objectTest(Object a) => Container();
 typedef Typedef<T> = void Function(T);
 
 @widget
-Widget typedefTest(Typedef<int> a) => Container();
+Widget typedefTest<T>(Typedef a) => Container();
 
 @widget
 // ignore: undefined_class

@@ -133,7 +133,7 @@ class FunctionTest extends StatelessWidget {
 '''));
     });
     test('typedef type', () async {
-      // @todo should be `final void Function(T) a;` instead of
+      // TODO should be `final void Function(T) a;` instead of
       // `final void Function(dynamic) a;`
       // and `DiagnosticsProperty<void Function(T)>` instead of
       // `ObjectFlagProperty<dynamic>.has`

@@ -6,7 +6,7 @@ void main() {
   final tester = SourceGenTester.fromPath('test/src/success.dart');
 
   final _generator = FunctionalWidgetGenerator();
-  _expect(String name, Matcher matcher) async =>
+  final _expect = (String name, Matcher matcher) async =>
       expectGenerateNamed(await tester, name, _generator, matcher);
   group('success', () {
     test('noArgument', () async {
@@ -353,6 +353,18 @@ class GenericFunction2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => genericFunction2(foo);
+}
+'''));
+      });
+      test('generic function #3', () async {
+        await _expect('genericFunction3', completion('''
+class GenericFunction3 extends StatelessWidget {
+  const GenericFunction3(this.foo, {Key key}) : super(key: key);
+
+  final String Function(int) foo;
+
+  @override
+  Widget build(BuildContext _context) => genericFunction3(foo);
 }
 '''));
       });

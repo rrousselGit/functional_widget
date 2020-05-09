@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart' as element_type;
 import 'package:code_builder/code_builder.dart';
 import 'package:analyzer/dart/ast/ast.dart';
@@ -70,8 +71,9 @@ Reference _typeToReference(element_type.DartType type) {
     final t = _functionTypedElementToFunctionType(type);
     return t.type;
   }
-
-  return type.displayName != null ? refer(type.displayName) : null;
+  final displayName =
+      type.getDisplayString(withNullability: false /* TODO upgrade to true */);
+  return displayName != null ? refer(displayName) : null;
 }
 
 FunctionType _functionTypedElementToFunctionType(
@@ -80,7 +82,9 @@ FunctionType _functionTypedElementToFunctionType(
   return FunctionType((b) {
     return b
       ..returnType = _typeToReference(element.returnType)
-      ..types.addAll(element.typeFormals.map((f) => _typeToReference(f.type)))
+      // TODO set appropriate `nullabilitySuffix`
+      ..types.addAll(element.typeFormals.map((f) => _typeToReference(
+          f.instantiate(nullabilitySuffix: NullabilitySuffix.none))))
       ..requiredParameters.addAll(element.parameters
           .where((p) => p.isNotOptional)
           .map(_parseParameter)

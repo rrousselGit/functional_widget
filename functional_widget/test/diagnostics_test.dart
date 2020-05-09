@@ -8,9 +8,8 @@ void main() {
 
   final _generator = FunctionalWidgetGenerator(
       const FunctionalWidget(debugFillProperties: true));
-  Future<void> _expect(String name, Matcher matcher) async {
-    return expectGenerateNamed(await tester, name, _generator, matcher);
-  }
+  final _expect = (String name, Matcher matcher) async =>
+      expectGenerateNamed(await tester, name, _generator, matcher);
 
   group('diagnostics', () {
     test('int', () async {

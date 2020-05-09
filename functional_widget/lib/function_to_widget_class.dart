@@ -2,7 +2,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
-import 'package:functional_widget/findBeginToken.dart';
 import 'package:functional_widget/src/parameters.dart';
 import 'package:functional_widget/src/utils.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
@@ -213,7 +212,7 @@ class FunctionalWidgetGenerator
   }
 
   String _getFallbackElementDiagnostic(ParameterElement element) =>
-      'DiagnosticsProperty<${element.type.isDynamic ? findBeginToken(element) : element.type.displayName}>';
+      'DiagnosticsProperty<${element.type.isDynamic ? tryParseDynamicType(element) : element.type.displayName}>';
 
   String _tryParseFunctionToDiagnostic(
       ParameterElement element, String propertyType) {

@@ -1,7 +1,8 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart' as element_type;
 import 'package:code_builder/code_builder.dart';
-import 'package:functional_widget/findBeginToken.dart';
+import 'package:analyzer/dart/ast/ast.dart';
 
 class FunctionParameters {
   FunctionParameters._(this._parameters);
@@ -54,9 +55,8 @@ Reference _parameterToReference(ParameterElement element) {
   if (element.type == null) {
     return null;
   }
-  if (element.type.isUndefined) {
-    var token = findBeginToken(element);
-    return refer(token.toString());
+  if (element.type.isDynamic) {
+    return refer(tryParseDynamicType(element));
   }
 
   return _typeToReference(element.type);
@@ -71,8 +71,9 @@ Reference _typeToReference(element_type.DartType type) {
     final t = _functionTypedElementToFunctionType(type);
     return t.type;
   }
-
-  return type.displayName != null ? refer(type.displayName) : null;
+  final displayName =
+      type.getDisplayString(withNullability: false /* TODO upgrade to true */);
+  return displayName != null ? refer(displayName) : null;
 }
 
 FunctionType _functionTypedElementToFunctionType(
@@ -81,7 +82,9 @@ FunctionType _functionTypedElementToFunctionType(
   return FunctionType((b) {
     return b
       ..returnType = _typeToReference(element.returnType)
-      ..types.addAll(element.typeFormals.map((f) => _typeToReference(f.type)))
+      // TODO set appropriate `nullabilitySuffix`
+      ..types.addAll(element.typeFormals.map((f) => _typeToReference(
+          f.instantiate(nullabilitySuffix: NullabilitySuffix.none))))
       ..requiredParameters.addAll(element.parameters
           .where((p) => p.isNotOptional)
           .map(_parseParameter)
@@ -95,4 +98,15 @@ FunctionType _functionTypedElementToFunctionType(
           .map(_parseParameter)
           .map((p) => p.type));
   });
+}
+
+String tryParseDynamicType(ParameterElement element) {
+  final parsedLibrary =
+      element.session?.getParsedLibraryByElement(element.library);
+  final node = parsedLibrary?.getElementDeclaration(element)?.node;
+  final parameter = node is DefaultFormalParameter ? node.parameter : node;
+  if (parameter is SimpleFormalParameter && parameter.type != null) {
+    return parameter.type.beginToken.toString();
+  }
+  return 'dynamic';
 }

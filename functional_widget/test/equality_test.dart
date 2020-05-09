@@ -10,7 +10,7 @@ void main() {
     group('none', () {
       final _generator = FunctionalWidgetGenerator(
           const FunctionalWidget(equality: FunctionalWidgetEquality.none));
-      _expect(String name, Matcher matcher) async =>
+      final _expect = (String name, Matcher matcher) async =>
           expectGenerateNamed(await tester, name, _generator, matcher);
 
       test('never generate hashcode/operator==', () async {
@@ -32,7 +32,7 @@ class Named extends StatelessWidget {
     group('hashCode', () {
       final _generator = FunctionalWidgetGenerator(
           const FunctionalWidget(equality: FunctionalWidgetEquality.equal));
-      _expect(String name, Matcher matcher) async =>
+      final _expect = (String name, Matcher matcher) async =>
           expectGenerateNamed(await tester, name, _generator, matcher);
       test("functions with no argument don't generate any hashCode override",
           () async {
@@ -200,7 +200,7 @@ class Mixt extends StatelessWidget {
     group('equal', () {
       final _generator = FunctionalWidgetGenerator(
           const FunctionalWidget(equality: FunctionalWidgetEquality.equal));
-      _expect(String name, Matcher matcher) async =>
+      final _expect = (String name, Matcher matcher) async =>
           expectGenerateNamed(await tester, name, _generator, matcher);
       test("functions with no argument don't generate any operator== override",
           () async {
@@ -367,7 +367,7 @@ class Mixt extends StatelessWidget {
     group('identical', () {
       final _generator = FunctionalWidgetGenerator(
           const FunctionalWidget(equality: FunctionalWidgetEquality.identical));
-      _expect(String name, Matcher matcher) async =>
+      final _expect = (String name, Matcher matcher) async =>
           expectGenerateNamed(await tester, name, _generator, matcher);
       test("functions with no argument don't generate any operator== override",
           () async {

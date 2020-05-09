@@ -8,9 +8,8 @@ void main() {
 
   final _generator = FunctionalWidgetGenerator(
       const FunctionalWidget(debugFillProperties: true));
-  Future<void> _expect(String name, Matcher matcher) async {
-    return expectGenerateNamed(await tester, name, _generator, matcher);
-  }
+  final _expect = (String name, Matcher matcher) async =>
+      expectGenerateNamed(await tester, name, _generator, matcher);
 
   group('diagnostics', () {
     test('int', () async {
@@ -127,6 +126,27 @@ class FunctionTest extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<void Function()>('a', a));
+  }
+}
+'''));
+    });
+    test('typedef type', () async {
+      // TODO should be `final void Function(T) a;` instead of
+      // `final void Function(dynamic) a;`
+      // and `DiagnosticsProperty<void Function(T)>` instead of
+      // `ObjectFlagProperty<dynamic>.has`
+      await _expect('typedefTest', completion('''
+class TypedefTest<T> extends StatelessWidget {
+  const TypedefTest(this.a, {Key key}) : super(key: key);
+
+  final void Function(dynamic) a;
+
+  @override
+  Widget build(BuildContext _context) => typedefTest<T>(a);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
     properties.add(ObjectFlagProperty<dynamic>.has('a', a));
   }
 }
@@ -141,6 +161,23 @@ class DynamicTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => dynamicTest(a);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<dynamic>('a', a));
+  }
+}
+'''));
+    });
+    test('inferred type', () async {
+      await _expect('inferredTest', completion('''
+class InferredTest extends StatelessWidget {
+  const InferredTest(this.a, {Key key}) : super(key: key);
+
+  final dynamic a;
+
+  @override
+  Widget build(BuildContext _context) => inferredTest(a);
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);

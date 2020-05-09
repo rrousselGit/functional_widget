@@ -82,12 +82,13 @@ Widget annotatedUndefinedType({@meta.required Color foo}) => Container();
 @hwidget
 Widget hookExample() => Container();
 
-typedef Typedef = void Function();
+typedef Typedef<T> = void Function(T);
 
 @widget
-Widget typedefFunction(Typedef t) => Container();
+Widget typedefFunction<T>(Typedef<T> t) => Container();
 
 @widget
+// ignore: use_function_type_syntax_for_parameters
 Widget inlineFunction(void t()) => Container();
 
 @widget
@@ -113,6 +114,7 @@ Widget genericExtends<T extends Container>(T foo) => Container();
 @widget
 Widget genericClass<T>(T Function() foo) => Container();
 
+// ignore: prefer_generic_function_type_aliases
 typedef T _GenericFunction<T>(T foo);
 
 @widget
@@ -122,3 +124,8 @@ typedef _GenericFunction2 = T Function<T>(T foo);
 
 @widget
 Widget genericFunction2(_GenericFunction2 foo) => Container();
+
+typedef _GenericFunction3<T, U> = U Function(T foo);
+
+@widget
+Widget genericFunction3(_GenericFunction3<int, String> foo) => Container();

@@ -6,7 +6,7 @@ void main() {
   final tester = SourceGenTester.fromPath('test/src/success.dart');
 
   final _generator = FunctionalWidgetGenerator();
-  _expect(String name, Matcher matcher) async =>
+  final _expect = (String name, Matcher matcher) async =>
       expectGenerateNamed(await tester, name, _generator, matcher);
   group('success', () {
     test('noArgument', () async {
@@ -181,7 +181,7 @@ class Annotated extends StatelessWidget {
 }
 '''));
     });
-    test('undefined type', () async {
+    test('unknown type', () async {
       await _expect('undefinedType', completion('''
 class UndefinedType extends StatelessWidget {
   const UndefinedType({Key key, this.foo}) : super(key: key);
@@ -193,7 +193,7 @@ class UndefinedType extends StatelessWidget {
 }
 '''));
     });
-    test('annotated undefined type', () async {
+    test('annotated unknown type', () async {
       await _expect('annotatedUndefinedType', completion('''
 class AnnotatedUndefinedType extends StatelessWidget {
   const AnnotatedUndefinedType({Key key, @required this.foo}) : super(key: key);
@@ -246,13 +246,13 @@ class GenericExtends<T extends Container> extends StatelessWidget {
     group('functions', () {
       test('typedef', () async {
         await _expect('typedefFunction', completion('''
-class TypedefFunction extends StatelessWidget {
+class TypedefFunction<T> extends StatelessWidget {
   const TypedefFunction(this.t, {Key key}) : super(key: key);
 
-  final void Function() t;
+  final void Function(T) t;
 
   @override
-  Widget build(BuildContext _context) => typedefFunction(t);
+  Widget build(BuildContext _context) => typedefFunction<T>(t);
 }
 '''));
       });
@@ -353,6 +353,18 @@ class GenericFunction2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => genericFunction2(foo);
+}
+'''));
+      });
+      test('generic function #3', () async {
+        await _expect('genericFunction3', completion('''
+class GenericFunction3 extends StatelessWidget {
+  const GenericFunction3(this.foo, {Key key}) : super(key: key);
+
+  final String Function(int) foo;
+
+  @override
+  Widget build(BuildContext _context) => genericFunction3(foo);
 }
 '''));
       });

@@ -11,7 +11,7 @@ void main() {
         () async {
       final _generator = FunctionalWidgetGenerator(
           const FunctionalWidget(widgetType: FunctionalWidgetType.hook));
-      _expect(String name, Matcher matcher) async =>
+      final _expect = (String name, Matcher matcher) async =>
           expectGenerateNamed(await tester, name, _generator, matcher);
 
       await _expect('sWidget', completion('''
@@ -27,7 +27,7 @@ class SWidget extends StatelessWidget {
         () async {
       final _generator = FunctionalWidgetGenerator(
           const FunctionalWidget(widgetType: FunctionalWidgetType.stateless));
-      _expect(String name, Matcher matcher) async =>
+      final _expect = (String name, Matcher matcher) async =>
           expectGenerateNamed(await tester, name, _generator, matcher);
 
       await _expect('hWidget', completion('''
@@ -43,7 +43,7 @@ class HWidget extends HookWidget {
       test('generate stateless if conf is stateless', () async {
         var _generator = FunctionalWidgetGenerator(
             const FunctionalWidget(widgetType: FunctionalWidgetType.stateless));
-        _expect(String name, Matcher matcher) async =>
+        final _expect = (String name, Matcher matcher) async =>
             expectGenerateNamed(await tester, name, _generator, matcher);
 
         await _expect('adaptiveWidget', completion('''
@@ -58,7 +58,7 @@ class AdaptiveWidget extends StatelessWidget {
       test('generate hook if conf is hook', () async {
         var _generator = FunctionalWidgetGenerator(
             const FunctionalWidget(widgetType: FunctionalWidgetType.hook));
-        _expect(String name, Matcher matcher) async =>
+        final _expect = (String name, Matcher matcher) async =>
             expectGenerateNamed(await tester, name, _generator, matcher);
 
         await _expect('adaptiveWidget', completion('''

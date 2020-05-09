@@ -8,7 +8,7 @@ final closure = () => Container();
 external Widget externalTest();
 
 @widget
-// ignore: implicit_dynamic_return
+// ignore: implicit_dynamic_return, always_declare_return_types
 asyncTest() async {
   return Container();
 }
@@ -30,7 +30,7 @@ dynamic dynamicTest() {
 }
 
 @widget
-// ignore: implicit_dynamic_return
+// ignore: implicit_dynamic_return, always_declare_return_types
 implicitDynamic() {
   return Container();
 }

@@ -19,7 +19,10 @@ Widget enumTest(_Foo a) => Container();
 @widget
 Widget objectTest(Object a) => Container();
 
-typedef Foo<T> = void Function(T);
+typedef Typedef<T> = void Function(T);
+
+@widget
+Widget typedefTest<T>(Typedef a) => Container();
 
 @widget
 // ignore: undefined_class
@@ -30,3 +33,7 @@ Widget functionTest(void Function() a) => Container();
 
 @widget
 Widget dynamicTest(dynamic a) => Container();
+
+@widget
+// ignore: implicit_dynamic_parameter
+Widget inferredTest(a) => Container();

@@ -2,7 +2,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
-import 'package:functional_widget/findBeginToken.dart';
 import 'package:functional_widget/src/parameters.dart';
 import 'package:functional_widget/src/utils.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
@@ -64,7 +63,9 @@ class FunctionalWidgetGenerator
     if (function.isAsynchronous ||
         function.isExternal ||
         function.isGenerator ||
-        function.returnType?.displayName != 'Widget') {
+        function.returnType?.getDisplayString(
+                withNullability: false /* TODO upgrade to true */) !=
+            'Widget') {
       throw InvalidGenerationSourceError(
         'Invalid prototype. The function must be synchronous, top level, and return a Widget',
         element: function,
@@ -112,8 +113,9 @@ class FunctionalWidgetGenerator
             _defaultOptions.debugFillProperties) {
           final overrideDebugFillProperties = _overrideDebugFillProperties(
               userDefined, functionElement.parameters);
-          if (overrideDebugFillProperties != null)
+          if (overrideDebugFillProperties != null) {
             b.methods.add(overrideDebugFillProperties);
+          }
         }
       },
     );
@@ -152,14 +154,18 @@ class FunctionalWidgetGenerator
   List<Expression> _computeBuildPositionalParametersExpression(
       FunctionParameters parameters) {
     final positional = <Expression>[];
-    if (parameters.startsWithContext)
+    if (parameters.startsWithContext) {
       positional.add(const CodeExpression(Code('_context')));
-    if (parameters.startsWithKey)
+    }
+    if (parameters.startsWithKey) {
       positional.add(const CodeExpression(Code('key')));
-    if (parameters.followedByContext)
+    }
+    if (parameters.followedByContext) {
       positional.add(const CodeExpression(Code('_context')));
-    if (parameters.followedByKey)
+    }
+    if (parameters.followedByKey) {
       positional.add(const CodeExpression(Code('key')));
+    }
     positional.addAll(parameters.userDefined
         .where((p) => !p.named)
         .map((p) => CodeExpression(Code(p.name))));
@@ -181,9 +187,11 @@ class FunctionalWidgetGenerator
           ..returns = refer('void')
           ..lambda = false
           ..body = Block.of(
-            [const Code('super.debugFillProperties(properties);')]..addAll(
-                userFields.map((f) => _parameterToDiagnostic(
-                    f, elements.firstWhere((e) => e.name == f.name)))),
+            [
+              const Code('super.debugFillProperties(properties);'),
+              ...userFields.map((f) => _parameterToDiagnostic(
+                  f, elements.firstWhere((e) => e.name == f.name)))
+            ],
           ));
   }
 
@@ -213,7 +221,7 @@ class FunctionalWidgetGenerator
   }
 
   String _getFallbackElementDiagnostic(ParameterElement element) =>
-      'DiagnosticsProperty<${element.type.isUndefined ? findBeginToken(element) : element.type.displayName}>';
+      'DiagnosticsProperty<${element.type.isDynamic ? tryParseDynamicType(element) : element.type.getDisplayString(withNullability: false /* TODO upgrade to true */)}>';
 
   String _tryParseFunctionToDiagnostic(
       ParameterElement element, String propertyType) {
@@ -232,7 +240,8 @@ class FunctionalWidgetGenerator
     if (element.type.element is ClassElement) {
       final classElement = element.type.element as ClassElement;
       if (classElement.isEnum) {
-        propertyType = 'EnumProperty<${element.type.displayName}>';
+        propertyType =
+            'EnumProperty<${element.type.getDisplayString(withNullability: false /* TODO upgrade to true */)}>';
       }
     }
     return propertyType;
@@ -328,8 +337,10 @@ class FunctionalWidgetGenerator
     List<TypeParameterElement> typeParameters,
   ) {
     return typeParameters.map((e) {
-      return e.bound?.displayName != null
-          ? refer('${e.displayName} extends ${e.bound.displayName}')
+      final displayName = e.bound
+          ?.getDisplayString(withNullability: false /* TODO upgrade to true */);
+      return displayName != null
+          ? refer('${e.displayName} extends $displayName')
           : refer(e.displayName);
     });
   }

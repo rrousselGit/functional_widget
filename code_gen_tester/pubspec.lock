@@ -84,7 +84,7 @@ packages:
       name: build_test
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.12+1"
+    version: "1.0.0"
   built_collection:
     dependency: transitive
     description:
@@ -295,13 +295,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.3"
-  package_resolver:
-    dependency: transitive
-    description:
-      name: package_resolver
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.10"
   path:
     dependency: transitive
     description:
@@ -315,7 +308,7 @@ packages:
       name: pedantic
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.0"
+    version: "1.9.0"
   pool:
     dependency: transitive
     description:

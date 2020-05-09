@@ -1,12 +1,12 @@
 name: functional_widget_example
 description: A new Flutter project.
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0" 
+  sdk: ^2.5.0
 
 dependencies:
   flutter:
     sdk: flutter
-  functional_widget_annotation: ^0.5.0
+  functional_widget_annotation: ^0.5.1
 
 builders:
-  functional_widget: ^0.6.0
+  functional_widget: ^0.7.2

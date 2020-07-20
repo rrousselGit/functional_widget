@@ -1,4 +1,4 @@
-## 0.5.2
+## 0.5.3
 
 - deprecated `@widget`
 - deprecated `FunctionalWidgetEquality.equal`

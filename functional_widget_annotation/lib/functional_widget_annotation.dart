@@ -18,6 +18,7 @@ enum FunctionalWidgetType {
 /// Determines how [operator==] and [hashCode] of the class will be treated.
 ///
 /// Defaults to [none].
+@Deprecated('Will be removed in 0.8.0, only use `none`')
 enum FunctionalWidgetEquality {
   /// No override.
   none,
@@ -40,9 +41,10 @@ enum FunctionalWidgetEquality {
   ///       identical(o, this) || (o is Foo && value == o.value);
   /// }
   /// ```
+  @Deprecated('Will be removed in 0.8.0, only use `none`')
   equal,
 
-  /// Compares all fields besides `BuildContext` and `Key` using [identical].
+  /// Compares all fields besides `BuildContext` and `Key` using `identical`.
   ///
   /// Example of generated code:
   /// ```dart
@@ -60,6 +62,7 @@ enum FunctionalWidgetEquality {
   ///       identical(o, this) || (o is Foo && identical(value, o.value));
   /// }
   /// ```
+  @Deprecated('Will be removed in 0.8.0, only use `none`')
   identical
 }
 
@@ -79,6 +82,7 @@ class FunctionalWidget {
   /// Configures how [operator==] and [hashCode] behaves
   ///
   /// Defaults to [FunctionalWidgetEquality.none].
+  @Deprecated('Will be removed in 0.8.0, only use `none`')
   final FunctionalWidgetEquality equality;
 
   /// Defines if the generated widget should emit diagnostics informations.

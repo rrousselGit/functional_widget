@@ -1,3 +1,9 @@
+## 0.8.0
+
+- removed `@swidget`
+- removed `FunctionalWidgetEquality.equal`
+- removed `FunctionalWidgetEquality.identical`
+
 ## 0.7.3
 
 - Upgraded all the dependencies to latest (thanks to @truongsinh)

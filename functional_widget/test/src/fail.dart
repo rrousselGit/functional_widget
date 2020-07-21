@@ -1,35 +1,35 @@
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'fake_flutter.dart';
 
-@widget
+@swidget
 final closure = () => Container();
 
-@widget
+@swidget
 external Widget externalTest();
 
-@widget
+@swidget
 // ignore: implicit_dynamic_return, always_declare_return_types
 asyncTest() async {
   return Container();
 }
 
-@widget
+@swidget
 int notAWidget() {
   return 42;
 }
 
-@widget
+@swidget
 // ignore: non_constant_identifier_names
 Widget TitleName() {
   return Container();
 }
 
-@widget
+@swidget
 dynamic dynamicTest() {
   return Container();
 }
 
-@widget
+@swidget
 // ignore: implicit_dynamic_return, always_declare_return_types
 implicitDynamic() {
   return Container();

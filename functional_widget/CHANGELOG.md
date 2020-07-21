@@ -33,7 +33,7 @@
 The behavior is that the following function:
 
 ```dart
-@widget
+@swidget
 Widget foo(int foo, int bar) {
     return Container();
 }
@@ -57,7 +57,7 @@ This is useful because overriding `operator==` prevents pointless rebuild when n
 - Support function callbacks and generic functions:
 
 ```dart
-@widget
+@swidget
 Widget foo<T>(void onTap(T value)) {
     // do something
 }

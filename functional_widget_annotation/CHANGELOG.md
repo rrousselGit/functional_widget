@@ -1,6 +1,12 @@
+## 0.8.0
+
+- removed `@swidget`
+- removed `FunctionalWidgetEquality.equal`
+- removed `FunctionalWidgetEquality.identical`
+
 ## 0.5.3
 
-- deprecated `@widget`
+- deprecated `@swidget`
 - deprecated `FunctionalWidgetEquality.equal`
 - deprecated `FunctionalWidgetEquality.identical`
 

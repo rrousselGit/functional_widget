@@ -50,49 +50,6 @@ void main() {
         );
       });
     });
-    group('equality', () {
-      test('default to null', () {
-        expect(
-            parseBuilderOptions(const BuilderOptions(<String, dynamic>{}))
-                .equality,
-            null);
-      });
-      test('throws if string but not valid', () {
-        expect(
-          () => parseBuilderOptions(
-              const BuilderOptions(<String, dynamic>{'equality': 'foo'})),
-          throwsArgumentError,
-        );
-      });
-      test('throws if not string', () {
-        expect(
-          () => parseBuilderOptions(
-              const BuilderOptions(<String, dynamic>{'equality': 42})),
-          throwsArgumentError,
-        );
-      });
-      test('parses valid value', () {
-        expect(
-          parseBuilderOptions(
-                  const BuilderOptions(<String, dynamic>{'equality': 'none'}))
-              .equality,
-          FunctionalWidgetEquality.none,
-        );
-
-        expect(
-          parseBuilderOptions(
-                  const BuilderOptions(<String, dynamic>{'equality': 'equal'}))
-              .equality,
-          FunctionalWidgetEquality.equal,
-        );
-
-        expect(
-          parseBuilderOptions(const BuilderOptions(
-              <String, dynamic>{'equality': 'identical'})).equality,
-          FunctionalWidgetEquality.identical,
-        );
-      });
-    });
     group('widgetType', () {
       test('default to null', () {
         expect(

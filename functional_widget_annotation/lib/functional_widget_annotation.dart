@@ -15,62 +15,10 @@ enum FunctionalWidgetType {
   stateless,
 }
 
-/// Determines how [operator==] and [hashCode] of the class will be treated.
-///
-/// Defaults to [none].
-@Deprecated('Will be removed in 0.8.0, only use `none`')
-enum FunctionalWidgetEquality {
-  /// No override.
-  none,
-
-  /// Compares all fields besides `BuildContext` and `Key` using [operator==].
-  ///
-  /// Example of generated code:
-  /// ```dart
-  /// class Foo extends StatelessWidget {
-  ///   const Foo(this.value, {Key key}) : super(key: key);
-  ///
-  ///   final int value;
-  ///
-  ///   @override
-  ///   Widget build(BuildContext _context) => foo(value);
-  ///   @override
-  ///   int get hashCode => value.hashCode;
-  ///   @override
-  ///   bool operator ==(Object o) =>
-  ///       identical(o, this) || (o is Foo && value == o.value);
-  /// }
-  /// ```
-  @Deprecated('Will be removed in 0.8.0, only use `none`')
-  equal,
-
-  /// Compares all fields besides `BuildContext` and `Key` using `identical`.
-  ///
-  /// Example of generated code:
-  /// ```dart
-  /// class Foo extends StatelessWidget {
-  ///   const Foo(this.value, {Key key}) : super(key: key);
-  ///
-  ///   final int value;
-  ///
-  ///   @override
-  ///   Widget build(BuildContext _context) => foo(value);
-  ///   @override
-  ///   int get hashCode => value.hashCode;
-  ///   @override
-  ///   bool operator ==(Object o) =>
-  ///       identical(o, this) || (o is Foo && identical(value, o.value));
-  /// }
-  /// ```
-  @Deprecated('Will be removed in 0.8.0, only use `none`')
-  identical
-}
-
 /// Decorates a function to customize the generated class
 class FunctionalWidget {
   const FunctionalWidget({
     this.widgetType,
-    this.equality,
     this.debugFillProperties,
   });
 
@@ -79,24 +27,9 @@ class FunctionalWidget {
   /// Defaults to [FunctionalWidgetType.stateless].
   final FunctionalWidgetType widgetType;
 
-  /// Configures how [operator==] and [hashCode] behaves
-  ///
-  /// Defaults to [FunctionalWidgetEquality.none].
-  @Deprecated('Will be removed in 0.8.0, only use `none`')
-  final FunctionalWidgetEquality equality;
-
   /// Defines if the generated widget should emit diagnostics informations.
   final bool debugFillProperties;
 }
-
-/// A decorator for functions to generate a `Widget`.
-///
-/// The type of the generated widget depends on the configurations from `build.yaml` file.
-/// Defaults to `StatelessWidget`.
-///
-/// The name of the generated widget is the name of the decorated function,
-/// with an uppercase as first letter.
-const FunctionalWidget widget = FunctionalWidget();
 
 /// A decorator for functions to generate a `StatelessWidget`.
 ///

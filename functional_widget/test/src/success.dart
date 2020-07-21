@@ -10,72 +10,72 @@ Widget sWidget() => Container();
 @hwidget
 Widget hWidget() => Container();
 
-@widget
+@swidget
 Widget adaptiveWidget() => Container();
 
-@widget
+@swidget
 Widget noArgument() => Container();
 
-@widget
+@swidget
 Widget required(foo, int bar) => Container();
 
-@widget
+@swidget
 Widget named({foo, int bar}) => Container();
 
-@widget
+@swidget
 Widget namedDefault({int foo = 42}) => Container();
 
-@widget
+@swidget
 Widget mixt(foo, int bar, {nfoo, int nbar}) => Container();
 
-@widget
+@swidget
 Widget onlyOneArg(int foo) => Container();
 
-@widget
+@swidget
 Widget withContext(BuildContext context) => Container();
 
-@widget
+@swidget
 Widget withContextThenOneArg(BuildContext context, int foo) => Container();
 
-@widget
+@swidget
 Widget withKey(Key key) => Container();
 
-@widget
+@swidget
 Widget withKeyThenOneArg(Key key, int foo) => Container();
 
-@widget
+@swidget
 Widget withContextThenKey(BuildContext context, Key key) => Container();
 
-@widget
+@swidget
 Widget withContextThenKeyThenOneArg(BuildContext context, Key key, int foo) =>
     Container();
 
-@widget
+@swidget
 Widget withKeyThenContext(Key key, BuildContext context) => Container();
 
-@widget
+@swidget
 Widget withKeyThenContextThenOneArg(Key key, BuildContext context, int foo) =>
     Container();
 
-@widget
+@swidget
 Widget whateverThenContext(int foo, BuildContext bar) => Container();
 
-@widget
+@swidget
 Widget whateverThenKey(int foo, Key bar) => Container();
 
 /// Hello
 /// World
-@widget
+@swidget
 Widget documentation(int foo) => Container();
 
-@widget
+@swidget
 Widget annotated({@meta.required int foo}) => Container();
 
-@widget
+@swidget
 // ignore: undefined_class
 Widget undefinedType({Color foo}) => Container();
 
-@widget
+@swidget
 // ignore: undefined_class
 Widget annotatedUndefinedType({@meta.required Color foo}) => Container();
 
@@ -84,48 +84,48 @@ Widget hookExample() => Container();
 
 typedef Typedef<T> = void Function(T);
 
-@widget
+@swidget
 Widget typedefFunction<T>(Typedef<T> t) => Container();
 
-@widget
+@swidget
 // ignore: use_function_type_syntax_for_parameters
 Widget inlineFunction(void t()) => Container();
 
-@widget
+@swidget
 Widget inlineFunction2(void Function() t) => Container();
 
-@widget
+@swidget
 Widget nestedFunction(void Function(void Function(int a), int b) t) =>
     Container();
 
-@widget
+@swidget
 // ignore: undefined_class
 Widget unknownTypeFunction(Color Function() t) => Container();
 
-@widget
+@swidget
 Widget generic<T>(T foo) => Container();
 
-@widget
+@swidget
 Widget genericMultiple<T, S>(T foo, S bar) => Container();
 
-@widget
+@swidget
 Widget genericExtends<T extends Container>(T foo) => Container();
 
-@widget
+@swidget
 Widget genericClass<T>(T Function() foo) => Container();
 
 // ignore: prefer_generic_function_type_aliases
 typedef T _GenericFunction<T>(T foo);
 
-@widget
+@swidget
 Widget genericFunction(_GenericFunction<int> foo) => Container();
 
 typedef _GenericFunction2 = T Function<T>(T foo);
 
-@widget
+@swidget
 Widget genericFunction2(_GenericFunction2 foo) => Container();
 
 typedef _GenericFunction3<T, U> = U Function(T foo);
 
-@widget
+@swidget
 Widget genericFunction3(_GenericFunction3<int, String> foo) => Container();

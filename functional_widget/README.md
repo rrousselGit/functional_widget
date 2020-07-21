@@ -36,14 +36,18 @@ The problem is, using functions instead of classes is not recommended:
 
 _functional_widgets_, is an attempt to solve this issue, using a code generator.
 
-Simply write your widget as a function, decorate it with a `@widget`, and then this library will generate a class for you to use.
+Simply write your widget as a function, decorate it with a `@swidget`, and then
+this library will generate a class for you to use.
+
+As the added benefit, you also get for free the ability to inspect the parameters
+passed to your widgets in the devtool
 
 ## Example
 
 You write:
 
 ```dart
-@widget
+@swidget
 Widget foo(BuildContext context, int value) {
   return Text('$value');
 }
@@ -53,13 +57,19 @@ It generates:
 
 ```dart
 class Foo extends StatelessWidget {
-  final int value;
-
   const Foo(this.value, {Key key}) : super(key: key);
+
+  final int value;
 
   @override
   Widget build(BuildContext context) {
     return foo(context, value);
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IntProperty('value', value));
   }
 }
 ```
@@ -68,7 +78,7 @@ And then you use it:
 
 ```dart
 runApp(
-    Foo(42)
+  Foo(42)
 );
 ```
 
@@ -78,45 +88,30 @@ runApp(
 
 There are a few separate packages you need to install:
 
-- `functional_widget_annotation`, a package containing decorators. You must install it as `dependencies`.
-- `functional_widget`, a code-generator that uses the decorators from the previous packages to generate your widget.
-Install it inside `builders`, a Flutter specific field on your `pubspec.yaml` made for code-generators.
+- `functional_widget_annotation`, a package containing decorators. You must
+  install it as `dependencies`.
+- `functional_widget`, a code-generator that uses the decorators from the previous
+  packages to generate your widget.
+- `build_runner`, a dependency that all applications using code-generation should have
 
-Your `pubspec.yaml` should looks like:
-
-```yaml
-dependencies:
-  functional_widget_annotation: ^0.5.1
-
-builders:
-  functional_widget: ^0.7.2
-```
-
-That's it! Flutter will automatically run the code generator when executing `flutter build`, `flutter run` or similar.
-
-### Install (build_runner)
-
-If your version of Flutter is too old, the previous installation method may not work.
-In that case it is possible to work with `functional_widget` by using `build_runner` package.
-
-First add the following to your `pubspec.yaml`:
+Your `pubspec.yaml` should look like:
 
 ```yaml
 dependencies:
-  functional_widget_annotation: ^0.5.1
+  functional_widget_annotation: ^0.8.0
 
 dev_dependencies:
-  functional_widget: ^0.7.2
+  functional_widget: ^0.8.0
   build_runner: ^1.9.0
 ```
 
-Then to run the generator, you must use `build_runner`:
+That's it!
+
+You can then start the code-generator with:
 
 ```sh
-flutter pub pub run build_runner watch
+flutter pub run build_runner watch
 ```
-
-This will watch your source folder and run the code-generator whenever something changes.
 
 ## Customize the output
 
@@ -134,7 +129,6 @@ targets:
           # Default values:
           debugFillProperties: false
           widgetType: stateless # or 'hook'
-          equality: none # or 'identical'/'equal'
 ```
 
 `FunctionalWidget` decorator will override the default behavior for one specific widget.
@@ -143,7 +137,6 @@ targets:
 @FunctionalWidget(
   debugFillProperties: true,
   widgetType: FunctionalWidgetType.hook,
-  equality: FunctionalWidgetEquality.identical,
 )
 Widget foo() => Container();
 ```
@@ -165,7 +158,7 @@ Example:
 ```dart
 import 'package:flutter/foundation.dart';
 
-@widget
+@swidget
 Widget example(int foo, String bar) => Container();
 ```
 
@@ -192,7 +185,7 @@ class Example extends StatelessWidget {
 
 ### Generate different type of widgets
 
-By default, the generated widget is a `StatelessWidget`.
+By default, the generated widget by `@FunctionalWidget()` is a `StatelessWidget`.
 
 It is possible to generate a `HookWidget` instead (from https://github.com/rrousselGit/flutter_hooks)
 
@@ -200,81 +193,42 @@ There are a few ways to do so:
 
 - Through `build.yaml`:
 
-```yaml
-# build.yaml
-targets:
-  $default:
-    builders:
-      functional_widget:
-        options:
-          widgetType: hook
-```
+  ```yaml
+  # build.yaml
+  targets:
+    $default:
+      builders:
+        functional_widget:
+          options:
+            widgetType: hook
+  ```
 
-- With `@FunctionalWidget` decorator:
+  then used as:
 
-```dart
-@FunctionalWidget(widgetType: FunctionalWidgetType.hook)
-Widget example(int foo, String bar) => Container();
-```
+  ```dart
+  @FunctionalWidget()
+  Widget example(int foo, String bar) => Container();
+  ```
+
+- With parameters on the `@FunctionalWidget` decorator:
+
+  ```dart
+  @FunctionalWidget(widgetType: FunctionalWidgetType.hook)
+  Widget example(int foo, String bar) => Container();
+  ```
 
 - With the shorthand `@hwidget` decorator:
 
-```dart
-@hwidget
-Widget example(int foo, String bar) => Container();
-```
-
-```dart
-class Example extends HookWidget {
-  const Example(this.foo, this.bar, {Key key}) : super(key: key);
-
-  final int foo;
-
-  final String bar;
-
-  @override
-  Widget build(BuildContext _context) => example(foo, bar);
-}
-```
-
----
+  ```dart
+  @hwidget
+  Widget example(int foo, String bar) => Container();
+  ```
 
 In any cases, `flutter_hooks` must be added as a separate dependency in the `pubspec.yaml`
 
 ```yaml
 dependencies:
   flutter_hooks: # some version number
-```
-
-### operator== override
-
-It can be interesting for `Widget` to override `operator==` for performance optimizations.
-
-`functional_widget` optionally allows overriding both `operator==` and `hashCode` based on the field used.
-
-There are two different configurations:
-
-- `none` (default): Don't override anything
-- `identical`, overrides `hashCode` and `operator==` with the latter being implemented using `identical` to compare fields.
-- `equal`, similar to `identical`, but using `==` to compare fields.
-
-It can be configured both through `build.yaml`:
-
-```yaml
-# build.yaml
-targets:
-  $default:
-    builders:
-      functional_widget:
-        options:
-          equility: identical
-```
-
-or using `@FunctionalWidget` decorator:
-
-```dart
-@FunctionalWidget(equality: FunctionalWidgetEquality.identical)
-Widget example(int foo, String bar) => Container();
 ```
 
 ### All the potential function prototypes
@@ -295,7 +249,7 @@ You can then add however many arguments you like **after** the previously define
 - positional
 
 ```dart
-@widget
+@swidget
 Widget foo(int value) => Text(value.toString());
 
 // USAGE
@@ -306,7 +260,7 @@ Foo(42);
 - named:
 
 ```dart
-@widget
+@swidget
 Widget foo({int value}) => Text(value.toString());
 
 // USAGE
@@ -317,7 +271,7 @@ Foo(value: 42);
 - A bit of everything:
 
 ```dart
-@widget
+@swidget
 Widget foo(BuildContext context, int value, { int value2 }) {
   return Text('$value $value2');
 }

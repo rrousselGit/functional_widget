@@ -2,38 +2,38 @@
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'fake_flutter.dart';
 
-@widget
+@swidget
 Widget intTest(int a) => Container();
 
-@widget
+@swidget
 Widget doubleTest(double a) => Container();
 
-@widget
+@swidget
 Widget stringTest(String a) => Container();
 
 enum _Foo { a, b }
 
-@widget
+@swidget
 Widget enumTest(_Foo a) => Container();
 
-@widget
+@swidget
 Widget objectTest(Object a) => Container();
 
 typedef Typedef<T> = void Function(T);
 
-@widget
+@swidget
 Widget typedefTest<T>(Typedef a) => Container();
 
-@widget
+@swidget
 // ignore: undefined_class
 Widget colorTest(Color a) => Container();
 
-@widget
+@swidget
 Widget functionTest(void Function() a) => Container();
 
-@widget
+@swidget
 Widget dynamicTest(dynamic a) => Container();
 
-@widget
+@swidget
 // ignore: implicit_dynamic_parameter
 Widget inferredTest(a) => Container();

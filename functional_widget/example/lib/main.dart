@@ -4,13 +4,13 @@ import 'package:flutter/widgets.dart';
 
 part 'main.g.dart';
 
-// we create a widget using a widget decorated by `@widget`
-@widget
+// we create a widget using a widget decorated by `@swidget`
+@swidget
 Widget foo(int value) {
   return Container();
 }
 
-@widget
+@swidget
 Widget example(int foo, String bar, {ValueChanged<bool> onChanged}) {
   return Container();
 }

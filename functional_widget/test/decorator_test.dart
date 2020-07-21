@@ -39,7 +39,7 @@ class HWidget extends HookWidget {
 }
 '''));
     });
-    group('@widget', () {
+    group('@swidget', () {
       test('generate stateless if conf is stateless', () async {
         var _generator = FunctionalWidgetGenerator(
             const FunctionalWidget(widgetType: FunctionalWidgetType.stateless));
@@ -62,7 +62,7 @@ class AdaptiveWidget extends StatelessWidget {
             expectGenerateNamed(await tester, name, _generator, matcher);
 
         await _expect('adaptiveWidget', completion('''
-class AdaptiveWidget extends HookWidget {
+class AdaptiveWidget extends StatelessWidget {
   const AdaptiveWidget({Key key}) : super(key: key);
 
   @override

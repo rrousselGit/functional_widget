@@ -26,7 +26,7 @@ const _kOverrideDecorator = CodeExpression(Code('override'));
 
 /// A generator that outputs widgets from a function
 ///
-/// The function must be decorated by `@widget` and be a top level function.
+/// The function must be decorated by `@swidget` and be a top level function.
 /// The type of the widget is infered by the arguments of the function and defaults
 /// to `StatelessWidget`
 class FunctionalWidgetGenerator
@@ -34,7 +34,6 @@ class FunctionalWidgetGenerator
   FunctionalWidgetGenerator([FunctionalWidget options])
       : _defaultOptions = FunctionalWidget(
           debugFillProperties: options?.debugFillProperties ?? false,
-          equality: options?.equality ?? FunctionalWidgetEquality.none,
           widgetType: options?.widgetType ?? FunctionalWidgetType.stateless,
         );
 
@@ -108,7 +107,6 @@ class FunctionalWidgetGenerator
         if (functionElement.documentationComment != null) {
           b.docs.add(functionElement.documentationComment);
         }
-        _generateEquality(annotation, userDefined, b, functionElement);
         if (annotation.debugFillProperties ??
             _defaultOptions.debugFillProperties) {
           final overrideDebugFillProperties = _overrideDebugFillProperties(
@@ -119,27 +117,6 @@ class FunctionalWidgetGenerator
         }
       },
     );
-  }
-
-  void _generateEquality(
-    FunctionalWidget annotation,
-    List<Parameter> userDefined,
-    ClassBuilder classBuilder,
-    FunctionElement functionElement,
-  ) {
-    final equality = annotation.equality ?? _defaultOptions.equality;
-    if (equality != FunctionalWidgetEquality.none) {
-      final overrideHashCode = _overrideHashCode(userDefined);
-      if (overrideHashCode != null) classBuilder.methods.add(overrideHashCode);
-
-      final operatorEqual = _overrideOperatorEqual(
-        userDefined,
-        _toTitle(functionElement.name),
-        functionElement.typeParameters,
-        equality,
-      );
-      if (operatorEqual != null) classBuilder.methods.add(operatorEqual);
-    }
   }
 
   Map<String, Expression> _computeBuildNamedParametersExpression(
@@ -245,69 +222,6 @@ class FunctionalWidgetGenerator
       }
     }
     return propertyType;
-  }
-
-  Method _overrideOperatorEqual(
-    List<Parameter> userFields,
-    String className,
-    List<TypeParameterElement> typeParameters,
-    FunctionalWidgetEquality equality,
-  ) {
-    return userFields.isEmpty
-        ? null
-        : Method(
-            (b) {
-              final serializedTypeParameters = typeParameters.isEmpty
-                  ? ''
-                  : '<${typeParameters.map((t) => t.displayName).join(', ')}>';
-              return b
-                ..annotations.add(_kOverrideDecorator)
-                ..returns = refer('bool')
-                ..name = 'operator=='
-                ..lambda = true
-                ..requiredParameters.add(
-                  Parameter(
-                    (b) => b
-                      ..name = 'o'
-                      ..type = refer('Object'),
-                  ),
-                )
-                ..body = Code(
-                    'identical(o, this) || (o is $className$serializedTypeParameters && ${_serializeEquality(userFields, equality)})');
-            },
-          );
-  }
-
-  String _serializeEquality(
-      List<Parameter> userFields, FunctionalWidgetEquality equality) {
-    switch (equality) {
-      case FunctionalWidgetEquality.identical:
-        return userFields
-            .map((f) => f.name)
-            .map((name) => 'identical($name, o.$name)')
-            .join(' &&');
-      case FunctionalWidgetEquality.equal:
-      default:
-        return userFields
-            .map((f) => f.name)
-            .map((name) => '$name == o.$name')
-            .join(' &&');
-    }
-  }
-
-  Method _overrideHashCode(List<Parameter> userFields) {
-    return userFields.isEmpty
-        ? null
-        : Method((b) => b
-          ..annotations.add(_kOverrideDecorator)
-          ..returns = refer('int')
-          ..name = 'hashCode'
-          ..type = MethodType.getter
-          ..lambda = true
-          ..body = userFields.length == 1
-              ? Code('${userFields.first.name}.hashCode')
-              : Code(
-                  'hashValues(${userFields.map((f) => f.name).join(', ')})'));
   }
 
   Method _createBuildMethod(String functionName, List<Expression> positional,

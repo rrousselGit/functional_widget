@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 
 part 'main.g.dart';
 
-// we create a widget using a widget decorated by `@widget`
-@widget
+// we create a widget using a widget decorated by `@swidget`
+@swidget
 Widget foo() {
   return Container();
 }

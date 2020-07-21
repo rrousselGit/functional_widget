@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import 'package:build/build.dart';
 import 'package:code_gen_tester/src/analysis_utils.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
-import 'dart:async';
 
 Future<void> expectGenerate(
   SourceGenTester tester,
@@ -42,7 +43,7 @@ final Map<String, LibraryReader> _cacheLibrary = {};
 
 abstract class SourceGenTester {
   static Future<SourceGenTester> fromPath(String path) async {
-    LibraryReader libraryReader = _cacheLibrary[path];
+    var libraryReader = _cacheLibrary[path];
     if (libraryReader == null) {
       libraryReader = await resolveCompilationUnit(path);
       _cacheLibrary[path] = libraryReader;

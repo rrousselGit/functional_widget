@@ -12,7 +12,7 @@ dependencies:
   build_config: ^0.4.2
   code_builder: ^3.2.1
   build: ^1.2.2
-  analyzer: ^0.39.8
+  analyzer: ">=0.39.8 <0.41.0"
   meta: ^1.1.8
 
 dev_dependencies:

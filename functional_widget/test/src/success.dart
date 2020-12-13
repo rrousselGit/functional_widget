@@ -17,16 +17,7 @@ Widget adaptiveWidget() => Container();
 Widget noArgument() => Container();
 
 @swidget
-Widget required(foo, int bar) => Container();
-
-@swidget
-Widget named({foo, int bar}) => Container();
-
-@swidget
 Widget namedDefault({int foo = 42}) => Container();
-
-@swidget
-Widget mixt(foo, int bar, {nfoo, int nbar}) => Container();
 
 @swidget
 Widget onlyOneArg(int foo) => Container();
@@ -71,14 +62,6 @@ Widget documentation(int foo) => Container();
 @swidget
 Widget annotated({@meta.required int foo}) => Container();
 
-@swidget
-// ignore: undefined_class
-Widget undefinedType({Color foo}) => Container();
-
-@swidget
-// ignore: undefined_class
-Widget annotatedUndefinedType({@meta.required Color foo}) => Container();
-
 @hwidget
 Widget hookExample() => Container();
 
@@ -97,10 +80,6 @@ Widget inlineFunction2(void Function() t) => Container();
 @swidget
 Widget nestedFunction(void Function(void Function(int a), int b) t) =>
     Container();
-
-@swidget
-// ignore: undefined_class
-Widget unknownTypeFunction(Color Function() t) => Container();
 
 @swidget
 Widget generic<T>(T foo) => Container();

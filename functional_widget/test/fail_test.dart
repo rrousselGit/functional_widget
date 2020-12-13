@@ -15,6 +15,7 @@ void main() {
             'Error, the decorated element is not a function'),
       );
     });
+
     test('external', () async {
       await expectGenerateNamed(
         await tester,
@@ -23,28 +24,7 @@ void main() {
         throwsInvalidGenerationSourceError(),
       );
     });
-    test('dynamic', () async {
-      await expectGenerateNamed(
-        await tester,
-        'dynamicTest',
-        FunctionalWidgetGenerator(),
-        throwsInvalidGenerationSourceError(),
-      );
-      await expectGenerateNamed(
-        await tester,
-        'implicitDynamic',
-        FunctionalWidgetGenerator(),
-        throwsInvalidGenerationSourceError(),
-      );
-    });
-    test('async', () async {
-      await expectGenerateNamed(
-        await tester,
-        'asyncTest',
-        FunctionalWidgetGenerator(),
-        throwsInvalidGenerationSourceError(),
-      );
-    });
+
     test('return type not widget', () async {
       await expectGenerateNamed(
         await tester,

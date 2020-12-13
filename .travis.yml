@@ -1,23 +1,26 @@
-# Created with package:mono_repo v1.2.2-dev
+# Created with package:mono_repo v3.4.2
 language: dart
 
 jobs:
   include:
     - stage: analyzer_and_format
-      name: "SDK: stable - DIR: functional_widget - TASKS: [dartfmt -n --set-exit-if-changed ., dartanalyzer --fatal-infos --fatal-warnings lib test]"
-      script: ./tool/travis.sh dartfmt dartanalyzer_0
-      env: PKG="functional_widget"
+      name: "PKG: functional_widget; `dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-infos --fatal-warnings lib test`"
       dart: stable
-    - stage: unit_test
-      name: "SDK: stable - DIR: functional_widget - TASKS: [pub run test, pub run test_coverage, bash <(curl -s https://codecov.io/bash)]"
-      script: ./tool/travis.sh test command_0 command_1
-      env: PKG="functional_widget"
-      dart: stable
+      os: linux
+      env: PKGS="functional_widget"
+      script: tool/ci.sh dartfmt dartanalyzer_0
     - stage: analyzer_and_format
-      name: "SDK: stable - DIR: functional_widget_annotation - TASKS: [dartfmt -n --set-exit-if-changed ., dartanalyzer --fatal-infos --fatal-warnings lib]"
-      script: ./tool/travis.sh dartfmt dartanalyzer_1
-      env: PKG="functional_widget_annotation"
+      name: "PKG: functional_widget_annotation; `dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-infos --fatal-warnings lib`"
       dart: stable
+      os: linux
+      env: PKGS="functional_widget_annotation"
+      script: tool/ci.sh dartfmt dartanalyzer_1
+    - stage: unit_test
+      name: "PKG: functional_widget; `pub run test`"
+      dart: stable
+      os: linux
+      env: PKGS="functional_widget"
+      script: tool/ci.sh test
 
 stages:
   - analyzer_and_format
@@ -30,5 +33,5 @@ branches:
 
 cache:
   directories:
-    - "$HOME/.pub-cache"
+    - $HOME/.pub-cache
     - functional_widget/.dart_tool/build

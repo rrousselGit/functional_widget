@@ -35,6 +35,7 @@ void main() {
           throwsArgumentError,
         );
       });
+
       test('parses valid value', () {
         expect(
           parseBuilderOptions(const BuilderOptions(
@@ -57,6 +58,7 @@ void main() {
                 .widgetType,
             null);
       });
+
       test('throws if string but not valid', () {
         expect(
           () => parseBuilderOptions(
@@ -64,6 +66,7 @@ void main() {
           throwsArgumentError,
         );
       });
+
       test('throws if not string', () {
         expect(
           () => parseBuilderOptions(
@@ -71,6 +74,7 @@ void main() {
           throwsArgumentError,
         );
       });
+
       test('parses valid value', () {
         expect(
           parseBuilderOptions(

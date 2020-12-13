@@ -6,9 +6,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  functional_widget_annotation: ^0.5.1
 
 dev_dependencies:
   build_runner: ^1.9.0
+
+dependency_overrides:
+  functional_widget_annotation:
+    path: ../
   functional_widget:
     path: ../../functional_widget

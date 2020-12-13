@@ -81,12 +81,13 @@ $output
     final e = library
         .annotatedWith(generator.typeChecker)
         .firstWhere((e) => e.element.name == name);
-    final generated = await generator.generateForAnnotatedElement(
+    final dynamic generated = await generator.generateForAnnotatedElement(
       e.element,
       e.annotation,
       buildStep,
     );
-    final output = formatter.format(generated);
+
+    final output = formatter.format(generated.toString());
     printOnFailure('''
 Generator ${generator.runtimeType} generated:
 ```
@@ -97,7 +98,7 @@ $output
   }
 }
 
-Matcher throwsInvalidGenerationSourceError([messageMatcher]) {
+Matcher throwsInvalidGenerationSourceError([dynamic messageMatcher]) {
   var c = const TypeMatcher<InvalidGenerationSourceError>()
       .having((e) => e.element, 'element', isNotNull);
 

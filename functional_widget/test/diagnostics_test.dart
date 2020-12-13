@@ -29,6 +29,7 @@ class IntTest extends StatelessWidget {
 }
 '''));
     });
+
     test('double', () async {
       await _expect('doubleTest', completion('''
 class DoubleTest extends StatelessWidget {
@@ -46,6 +47,7 @@ class DoubleTest extends StatelessWidget {
 }
 '''));
     });
+
     test('String', () async {
       await _expect('stringTest', completion('''
 class StringTest extends StatelessWidget {
@@ -63,6 +65,7 @@ class StringTest extends StatelessWidget {
 }
 '''));
     });
+
     test('enums', () async {
       await _expect('enumTest', completion('''
 class EnumTest extends StatelessWidget {
@@ -80,6 +83,7 @@ class EnumTest extends StatelessWidget {
 }
 '''));
     });
+
     test('object', () async {
       await _expect('objectTest', completion('''
 class ObjectTest extends StatelessWidget {
@@ -97,23 +101,7 @@ class ObjectTest extends StatelessWidget {
 }
 '''));
     });
-    test('unknown type', () async {
-      await _expect('colorTest', completion('''
-class ColorTest extends StatelessWidget {
-  const ColorTest(this.a, {Key key}) : super(key: key);
 
-  final Color a;
-
-  @override
-  Widget build(BuildContext _context) => colorTest(a);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Color>('a', a));
-  }
-}
-'''));
-    });
     test('function type', () async {
       await _expect('functionTest', completion('''
 class FunctionTest extends StatelessWidget {
@@ -131,6 +119,7 @@ class FunctionTest extends StatelessWidget {
 }
 '''));
     });
+
     test('typedef type', () async {
       // TODO should be `final void Function(T) a;` instead of
       // `final void Function(dynamic) a;`
@@ -152,6 +141,7 @@ class TypedefTest<T> extends StatelessWidget {
 }
 '''));
     });
+
     test('dynamic type', () async {
       await _expect('dynamicTest', completion('''
 class DynamicTest extends StatelessWidget {
@@ -161,23 +151,6 @@ class DynamicTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => dynamicTest(a);
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<dynamic>('a', a));
-  }
-}
-'''));
-    });
-    test('inferred type', () async {
-      await _expect('inferredTest', completion('''
-class InferredTest extends StatelessWidget {
-  const InferredTest(this.a, {Key key}) : super(key: key);
-
-  final dynamic a;
-
-  @override
-  Widget build(BuildContext _context) => inferredTest(a);
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);

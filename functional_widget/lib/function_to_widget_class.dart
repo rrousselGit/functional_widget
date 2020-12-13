@@ -62,8 +62,7 @@ class FunctionalWidgetGenerator
     if (function.isAsynchronous ||
         function.isExternal ||
         function.isGenerator ||
-        function.returnType?.getDisplayString(
-                withNullability: false /* TODO upgrade to true */) !=
+        function.returnType?.getDisplayString(withNullability: false) !=
             'Widget') {
       throw InvalidGenerationSourceError(
         'Invalid prototype. The function must be synchronous, top level, and return a Widget',

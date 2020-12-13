@@ -8,12 +8,6 @@ final closure = () => Container();
 external Widget externalTest();
 
 @swidget
-// ignore: implicit_dynamic_return, always_declare_return_types
-asyncTest() async {
-  return Container();
-}
-
-@swidget
 int notAWidget() {
   return 42;
 }
@@ -26,11 +20,5 @@ Widget TitleName() {
 
 @swidget
 dynamic dynamicTest() {
-  return Container();
-}
-
-@swidget
-// ignore: implicit_dynamic_return, always_declare_return_types
-implicitDynamic() {
   return Container();
 }

@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/rrousselGit/functional_widget.svg?branch=master)](https://travis-ci.org/rrousselGit/functional_widget)
-[![pub package](https://img.shields.io/pub/v/functional_widget.svg)](https://pub.dartlang.org/packages/functional_widget) [![pub package](https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true&style=flat-square)](https://github.com/Solido/awesome-flutter) [![codecov](https://codecov.io/gh/rrousselGit/functional_widget/branch/master/graph/badge.svg)](https://codecov.io/gh/rrousselGit/functional_widget)
+[![pub package](https://img.shields.io/pub/v/functional_widget.svg)](https://pub.dartlang.org/packages/functional_widget) [![pub package](https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true&style=flat-square)](https://github.com/Solido/awesome-flutter)
 
 Widgets are cool. But classes are quite verbose:
 

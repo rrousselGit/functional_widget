@@ -1,3 +1,7 @@
+## 0.8.1
+
+- Updated `analyzer` and `build_runner` versions
+
 ## 0.8.0
 
 - removed `@swidget`

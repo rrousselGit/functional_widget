@@ -20,36 +20,6 @@ class NoArgument extends StatelessWidget {
 '''));
     });
 
-    test('required', () async {
-      await _expect('required', completion('''
-class Required extends StatelessWidget {
-  const Required(this.foo, this.bar, {Key key}) : super(key: key);
-
-  final dynamic foo;
-
-  final int bar;
-
-  @override
-  Widget build(BuildContext _context) => required(foo, bar);
-}
-'''));
-    });
-
-    test('named', () async {
-      await _expect('named', completion('''
-class Named extends StatelessWidget {
-  const Named({Key key, this.foo, this.bar}) : super(key: key);
-
-  final dynamic foo;
-
-  final int bar;
-
-  @override
-  Widget build(BuildContext _context) => named(foo: foo, bar: bar);
-}
-'''));
-    });
-
     test('namedDefault', () async {
       await _expect('namedDefault', completion('''
 class NamedDefault extends StatelessWidget {
@@ -59,26 +29,6 @@ class NamedDefault extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => namedDefault(foo: foo);
-}
-'''));
-    });
-
-    test('mixt', () async {
-      await _expect('mixt', completion('''
-class Mixt extends StatelessWidget {
-  const Mixt(this.foo, this.bar, {Key key, this.nfoo, this.nbar})
-      : super(key: key);
-
-  final dynamic foo;
-
-  final int bar;
-
-  final dynamic nfoo;
-
-  final int nbar;
-
-  @override
-  Widget build(BuildContext _context) => mixt(foo, bar, nfoo: nfoo, nbar: nbar);
 }
 '''));
     });
@@ -93,6 +43,7 @@ class WithContext extends StatelessWidget {
 }
 '''));
     });
+
     test('key', () async {
       await _expect('withKey', completion('''
 class WithKey extends StatelessWidget {
@@ -103,6 +54,7 @@ class WithKey extends StatelessWidget {
 }
 '''));
     });
+
     test('context then key', () async {
       await _expect('withContextThenKey', completion('''
 class WithContextThenKey extends StatelessWidget {
@@ -113,6 +65,7 @@ class WithContextThenKey extends StatelessWidget {
 }
 '''));
     });
+
     test('key then context', () async {
       await _expect('withKeyThenContext', completion('''
 class WithKeyThenContext extends StatelessWidget {
@@ -123,6 +76,7 @@ class WithKeyThenContext extends StatelessWidget {
 }
 '''));
     });
+
     test('whatever then context', () async {
       await _expect('whateverThenContext', completion('''
 class WhateverThenContext extends StatelessWidget {
@@ -137,6 +91,7 @@ class WhateverThenContext extends StatelessWidget {
 }
 '''));
     });
+
     test('whatever then key', () async {
       await _expect('whateverThenKey', completion('''
 class WhateverThenKey extends StatelessWidget {
@@ -151,6 +106,7 @@ class WhateverThenKey extends StatelessWidget {
 }
 '''));
     });
+
     test('documentation', () async {
       await _expect('documentation', completion('''
 /// Hello
@@ -169,6 +125,7 @@ class Documentation extends StatelessWidget {
 }
 '''));
     });
+
     test('annotated', () async {
       await _expect('annotated', completion('''
 class Annotated extends StatelessWidget {
@@ -181,30 +138,7 @@ class Annotated extends StatelessWidget {
 }
 '''));
     });
-    test('unknown type', () async {
-      await _expect('undefinedType', completion('''
-class UndefinedType extends StatelessWidget {
-  const UndefinedType({Key key, this.foo}) : super(key: key);
 
-  final Color foo;
-
-  @override
-  Widget build(BuildContext _context) => undefinedType(foo: foo);
-}
-'''));
-    });
-    test('annotated unknown type', () async {
-      await _expect('annotatedUndefinedType', completion('''
-class AnnotatedUndefinedType extends StatelessWidget {
-  const AnnotatedUndefinedType({Key key, @required this.foo}) : super(key: key);
-
-  final Color foo;
-
-  @override
-  Widget build(BuildContext _context) => annotatedUndefinedType(foo: foo);
-}
-'''));
-    });
     test('hook widget', () async {
       await _expect('hookExample', completion('''
 class HookExample extends HookWidget {
@@ -229,6 +163,7 @@ class Generic<T> extends StatelessWidget {
 }
 '''));
     });
+
     test('generic widget extends', () async {
       // currently not possible to know the type
       await _expect('genericExtends', completion('''
@@ -256,6 +191,7 @@ class TypedefFunction<T> extends StatelessWidget {
 }
 '''));
       });
+
       test('inline', () async {
         await _expect('inlineFunction', completion('''
 class InlineFunction extends StatelessWidget {
@@ -268,6 +204,7 @@ class InlineFunction extends StatelessWidget {
 }
 '''));
       });
+
       test('inline2', () async {
         await _expect('inlineFunction2', completion('''
 class InlineFunction2 extends StatelessWidget {
@@ -280,6 +217,7 @@ class InlineFunction2 extends StatelessWidget {
 }
 '''));
       });
+
       test('nested function', () async {
         await _expect('nestedFunction', completion('''
 class NestedFunction extends StatelessWidget {
@@ -292,19 +230,7 @@ class NestedFunction extends StatelessWidget {
 }
 '''));
       });
-      test('unknown type function', () async {
-        // currently not possible to know the type
-        await _expect('unknownTypeFunction', completion('''
-class UnknownTypeFunction extends StatelessWidget {
-  const UnknownTypeFunction(this.t, {Key key}) : super(key: key);
 
-  final dynamic Function() t;
-
-  @override
-  Widget build(BuildContext _context) => unknownTypeFunction(t);
-}
-'''));
-      });
       test('generic class', () async {
         // currently not possible to know the type
         await _expect('genericClass', completion('''
@@ -318,6 +244,7 @@ class GenericClass<T> extends StatelessWidget {
 }
 '''));
       });
+
       test('multiple generic class', () async {
         await _expect('genericMultiple', completion('''
 class GenericMultiple<T, S> extends StatelessWidget {
@@ -332,6 +259,7 @@ class GenericMultiple<T, S> extends StatelessWidget {
 }
 '''));
       });
+
       test('generic function', () async {
         await _expect('genericFunction', completion('''
 class GenericFunction extends StatelessWidget {
@@ -344,6 +272,7 @@ class GenericFunction extends StatelessWidget {
 }
 '''));
       });
+
       test('generic function #2', () async {
         await _expect('genericFunction2', completion('''
 class GenericFunction2 extends StatelessWidget {
@@ -356,6 +285,7 @@ class GenericFunction2 extends StatelessWidget {
 }
 '''));
       });
+
       test('generic function #3', () async {
         await _expect('genericFunction3', completion('''
 class GenericFunction3 extends StatelessWidget {

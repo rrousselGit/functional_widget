@@ -23,6 +23,7 @@ class SWidget extends StatelessWidget {
 }
 '''));
     });
+
     test('hwidget generate hookwidget even if default value is stateless',
         () async {
       final _generator = FunctionalWidgetGenerator(
@@ -55,6 +56,7 @@ class AdaptiveWidget extends StatelessWidget {
 }
 '''));
       });
+
       test('generate hook if conf is hook', () async {
         var _generator = FunctionalWidgetGenerator(
             const FunctionalWidget(widgetType: FunctionalWidgetType.hook));

@@ -10,8 +10,6 @@ stages:
   - unit_test:
     - group:
       - test
-      - command: pub run test_coverage
-      - command: bash <(curl -s https://codecov.io/bash)
 
 cache:
   directories:

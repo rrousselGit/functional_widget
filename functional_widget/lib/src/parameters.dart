@@ -44,17 +44,15 @@ Parameter _parseParameter(ParameterElement parameter) {
       ..docs.add(parameter.documentationComment ?? '')
       ..annotations.addAll(parameter.metadata.map((meta) {
         // ignore: invalid_use_of_visible_for_testing_member
-        return CodeExpression(Code(meta.element.displayName));
+        return CodeExpression(Code(meta.element!.displayName));
       }))
       ..named = parameter.isNamed
+      ..required = parameter.isRequiredNamed
       ..type = _parameterToReference(parameter),
   );
 }
 
 Reference _parameterToReference(ParameterElement element) {
-  if (element.type == null) {
-    return null;
-  }
   if (element.type.isDynamic) {
     return refer(tryParseDynamicType(element));
   }
@@ -63,28 +61,24 @@ Reference _parameterToReference(ParameterElement element) {
 }
 
 Reference _typeToReference(element_type.DartType type) {
-  if (type == null) {
-    return null;
-  }
   if (type is element_type.FunctionType) {
     // final functionTyped = type.element as FunctionTypedElement;
     final t = _functionTypedElementToFunctionType(type);
     return t.type;
   }
-  final displayName =
-      type.getDisplayString(withNullability: false /* TODO upgrade to true */);
-  return displayName != null ? refer(displayName) : null;
+  final displayName = type.getDisplayString(withNullability: true);
+  return refer(displayName);
 }
 
 FunctionType _functionTypedElementToFunctionType(
   element_type.FunctionType element,
 ) {
   return FunctionType((b) {
-    return b
+    b
       ..returnType = _typeToReference(element.returnType)
-      // TODO set appropriate `nullabilitySuffix`
       ..types.addAll(element.typeFormals.map((f) => _typeToReference(
           f.instantiate(nullabilitySuffix: NullabilitySuffix.none))))
+      ..isNullable = element.nullabilitySuffix == NullabilitySuffix.question
       ..requiredParameters.addAll(element.parameters
           .where((p) => p.isNotOptional)
           .map(_parseParameter)
@@ -102,11 +96,11 @@ FunctionType _functionTypedElementToFunctionType(
 
 String tryParseDynamicType(ParameterElement element) {
   final parsedLibrary =
-      element.session?.getParsedLibraryByElement(element.library);
+      element.session?.getParsedLibraryByElement(element.library!);
   final node = parsedLibrary?.getElementDeclaration(element)?.node;
   final parameter = node is DefaultFormalParameter ? node.parameter : node;
   if (parameter is SimpleFormalParameter && parameter.type != null) {
-    return parameter.type.beginToken.toString();
+    return parameter.type!.beginToken.toString();
   }
   return 'dynamic';
 }

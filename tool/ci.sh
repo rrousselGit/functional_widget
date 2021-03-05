@@ -72,7 +72,7 @@ for PKG in ${PKGS}; do
         ;;
       test)
         echo 'pub run test'
-        pub run test || EXIT_CODE=$?
+        pub run --no-sound-null-safety test || EXIT_CODE=$?
         ;;
       *)
         echo -e "\033[31mUnknown TASK '${TASK}' - TERMINATING JOB\033[0m"

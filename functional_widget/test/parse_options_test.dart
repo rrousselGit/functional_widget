@@ -52,11 +52,11 @@ void main() {
       });
     });
     group('widgetType', () {
-      test('default to null', () {
+      test('default to stateless', () {
         expect(
             parseBuilderOptions(const BuilderOptions(<String, dynamic>{}))
                 .widgetType,
-            null);
+            FunctionalWidgetType.stateless);
       });
 
       test('throws if string but not valid', () {

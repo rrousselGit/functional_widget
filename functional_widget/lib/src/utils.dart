@@ -6,7 +6,7 @@ import 'package:source_gen/source_gen.dart';
 const _kKnownOptionsName = ['widgetType', 'equality', 'debugFillProperties'];
 
 FunctionalWidget parseBuilderOptions(BuilderOptions options) {
-  final unknownOption = options?.config?.keys?.firstWhere(
+  final unknownOption = options.config?.keys.firstWhere(
       (key) => !_kKnownOptionsName.contains(key),
       orElse: () => null);
 
@@ -18,12 +18,12 @@ FunctionalWidget parseBuilderOptions(BuilderOptions options) {
   final debugFillProperties =
       _parseDebugFillProperties(options.config['debugFillProperties']);
   return FunctionalWidget(
-    widgetType: widgetType,
+    widgetType: widgetType ?? FunctionalWidgetType.stateless,
     debugFillProperties: debugFillProperties,
   );
 }
 
-bool _parseDebugFillProperties(dynamic value) {
+bool? _parseDebugFillProperties(dynamic value) {
   if (value == null) {
     // ignore: avoid_returning_null
     return null;
@@ -35,7 +35,7 @@ bool _parseDebugFillProperties(dynamic value) {
       'Invalid value. Potential values are `true` or `false`');
 }
 
-FunctionalWidgetType _parseWidgetType(dynamic value) {
+FunctionalWidgetType? _parseWidgetType(dynamic value) {
   if (value == null) {
     return null;
   }
@@ -51,14 +51,15 @@ FunctionalWidgetType _parseWidgetType(dynamic value) {
       'Invalid value. Potential values are `hook` or `stateless`');
 }
 
-FunctionalWidget parseFunctionalWidetAnnotation(ConstantReader reader) {
+FunctionalWidget parseFunctionalWidgetAnnotation(ConstantReader reader) {
   return FunctionalWidget(
     widgetType:
-        _parseEnum(reader.read('widgetType'), FunctionalWidgetType.values),
+        _parseEnum(reader.read('widgetType'), FunctionalWidgetType.values) ??
+            FunctionalWidgetType.stateless,
   );
 }
 
-T _parseEnum<T>(ConstantReader reader, List<T> values) => reader.isNull
+T? _parseEnum<T>(ConstantReader reader, List<T> values) => reader.isNull
     ? null
     : _enumValueForDartObject(
         reader.objectValue, values, (f) => f.toString().split('.')[1]);

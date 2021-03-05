@@ -16,7 +16,7 @@ void main() {
 
       await _expect('sWidget', completion('''
 class SWidget extends StatelessWidget {
-  const SWidget({Key key}) : super(key: key);
+  const SWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext _context) => sWidget();
@@ -33,7 +33,7 @@ class SWidget extends StatelessWidget {
 
       await _expect('hWidget', completion('''
 class HWidget extends HookWidget {
-  const HWidget({Key key}) : super(key: key);
+  const HWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext _context) => hWidget();
@@ -49,7 +49,7 @@ class HWidget extends HookWidget {
 
         await _expect('adaptiveWidget', completion('''
 class AdaptiveWidget extends StatelessWidget {
-  const AdaptiveWidget({Key key}) : super(key: key);
+  const AdaptiveWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext _context) => adaptiveWidget();
@@ -65,7 +65,7 @@ class AdaptiveWidget extends StatelessWidget {
 
         await _expect('adaptiveWidget', completion('''
 class AdaptiveWidget extends StatelessWidget {
-  const AdaptiveWidget({Key key}) : super(key: key);
+  const AdaptiveWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext _context) => adaptiveWidget();

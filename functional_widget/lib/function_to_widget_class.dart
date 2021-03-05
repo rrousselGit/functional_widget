@@ -13,12 +13,11 @@ const _kHookWidgetsPath = 'package:flutter_hooks/flutter_hooks.dart';
 final _widgetRef = refer('Widget', _kFlutterWidgetsPath);
 final _statelessWidgetRef = refer('StatelessWidget', _kFlutterWidgetsPath);
 final _hookWidgetRef = refer('HookWidget', _kHookWidgetsPath);
-final _keyRef = refer('Key', _kFlutterWidgetsPath);
 final _buildContextRef = refer('BuildContext', _kFlutterWidgetsPath);
 
 String _toTitle(String string) {
   return string.replaceFirstMapped(RegExp('[a-zA-Z]'), (match) {
-    return match.group(0).toUpperCase();
+    return match.group(0)!.toUpperCase();
   });
 }
 
@@ -31,20 +30,20 @@ const _kOverrideDecorator = CodeExpression(Code('override'));
 /// to `StatelessWidget`
 class FunctionalWidgetGenerator
     extends GeneratorForAnnotation<FunctionalWidget> {
-  FunctionalWidgetGenerator([FunctionalWidget options])
+  FunctionalWidgetGenerator([FunctionalWidget? options])
       : _defaultOptions = FunctionalWidget(
-          debugFillProperties: options?.debugFillProperties ?? false,
+          debugFillProperties: options?.debugFillProperties,
           widgetType: options?.widgetType ?? FunctionalWidgetType.stateless,
         );
 
   final FunctionalWidget _defaultOptions;
-  final _emitter = DartEmitter();
+  final _emitter = DartEmitter(Allocator.none, false, true);
 
   @override
   String generateForAnnotatedElement(
       Element element, ConstantReader annotation, BuildStep buildStep) {
     final function = _checkValidElement(element);
-    final type = parseFunctionalWidetAnnotation(annotation);
+    final type = parseFunctionalWidgetAnnotation(annotation);
 
     return _makeClassFromFunctionElement(function, type)
         .accept(_emitter)
@@ -58,11 +57,11 @@ class FunctionalWidgetGenerator
         element: element,
       );
     }
-    var function = element as FunctionElement;
+    final function = element;
     if (function.isAsynchronous ||
         function.isExternal ||
         function.isGenerator ||
-        function.returnType?.getDisplayString(withNullability: false) !=
+        function.returnType.getDisplayString(withNullability: true) !=
             'Widget') {
       throw InvalidGenerationSourceError(
         'Invalid prototype. The function must be synchronous, top level, and return a Widget',
@@ -89,7 +88,7 @@ class FunctionalWidgetGenerator
 
     return Class(
       (b) {
-        final widgetType = annotation.widgetType ?? _defaultOptions.widgetType;
+        final widgetType = annotation.widgetType;
         b
           ..name = _toTitle(functionElement.name)
           ..types.addAll(
@@ -100,14 +99,17 @@ class FunctionalWidgetGenerator
           ..fields.addAll(_paramsToFields(userDefined,
               doc: functionElement.documentationComment))
           ..constructors.add(_getConstructor(userDefined,
-              doc: functionElement.documentationComment))
+              doc: functionElement.documentationComment,
+              keyIsRequired:
+                  parameters.startsWithKey || parameters.followedByKey))
           ..methods.add(_createBuildMethod(
               functionElement.displayName, positional, named, functionElement));
         if (functionElement.documentationComment != null) {
           b.docs.add(functionElement.documentationComment);
         }
         if (annotation.debugFillProperties ??
-            _defaultOptions.debugFillProperties) {
+            _defaultOptions.debugFillProperties ??
+            false) {
           final overrideDebugFillProperties = _overrideDebugFillProperties(
               userDefined, functionElement.parameters);
           if (overrideDebugFillProperties != null) {
@@ -148,7 +150,7 @@ class FunctionalWidgetGenerator
     return positional;
   }
 
-  Method _overrideDebugFillProperties(
+  Method? _overrideDebugFillProperties(
       List<Parameter> userFields, List<ParameterElement> elements) {
     return userFields.isEmpty
         ? null
@@ -172,7 +174,7 @@ class FunctionalWidgetGenerator
   }
 
   Code _parameterToDiagnostic(Parameter parameter, ParameterElement element) {
-    String propertyType;
+    String? propertyType;
     switch (parameter.type.symbol) {
       case 'int':
         propertyType = 'IntProperty';
@@ -185,11 +187,9 @@ class FunctionalWidgetGenerator
         break;
       // TODO: Duration
       default:
-        propertyType = element.type != null
-            ? _tryParseClassToEnumDiagnostic(element, propertyType) ??
-                _tryParseFunctionToDiagnostic(element, propertyType) ??
-                _getFallbackElementDiagnostic(element)
-            : 'DiagnosticsProperty';
+        propertyType = _tryParseClassToEnumDiagnostic(element, propertyType) ??
+            _tryParseFunctionToDiagnostic(element, propertyType) ??
+            _getFallbackElementDiagnostic(element);
     }
 
     return Code(
@@ -197,10 +197,10 @@ class FunctionalWidgetGenerator
   }
 
   String _getFallbackElementDiagnostic(ParameterElement element) =>
-      'DiagnosticsProperty<${element.type.isDynamic ? tryParseDynamicType(element) : element.type.getDisplayString(withNullability: false /* TODO upgrade to true */)}>';
+      'DiagnosticsProperty<${element.type.isDynamic ? tryParseDynamicType(element) : element.type.getDisplayString(withNullability: true)}>';
 
-  String _tryParseFunctionToDiagnostic(
-      ParameterElement element, String propertyType) {
+  String? _tryParseFunctionToDiagnostic(
+      ParameterElement element, String? propertyType) {
     final kind = element.type.element?.kind;
     if (kind == ElementKind.FUNCTION ||
         kind == ElementKind.FUNCTION_TYPE_ALIAS ||
@@ -211,13 +211,13 @@ class FunctionalWidgetGenerator
     return propertyType;
   }
 
-  String _tryParseClassToEnumDiagnostic(
-      ParameterElement element, String propertyType) {
+  String? _tryParseClassToEnumDiagnostic(
+      ParameterElement element, String? propertyType) {
     if (element.type.element is ClassElement) {
       final classElement = element.type.element as ClassElement;
       if (classElement.isEnum) {
         propertyType =
-            'EnumProperty<${element.type.getDisplayString(withNullability: false /* TODO upgrade to true */)}>';
+            'EnumProperty<${element.type.getDisplayString(withNullability: true)}>';
       }
     }
     return propertyType;
@@ -240,8 +240,8 @@ class FunctionalWidgetGenerator
                 positional,
                 named,
                 function.typeParameters
-                    ?.map((p) => refer(p.displayName))
-                    ?.toList())
+                    .map((p) => refer(p.displayName))
+                    .toList())
             .code,
     );
   }
@@ -250,23 +250,30 @@ class FunctionalWidgetGenerator
     List<TypeParameterElement> typeParameters,
   ) {
     return typeParameters.map((e) {
-      final displayName = e.bound
-          ?.getDisplayString(withNullability: false /* TODO upgrade to true */);
+      final displayName = e.bound?.getDisplayString(withNullability: true);
       return displayName != null
           ? refer('${e.displayName} extends $displayName')
           : refer(e.displayName);
     });
   }
 
-  Constructor _getConstructor(List<Parameter> fields, {String doc}) {
+  Constructor _getConstructor(
+    List<Parameter> fields, {
+    String? doc,
+    bool keyIsRequired = false,
+  }) {
     return Constructor(
       (b) => b
         ..constant = true
         ..optionalParameters.add(Parameter((b) => b
+          ..required = keyIsRequired
           ..named = true
           ..name = 'key'
           ..docs.clear()
-          ..type = _keyRef))
+          ..type = TypeReference((b) => b
+            ..symbol = 'Key'
+            ..url = _kFlutterWidgetsPath
+            ..isNullable = !keyIsRequired)))
         ..docs.add(doc ?? '')
         ..requiredParameters
             .addAll(fields.where((p) => !p.named).map((p) => p.rebuild((b) => b
@@ -282,7 +289,7 @@ class FunctionalWidgetGenerator
     );
   }
 
-  Iterable<Field> _paramsToFields(List<Parameter> params, {String doc}) sync* {
+  Iterable<Field> _paramsToFields(List<Parameter> params, {String? doc}) sync* {
     for (final param in params) {
       yield Field(
         (b) => b

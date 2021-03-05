@@ -15,7 +15,7 @@ void main() {
     test('int', () async {
       await _expect('intTest', completion('''
 class IntTest extends StatelessWidget {
-  const IntTest(this.a, {Key key}) : super(key: key);
+  const IntTest(this.a, {Key? key}) : super(key: key);
 
   final int a;
 
@@ -33,7 +33,7 @@ class IntTest extends StatelessWidget {
     test('double', () async {
       await _expect('doubleTest', completion('''
 class DoubleTest extends StatelessWidget {
-  const DoubleTest(this.a, {Key key}) : super(key: key);
+  const DoubleTest(this.a, {Key? key}) : super(key: key);
 
   final double a;
 
@@ -51,7 +51,7 @@ class DoubleTest extends StatelessWidget {
     test('String', () async {
       await _expect('stringTest', completion('''
 class StringTest extends StatelessWidget {
-  const StringTest(this.a, {Key key}) : super(key: key);
+  const StringTest(this.a, {Key? key}) : super(key: key);
 
   final String a;
 
@@ -69,7 +69,7 @@ class StringTest extends StatelessWidget {
     test('enums', () async {
       await _expect('enumTest', completion('''
 class EnumTest extends StatelessWidget {
-  const EnumTest(this.a, {Key key}) : super(key: key);
+  const EnumTest(this.a, {Key? key}) : super(key: key);
 
   final _Foo a;
 
@@ -87,7 +87,7 @@ class EnumTest extends StatelessWidget {
     test('object', () async {
       await _expect('objectTest', completion('''
 class ObjectTest extends StatelessWidget {
-  const ObjectTest(this.a, {Key key}) : super(key: key);
+  const ObjectTest(this.a, {Key? key}) : super(key: key);
 
   final Object a;
 
@@ -105,7 +105,7 @@ class ObjectTest extends StatelessWidget {
     test('function type', () async {
       await _expect('functionTest', completion('''
 class FunctionTest extends StatelessWidget {
-  const FunctionTest(this.a, {Key key}) : super(key: key);
+  const FunctionTest(this.a, {Key? key}) : super(key: key);
 
   final void Function() a;
 
@@ -127,7 +127,7 @@ class FunctionTest extends StatelessWidget {
       // `ObjectFlagProperty<dynamic>.has`
       await _expect('typedefTest', completion('''
 class TypedefTest<T> extends StatelessWidget {
-  const TypedefTest(this.a, {Key key}) : super(key: key);
+  const TypedefTest(this.a, {Key? key}) : super(key: key);
 
   final void Function(dynamic) a;
 
@@ -145,7 +145,7 @@ class TypedefTest<T> extends StatelessWidget {
     test('dynamic type', () async {
       await _expect('dynamicTest', completion('''
 class DynamicTest extends StatelessWidget {
-  const DynamicTest(this.a, {Key key}) : super(key: key);
+  const DynamicTest(this.a, {Key? key}) : super(key: key);
 
   final dynamic a;
 

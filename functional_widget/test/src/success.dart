@@ -1,7 +1,6 @@
 // ignore_for_file: implicit_dynamic_parameter
 
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
-import 'package:meta/meta.dart' as meta;
 import 'fake_flutter.dart';
 
 @swidget
@@ -60,7 +59,13 @@ Widget whateverThenKey(int foo, Key bar) => Container();
 Widget documentation(int foo) => Container();
 
 @swidget
-Widget annotated({@meta.required int foo}) => Container();
+Widget withRequired({required int foo}) => Container();
+
+@swidget
+Widget withOptional({int? foo}) => Container();
+
+@swidget
+Widget withPositionalOptional(int? foo) => Container();
 
 @hwidget
 Widget hookExample() => Container();
@@ -78,6 +83,12 @@ Widget inlineFunction(void t()) => Container();
 Widget inlineFunction2(void Function() t) => Container();
 
 @swidget
+Widget inlineFunctionWithArgs(void Function(BuildContext?) t) => Container();
+
+@swidget
+Widget optionalInlineFunction(void Function()? t) => Container();
+
+@swidget
 Widget nestedFunction(void Function(void Function(int a), int b) t) =>
     Container();
 
@@ -92,6 +103,9 @@ Widget genericExtends<T extends Container>(T foo) => Container();
 
 @swidget
 Widget genericClass<T>(T Function() foo) => Container();
+
+@swidget
+Widget genericClassWithNullable<T>(T? Function() foo) => Container();
 
 // ignore: prefer_generic_function_type_aliases
 typedef T _GenericFunction<T>(T foo);
@@ -108,3 +122,8 @@ typedef _GenericFunction3<T, U> = U Function(T foo);
 
 @swidget
 Widget genericFunction3(_GenericFunction3<int, String> foo) => Container();
+
+typedef _GenericFunction4 = T? Function<T>(T? foo);
+
+@swidget
+Widget genericFunction4(_GenericFunction4? foo) => Container();

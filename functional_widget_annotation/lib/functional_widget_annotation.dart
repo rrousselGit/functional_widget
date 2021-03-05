@@ -18,7 +18,7 @@ enum FunctionalWidgetType {
 /// Decorates a function to customize the generated class
 class FunctionalWidget {
   const FunctionalWidget({
-    this.widgetType,
+    this.widgetType = FunctionalWidgetType.stateless,
     this.debugFillProperties,
   });
 
@@ -28,7 +28,7 @@ class FunctionalWidget {
   final FunctionalWidgetType widgetType;
 
   /// Defines if the generated widget should emit diagnostics informations.
-  final bool debugFillProperties;
+  final bool? debugFillProperties;
 }
 
 /// A decorator for functions to generate a `StatelessWidget`.

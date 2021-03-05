@@ -5,7 +5,7 @@ homepage: https://github.com/rrousselGit/functional_widget/tree/master/functiona
 version: 0.8.0
 
 environment:
-    sdk: ">= 2.5.0 <3.0.0"
+    sdk: ">= 2.12.0 <3.0.0"
 
 dev_dependencies:
     pedantic: ^1.9.2

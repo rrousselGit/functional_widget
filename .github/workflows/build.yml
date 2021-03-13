@@ -51,4 +51,4 @@ jobs:
         run: melos exec -- "flutter analyze"
 
       - name: Run tests
-        run: melos run test
+        run: melos run test --scope="functional_widget"

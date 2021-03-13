@@ -1,0 +1,54 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  schedule:
+    # runs the CI everyday at 10AM
+    - cron: "0 10 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        channel:
+          - dev
+          - stable
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: ${{ matrix.channel }}
+
+      - name: Add pub cache bin to PATH
+        run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+
+      - name: Add pub cache to PATH
+        run: echo "PUB_CACHE="$HOME/.pub-cache"" >> $GITHUB_ENV
+
+      - run: dart pub global activate melos
+
+      - name: Install dependencies
+        run: melos bootstrap
+
+      - name: Check format
+        run: flutter format --set-exit-if-changed .
+
+      # - name: Generate (dart)
+      #   run: melos exec --depends-on="build_runner" --no-flutter -- "dart run build_runner build --delete-conflicting-outputs"
+
+      # - name: Generate (flutter)
+      #   run: |
+      #     cd examples/stackoverflow && flutter pub run build_runner build --delete-conflicting-outputs && cd - 
+      #     cd examples/marvel && flutter pub run build_runner build --delete-conflicting-outputs && cd - 
+      #     cd examples/todos && flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Analyze
+        run: melos exec -- "flutter analyze"
+
+      - name: Run tests
+        run: melos run test

@@ -1,1 +1,1 @@
-functional_widget/README.md
+./packages/functional_widget/README.md

@@ -5,7 +5,7 @@ analyzer:
   strong-mode:
     implicit-casts: false
     implicit-dynamic: false
-  error:
+  errors:
     import_of_legacy_library_into_null_safe: ignore
 linter:
   rules:

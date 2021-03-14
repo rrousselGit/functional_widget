@@ -10,8 +10,8 @@ Future<void> expectGenerate(
   SourceGenTester tester,
   Generator generator,
   Matcher matcher, {
-  BuildStep buildStep,
-  String reason,
+  BuildStep? buildStep,
+  String? reason,
   dynamic skip,
 }) async {
   await expectLater(
@@ -27,8 +27,8 @@ Future<void> expectGenerateNamed(
   String name,
   GeneratorForAnnotation generator,
   Matcher matcher, {
-  BuildStep buildStep,
-  String reason,
+  BuildStep? buildStep,
+  String? reason,
   dynamic skip,
 }) async {
   await expectLater(
@@ -51,9 +51,9 @@ abstract class SourceGenTester {
     return _SourceGenTesterImpl(libraryReader);
   }
 
-  Future<String> generateFor(Generator generator, [BuildStep buildStep]);
+  Future<String> generateFor(Generator generator, [BuildStep? buildStep]);
   Future<String> generateForName(GeneratorForAnnotation generator, String name,
-      [BuildStep buildStep]);
+      [BuildStep? buildStep]);
 }
 
 class _SourceGenTesterImpl implements SourceGenTester {
@@ -63,7 +63,8 @@ class _SourceGenTesterImpl implements SourceGenTester {
   _SourceGenTesterImpl(this.library);
 
   @override
-  Future<String> generateFor(Generator generator, [BuildStep buildStep]) async {
+  Future<String> generateFor(Generator generator,
+      [BuildStep? buildStep]) async {
     final generated = await generator.generate(library, buildStep);
     final output = formatter.format(generated);
     printOnFailure('''
@@ -77,7 +78,7 @@ $output
 
   @override
   Future<String> generateForName(GeneratorForAnnotation generator, String name,
-      [BuildStep buildStep]) async {
+      [BuildStep? buildStep]) async {
     final e = library
         .annotatedWith(generator.typeChecker)
         .firstWhere((e) => e.element.name == name);

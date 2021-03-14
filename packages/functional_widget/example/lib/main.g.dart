@@ -7,7 +7,7 @@ part of 'main.dart';
 // **************************************************************************
 
 class Foo extends StatelessWidget {
-  const Foo(this.value, {Key key}) : super(key: key);
+  const Foo(this.value, {Key? key}) : super(key: key);
 
   final int value;
 
@@ -21,14 +21,14 @@ class Foo extends StatelessWidget {
 }
 
 class Example extends StatelessWidget {
-  const Example(this.foo, this.bar, {Key key, this.onChanged})
+  const Example(this.foo, this.bar, {Key? key, this.onChanged})
       : super(key: key);
 
   final int foo;
 
   final String bar;
 
-  final void Function(bool) onChanged;
+  final void Function(bool)? onChanged;
 
   @override
   Widget build(BuildContext _context) =>

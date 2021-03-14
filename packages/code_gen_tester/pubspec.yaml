@@ -10,14 +10,17 @@ dependencies:
   pedantic: ^1.9.0
   build_runner: ^1.10.3
   build_test: ^1.0.0
-  analyzer: ">=0.39.5 <1.0.0"
+  analyzer: ^1.0.0
   build: ">=0.12.6 <2.0.0"
   build_config: ">=0.4.2 <1.0.0"
   meta: ">=1.2.0 <2.0.0"
-  functional_widget_annotation: ">=0.8.0 <2.0.0"
+  functional_widget_annotation: ^0.9.0
   source_gen: ^0.9.5
   code_builder: ^3.2.1
 
+dependency_overrides:
+  functional_widget_annotation:
+    path: ../functional_widget_annotation
+
 dev_dependencies:
   mockito: ^4.1.1
-  test_coverage: ^0.4.1

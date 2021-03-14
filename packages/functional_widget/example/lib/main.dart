@@ -11,7 +11,11 @@ Widget foo(int value) {
 }
 
 @swidget
-Widget example(int foo, String bar, {ValueChanged<bool> onChanged}) {
+Widget example(
+  int foo,
+  String bar, {
+  ValueChanged<bool>? onChanged,
+}) {
   return Container();
 }
 

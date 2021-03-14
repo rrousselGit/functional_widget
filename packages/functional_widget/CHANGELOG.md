@@ -1,3 +1,7 @@
+## 0.9.0
+
+Migrated to null-safety (thanks to @tim-smart)
+
 ## 0.8.1
 
 - Updated `analyzer` and `build_runner` versions

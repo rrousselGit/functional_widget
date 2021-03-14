@@ -1,0 +1,18 @@
+name: functional_widget_example
+description: A new Flutter project.
+environment:
+  sdk: ^2.12.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  functional_widget_annotation:
+
+dev_dependencies:
+  functional_widget:
+    path: ..
+  build_runner: ^1.9.0
+
+dependency_overrides:
+  functional_widget_annotation:
+    path: ../../functional_widget_annotation

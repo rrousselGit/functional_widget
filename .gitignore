@@ -12,3 +12,8 @@ ios/
 # test_coverage generated main file
 .test_coverage.dart
 coverage/
+
+# Misc
+*.iml
+.idea
+pubspec.lock

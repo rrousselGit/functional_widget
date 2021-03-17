@@ -6,7 +6,7 @@ environment:
 
 dependencies:
   test: ^1.15.4
-  dart_style: ^1.3.6
+  dart_style: ^2.0.0
   pedantic: ^1.9.0
   build_runner: ^1.12.1
   build_test: ^2.0.0
@@ -19,6 +19,9 @@ dependencies:
   code_builder: ^3.2.1
 
 dependency_overrides:
-  build: ^2.0.0
   functional_widget_annotation:
     path: ../functional_widget_annotation
+  source_gen:
+    git:
+      url: https://github.com/dart-lang/source_gen.git
+      path: source_gen

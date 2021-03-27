@@ -71,7 +71,7 @@ class _SourceGenTesterImpl implements SourceGenTester {
       [BuildStep? buildStep]) async {
     final generated =
         await generator.generate(library, buildStep ?? _BuildStepImpl());
-    final output = formatter.format(generated ?? '');
+    final output = formatter.format(generated);
     printOnFailure('''
 Generator ${generator.runtimeType} generated:
 ```

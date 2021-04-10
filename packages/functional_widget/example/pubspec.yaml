@@ -16,3 +16,6 @@ dev_dependencies:
 dependency_overrides:
   functional_widget_annotation:
     path: ../../functional_widget_annotation
+  code_builder:
+    git:
+      url: https://github.com/dart-lang/code_builder/

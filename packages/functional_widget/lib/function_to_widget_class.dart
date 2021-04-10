@@ -37,7 +37,11 @@ class FunctionalWidgetGenerator
         );
 
   final FunctionalWidget _defaultOptions;
-  final _emitter = DartEmitter(Allocator.none, false, true);
+  final _emitter = DartEmitter(
+    allocator: Allocator.none,
+    orderDirectives: false,
+    useNullSafetySyntax: true,
+  );
 
   @override
   String generateForAnnotatedElement(
@@ -105,7 +109,7 @@ class FunctionalWidgetGenerator
           ..methods.add(_createBuildMethod(
               functionElement.displayName, positional, named, functionElement));
         if (functionElement.documentationComment != null) {
-          b.docs.add(functionElement.documentationComment);
+          b.docs.add(functionElement.documentationComment!);
         }
         if (annotation.debugFillProperties ??
             _defaultOptions.debugFillProperties ??
@@ -175,7 +179,7 @@ class FunctionalWidgetGenerator
 
   Code _parameterToDiagnostic(Parameter parameter, ParameterElement element) {
     String? propertyType;
-    switch (parameter.type.symbol) {
+    switch (parameter.type!.symbol) {
       case 'int':
         propertyType = 'IntProperty';
         break;

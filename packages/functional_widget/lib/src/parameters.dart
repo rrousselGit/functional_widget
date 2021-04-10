@@ -39,7 +39,7 @@ Parameter _parseParameter(ParameterElement parameter) {
     (b) => b
       ..name = parameter.name
       ..defaultTo = parameter.defaultValueCode != null
-          ? Code(parameter.defaultValueCode)
+          ? Code(parameter.defaultValueCode!)
           : null
       ..docs.add(parameter.documentationComment ?? '')
       ..annotations.addAll(parameter.metadata.map((meta) {
@@ -82,15 +82,15 @@ FunctionType _functionTypedElementToFunctionType(
       ..requiredParameters.addAll(element.parameters
           .where((p) => p.isNotOptional)
           .map(_parseParameter)
-          .map((p) => p.type))
+          .map((p) => p.type!))
       ..namedParameters.addEntries(element.parameters
           .where((p) => p.isNamed)
           .map(_parseParameter)
-          .map((p) => MapEntry(p.name, p.type)))
+          .map((p) => MapEntry(p.name, p.type!)))
       ..optionalParameters.addAll(element.parameters
           .where((p) => p.isOptionalPositional)
           .map(_parseParameter)
-          .map((p) => p.type));
+          .map((p) => p.type!));
   });
 }
 

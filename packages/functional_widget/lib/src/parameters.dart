@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart' as element_type;
@@ -95,8 +96,8 @@ FunctionType _functionTypedElementToFunctionType(
 }
 
 String tryParseDynamicType(ParameterElement element) {
-  final parsedLibrary =
-      element.session?.getParsedLibraryByElement(element.library!);
+  final parsedLibrary = element.session
+      ?.getParsedLibraryByElement2(element.library!) as ParsedLibraryResult?;
   final node = parsedLibrary?.getElementDeclaration(element)?.node;
   final parameter = node is DefaultFormalParameter ? node.parameter : node;
   if (parameter is SimpleFormalParameter && parameter.type != null) {

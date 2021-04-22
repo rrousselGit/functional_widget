@@ -4,13 +4,13 @@
 
 class ShouldThrow {
   final String errorMessage;
-  final String todo;
+  final String? todo;
   const ShouldThrow(this.errorMessage, [this.todo]);
 }
 
 class ShouldGenerate {
   final String expectedOutput;
-  final String expectedWrappedOutput;
+  final String? expectedWrappedOutput;
   final bool contains;
   final List<String> expectedLogItems;
   final bool checked;

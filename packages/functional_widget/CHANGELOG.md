@@ -1,3 +1,7 @@
+## 0.9.0+1
+
+Ugraded dependencies to latest
+
 ## 0.9.0
 
 Migrated to null-safety (thanks to @tim-smart)

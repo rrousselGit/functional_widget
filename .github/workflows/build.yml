@@ -42,4 +42,4 @@ jobs:
         run: melos exec -- "flutter analyze"
 
       - name: Run tests
-        run: melos exec --scope="functional_widget" -- "dart --no-sound-null-safety test"
+        run: melos exec --scope="functional_widget" -- "dart test"

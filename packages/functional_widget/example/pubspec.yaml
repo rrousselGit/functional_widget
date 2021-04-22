@@ -11,7 +11,7 @@ dependencies:
 dev_dependencies:
   functional_widget:
     path: ..
-  build_runner: ^1.9.0
+  build_runner: ^2.0.0
 
 dependency_overrides:
   functional_widget_annotation:

@@ -91,6 +91,14 @@ class FunctionalWidgetGenerator
     final positional = _computeBuildPositionalParametersExpression(parameters);
     final named = _computeBuildNamedParametersExpression(parameters);
 
+    Method? overrideDebugFillProperties;
+    if (annotation.debugFillProperties ??
+        _defaultOptions.debugFillProperties ??
+        false) {
+      overrideDebugFillProperties = await _overrideDebugFillProperties(
+          userDefined, functionElement.parameters, buildStep);
+    }
+
     return Class(
       (b) {
         final widgetType = annotation.widgetType;
@@ -112,14 +120,8 @@ class FunctionalWidgetGenerator
         if (functionElement.documentationComment != null) {
           b.docs.add(functionElement.documentationComment!);
         }
-        if (annotation.debugFillProperties ??
-            _defaultOptions.debugFillProperties ??
-            false) {
-          final overrideDebugFillProperties = _overrideDebugFillProperties(
-              userDefined, functionElement.parameters, buildStep);
-          if (overrideDebugFillProperties != null) {
-            b.methods.add(overrideDebugFillProperties);
-          }
+        if (overrideDebugFillProperties != null) {
+          b.methods.add(overrideDebugFillProperties);
         }
       },
     );
@@ -155,31 +157,36 @@ class FunctionalWidgetGenerator
     return positional;
   }
 
-  Method? _overrideDebugFillProperties(List<Parameter> userFields,
-      List<ParameterElement> elements, BuildStep buildStep) {
-    return userFields.isEmpty
-        ? null
-        : Method((b) => b
-          ..annotations.add(_kOverrideDecorator)
-          ..name = 'debugFillProperties'
-          ..requiredParameters.add(
-            Parameter((b) => b
-              ..name = 'properties'
-              ..type = refer('DiagnosticPropertiesBuilder')),
-          )
-          ..returns = refer('void')
-          ..lambda = false
-          ..body = Block.of(
-            [
-              const Code('super.debugFillProperties(properties);'),
-              ...userFields.map((f) => _parameterToDiagnostic(
-                  f, elements.firstWhere((e) => e.name == f.name), buildStep))
-            ],
-          ));
+  Future<Method?> _overrideDebugFillProperties(List<Parameter> userFields,
+      List<ParameterElement> elements, BuildStep buildStep) async {
+    if (userFields.isEmpty) {
+      return null;
+    }
+
+    final _diagnosticProperties = await Future.wait(userFields.map((f) async =>
+        _parameterToDiagnostic(
+            f, elements.firstWhere((e) => e.name == f.name), buildStep)));
+
+    return Method((b) => b
+      ..annotations.add(_kOverrideDecorator)
+      ..name = 'debugFillProperties'
+      ..requiredParameters.add(
+        Parameter((b) => b
+          ..name = 'properties'
+          ..type = refer('DiagnosticPropertiesBuilder')),
+      )
+      ..returns = refer('void')
+      ..lambda = false
+      ..body = Block.of(
+        [
+          const Code('super.debugFillProperties(properties);'),
+          ..._diagnosticProperties,
+        ],
+      ));
   }
 
-  Code _parameterToDiagnostic(
-      Parameter parameter, ParameterElement element, BuildStep buildStep) {
+  Future<Code> _parameterToDiagnostic(Parameter parameter,
+      ParameterElement element, BuildStep buildStep) async {
     String? propertyType;
     switch (parameter.type!.symbol) {
       case 'int':
@@ -195,16 +202,18 @@ class FunctionalWidgetGenerator
       default:
         propertyType = _tryParseClassToEnumDiagnostic(element, propertyType) ??
             _tryParseFunctionToDiagnostic(element, propertyType) ??
-            _getFallbackElementDiagnostic(element, buildStep);
+            await _getFallbackElementDiagnostic(element, buildStep);
     }
 
     return Code(
         "properties.add($propertyType('${parameter.name}', ${parameter.name}));");
   }
 
-  String _getFallbackElementDiagnostic(
-          ParameterElement element, BuildStep buildStep) =>
-      'DiagnosticsProperty<${element.type.isDynamic ? tryParseDynamicType(element, buildStep) : element.type.getDisplayString(withNullability: true)}>';
+  Future<String> _getFallbackElementDiagnostic(
+      ParameterElement element, BuildStep buildStep) async {
+    final parsedDynamicType = await tryParseDynamicType(element, buildStep);
+    return 'DiagnosticsProperty<${element.type.isDynamic ? parsedDynamicType : element.type.getDisplayString(withNullability: true)}>';
+  }
 
   String? _tryParseFunctionToDiagnostic(
       ParameterElement element, String? propertyType) {

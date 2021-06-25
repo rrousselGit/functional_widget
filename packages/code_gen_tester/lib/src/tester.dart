@@ -1,7 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:_fe_analyzer_shared/src/base/syntactic_entity.dart';
+import 'package:_fe_analyzer_shared/src/scanner/token.dart';
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/src/generated/java_engine.dart';
 import 'package:build/build.dart';
 import 'package:code_gen_tester/src/analysis_utils.dart';
 import 'package:crypto/crypto.dart';
@@ -124,7 +128,7 @@ class _BuildStepImpl implements BuildStep {
   Future<LibraryElement> get inputLibrary => throw UnimplementedError();
 
   @override
-  Resolver get resolver => throw UnimplementedError();
+  Resolver get resolver => _ResolverImpl();
 
   @override
   Future<bool> canRead(AssetId id) {
@@ -175,4 +179,106 @@ class _BuildStepImpl implements BuildStep {
       {Encoding encoding = utf8}) {
     throw UnimplementedError();
   }
+}
+
+class _ResolverImpl implements Resolver {
+  @override
+  Future<AssetId> assetIdForElement(Element element) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AstNode?> astNodeFor(Element element, {bool resolve = false}) {
+    return Future.value(_AstNodeImpl());
+  }
+
+  @override
+  Future<CompilationUnit> compilationUnitFor(AssetId assetId,
+      {bool allowSyntaxErrors = false}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<LibraryElement?> findLibraryByName(String libraryName) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> isLibrary(AssetId assetId) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<LibraryElement> get libraries => throw UnimplementedError();
+
+  @override
+  Future<LibraryElement> libraryFor(AssetId assetId,
+      {bool allowSyntaxErrors = false}) {
+    throw UnimplementedError();
+  }
+}
+
+class _AstNodeImpl implements AstNode {
+  @override
+  E? accept<E>(AstVisitor<E> visitor) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Token get beginToken => throw UnimplementedError();
+
+  @override
+  Iterable<SyntacticEntity> get childEntities => throw UnimplementedError();
+
+  @override
+  int get end => throw UnimplementedError();
+
+  @override
+  Token get endToken => throw UnimplementedError();
+
+  @override
+  Token? findPrevious(Token target) {
+    throw UnimplementedError();
+  }
+
+  @override
+  E? getProperty<E>(String name) {
+    throw UnimplementedError();
+  }
+
+  @override
+  bool get isSynthetic => throw UnimplementedError();
+
+  @override
+  int get length => throw UnimplementedError();
+
+  @override
+  int get offset => throw UnimplementedError();
+
+  @override
+  AstNode? get parent => throw UnimplementedError();
+
+  @override
+  AstNode get root => throw UnimplementedError();
+
+  @override
+  void setProperty(String name, Object? value) {}
+
+  @override
+  E? thisOrAncestorMatching<E extends AstNode>(Predicate<AstNode> predicate) {
+    throw UnimplementedError();
+  }
+
+  @override
+  E? thisOrAncestorOfType<E extends AstNode>() {
+    throw UnimplementedError();
+  }
+
+  @override
+  String toSource() {
+    throw UnimplementedError();
+  }
+
+  @override
+  void visitChildren(AstVisitor visitor) {}
 }

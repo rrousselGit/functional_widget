@@ -163,7 +163,7 @@ class FunctionalWidgetGenerator
       return null;
     }
 
-    final _diagnosticProperties = await Future.wait(userFields.map((f) async =>
+    final _diagnosticProperties = await Future.wait(userFields.map((f) =>
         _parameterToDiagnostic(
             f, elements.firstWhere((e) => e.name == f.name), buildStep)));
 

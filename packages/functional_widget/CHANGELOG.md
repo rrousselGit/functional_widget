@@ -1,3 +1,7 @@
+## 0.9.0+2
+
+Fixed an issue where the generator potentially throws an `InconsistentAnalysisException`
+
 ## 0.9.0+1
 
 Ugraded dependencies to latest

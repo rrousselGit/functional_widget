@@ -44,14 +44,14 @@ class FunctionalWidgetGenerator
   );
 
   @override
-  String generateForAnnotatedElement(
-      Element element, ConstantReader annotation, BuildStep buildStep) {
+  Future<String> generateForAnnotatedElement(
+      Element element, ConstantReader annotation, BuildStep buildStep) async {
     final function = _checkValidElement(element);
     final type = parseFunctionalWidgetAnnotation(annotation);
+    final _class =
+        await _makeClassFromFunctionElement(function, type, buildStep);
 
-    return _makeClassFromFunctionElement(function, type)
-        .accept(_emitter)
-        .toString();
+    return _class.accept(_emitter).toString();
   }
 
   FunctionElement _checkValidElement(Element element) {
@@ -82,13 +82,22 @@ class FunctionalWidgetGenerator
     return function;
   }
 
-  Spec _makeClassFromFunctionElement(
-      FunctionElement functionElement, FunctionalWidget annotation) {
-    final parameters = FunctionParameters.parseFunctionElement(functionElement);
+  Future<Spec> _makeClassFromFunctionElement(FunctionElement functionElement,
+      FunctionalWidget annotation, BuildStep buildStep) async {
+    final parameters = await FunctionParameters.parseFunctionElement(
+        functionElement, buildStep);
 
     final userDefined = parameters.userDefined;
     final positional = _computeBuildPositionalParametersExpression(parameters);
     final named = _computeBuildNamedParametersExpression(parameters);
+
+    Method? overrideDebugFillProperties;
+    if (annotation.debugFillProperties ??
+        _defaultOptions.debugFillProperties ??
+        false) {
+      overrideDebugFillProperties = await _overrideDebugFillProperties(
+          userDefined, functionElement.parameters, buildStep);
+    }
 
     return Class(
       (b) {
@@ -111,14 +120,8 @@ class FunctionalWidgetGenerator
         if (functionElement.documentationComment != null) {
           b.docs.add(functionElement.documentationComment!);
         }
-        if (annotation.debugFillProperties ??
-            _defaultOptions.debugFillProperties ??
-            false) {
-          final overrideDebugFillProperties = _overrideDebugFillProperties(
-              userDefined, functionElement.parameters);
-          if (overrideDebugFillProperties != null) {
-            b.methods.add(overrideDebugFillProperties);
-          }
+        if (overrideDebugFillProperties != null) {
+          b.methods.add(overrideDebugFillProperties);
         }
       },
     );
@@ -154,30 +157,36 @@ class FunctionalWidgetGenerator
     return positional;
   }
 
-  Method? _overrideDebugFillProperties(
-      List<Parameter> userFields, List<ParameterElement> elements) {
-    return userFields.isEmpty
-        ? null
-        : Method((b) => b
-          ..annotations.add(_kOverrideDecorator)
-          ..name = 'debugFillProperties'
-          ..requiredParameters.add(
-            Parameter((b) => b
-              ..name = 'properties'
-              ..type = refer('DiagnosticPropertiesBuilder')),
-          )
-          ..returns = refer('void')
-          ..lambda = false
-          ..body = Block.of(
-            [
-              const Code('super.debugFillProperties(properties);'),
-              ...userFields.map((f) => _parameterToDiagnostic(
-                  f, elements.firstWhere((e) => e.name == f.name)))
-            ],
-          ));
+  Future<Method?> _overrideDebugFillProperties(List<Parameter> userFields,
+      List<ParameterElement> elements, BuildStep buildStep) async {
+    if (userFields.isEmpty) {
+      return null;
+    }
+
+    final _diagnosticProperties = await Future.wait(userFields.map((f) =>
+        _parameterToDiagnostic(
+            f, elements.firstWhere((e) => e.name == f.name), buildStep)));
+
+    return Method((b) => b
+      ..annotations.add(_kOverrideDecorator)
+      ..name = 'debugFillProperties'
+      ..requiredParameters.add(
+        Parameter((b) => b
+          ..name = 'properties'
+          ..type = refer('DiagnosticPropertiesBuilder')),
+      )
+      ..returns = refer('void')
+      ..lambda = false
+      ..body = Block.of(
+        [
+          const Code('super.debugFillProperties(properties);'),
+          ..._diagnosticProperties,
+        ],
+      ));
   }
 
-  Code _parameterToDiagnostic(Parameter parameter, ParameterElement element) {
+  Future<Code> _parameterToDiagnostic(Parameter parameter,
+      ParameterElement element, BuildStep buildStep) async {
     String? propertyType;
     switch (parameter.type!.symbol) {
       case 'int':
@@ -193,15 +202,18 @@ class FunctionalWidgetGenerator
       default:
         propertyType = _tryParseClassToEnumDiagnostic(element, propertyType) ??
             _tryParseFunctionToDiagnostic(element, propertyType) ??
-            _getFallbackElementDiagnostic(element);
+            await _getFallbackElementDiagnostic(element, buildStep);
     }
 
     return Code(
         "properties.add($propertyType('${parameter.name}', ${parameter.name}));");
   }
 
-  String _getFallbackElementDiagnostic(ParameterElement element) =>
-      'DiagnosticsProperty<${element.type.isDynamic ? tryParseDynamicType(element) : element.type.getDisplayString(withNullability: true)}>';
+  Future<String> _getFallbackElementDiagnostic(
+      ParameterElement element, BuildStep buildStep) async {
+    final parsedDynamicType = await tryParseDynamicType(element, buildStep);
+    return 'DiagnosticsProperty<${element.type.isDynamic ? parsedDynamicType : element.type.getDisplayString(withNullability: true)}>';
+  }
 
   String? _tryParseFunctionToDiagnostic(
       ParameterElement element, String? propertyType) {

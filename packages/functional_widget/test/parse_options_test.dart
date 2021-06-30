@@ -1,7 +1,7 @@
 import 'package:build/build.dart';
+import 'package:functional_widget/src/utils.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:test/test.dart';
-import 'package:functional_widget/src/utils.dart';
 
 void main() {
   group('parseOptions', () {

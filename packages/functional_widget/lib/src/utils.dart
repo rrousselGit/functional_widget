@@ -1,8 +1,8 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:build/build.dart';
+import 'package:collection/collection.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:collection/collection.dart';
 
 const _kKnownOptionsName = ['widgetType', 'equality', 'debugFillProperties'];
 

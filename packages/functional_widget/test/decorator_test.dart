@@ -1,6 +1,7 @@
 import 'package:code_gen_tester/code_gen_tester.dart';
 import 'package:functional_widget/function_to_widget_class.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
+import 'package:matcher/matcher.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -27,6 +27,14 @@ class FunctionParameters {
   bool get followedByContext =>
       _parameters.length > 1 && startsWithKey && _isContext(_parameters[1]);
 
+  String? get keySymbol => (startsWithKey
+          ? _parameters.first
+          : followedByKey
+              ? _parameters[1]
+              : null)
+      ?.type
+      ?.symbol;
+
   List<Parameter> get userDefined => (followedByContext || followedByKey)
       ? (List<Parameter>.from(_parameters)..removeRange(0, 2))
       : (startsWithContext || startsWithKey)
@@ -34,7 +42,8 @@ class FunctionParameters {
           : _parameters;
 }
 
-bool _isKey(Parameter param) => param.type?.symbol == 'Key';
+bool _isKey(Parameter param) =>
+    param.type?.symbol == 'Key' || param.type?.symbol == 'Key?';
 
 bool _isContext(Parameter param) =>
     param.type?.symbol == 'BuildContext' || param.type?.symbol == 'HookContext';

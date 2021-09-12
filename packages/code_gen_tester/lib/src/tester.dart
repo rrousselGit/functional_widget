@@ -179,6 +179,9 @@ class _BuildStepImpl implements BuildStep {
       {Encoding encoding = utf8}) {
     throw UnimplementedError();
   }
+
+  @override
+  Iterable<AssetId> get allowedOutputs => throw UnimplementedError();
 }
 
 class _ResolverImpl implements Resolver {

@@ -187,6 +187,41 @@ class HookExample extends HookWidget {
 '''));
     });
 
+    test('consumer hook widget', () async {
+      await _expect('consumerHookExample', completion('''
+class ConsumerHookExample extends ConsumerHookWidget {
+  const ConsumerHookExample({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context, WidgetRef _ref) => consumerHookExample();
+}
+'''));
+    });
+
+    test('consumer hook widget with WidgetRef', () async {
+      await _expect('consumerHookExampleWithRef', completion('''
+class ConsumerHookExampleWithRef extends ConsumerHookWidget {
+  const ConsumerHookExampleWithRef({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context, WidgetRef _ref) =>
+      consumerHookExampleWithRef(_ref);
+}
+'''));
+    });
+
+    test('consumer hook widget with WidgetRef and BuildContext', () async {
+      await _expect('consumerHookExampleWithRefAndContext', completion('''
+class ConsumerHookExampleWithRefAndContext extends ConsumerHookWidget {
+  const ConsumerHookExampleWithRefAndContext({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context, WidgetRef _ref) =>
+      consumerHookExampleWithRefAndContext(_ref, _context);
+}
+'''));
+    });
+
     test('generic widget', () async {
       // currently not possible to know the type
       await _expect('generic', completion('''

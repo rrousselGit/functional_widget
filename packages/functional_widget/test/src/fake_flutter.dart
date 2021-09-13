@@ -5,3 +5,5 @@ class Container extends Widget {}
 class BuildContext {}
 
 class Key {}
+
+class WidgetRef {}

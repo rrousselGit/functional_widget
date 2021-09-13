@@ -11,6 +11,15 @@ enum FunctionalWidgetType {
   /// ```
   hook,
 
+  /// Will generate a `ConsumerHookWidget`, from `hooks_riverpod` package.
+  ///
+  /// `ConsumerHookWidget` must be installed as a separate dependency:
+  /// ```yaml
+  /// dependencies:
+  ///   hooks_riverpod: any
+  /// ```
+  consumerHook,
+
   /// Will generate a `StatelessWidget`.
   stateless,
 }
@@ -51,4 +60,18 @@ const FunctionalWidget swidget = FunctionalWidget(
 /// with an uppercase as first letter.
 const FunctionalWidget hwidget = FunctionalWidget(
   widgetType: FunctionalWidgetType.hook,
+);
+
+/// A decorator for functions to generate a `ConsumerHookWidget`.
+///
+/// `ConsumerHookWidget` must be installed as a separate dependency:
+/// ```yaml
+/// dependencies:
+///   hooks_riverpod: any
+/// ```
+///
+/// The name of the generated widget is the name of the decorated function,
+/// with an uppercase as first letter.
+const FunctionalWidget chwidget = FunctionalWidget(
+  widgetType: FunctionalWidgetType.consumerHook,
 );

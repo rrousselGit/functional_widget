@@ -38,6 +38,7 @@ class Example extends StatelessWidget {
     super.debugFillProperties(properties);
     properties.add(IntProperty('foo', foo));
     properties.add(StringProperty('bar', bar));
-    properties.add(ObjectFlagProperty<dynamic>.has('onChanged', onChanged));
+    properties
+        .add(DiagnosticsProperty<void Function(bool)?>('onChanged', onChanged));
   }
 }

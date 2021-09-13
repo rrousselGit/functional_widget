@@ -73,6 +73,17 @@ Widget withPositionalOptional(int? foo) => Container();
 @hwidget
 Widget hookExample() => Container();
 
+@chwidget
+Widget consumerHookExample() => Container();
+
+@chwidget
+Widget consumerHookExampleWithRef(WidgetRef ref) => Container();
+
+@chwidget
+Widget consumerHookExampleWithRefAndContext(
+        WidgetRef ref, BuildContext context) =>
+    Container();
+
 typedef Typedef<T> = void Function(T);
 
 @swidget

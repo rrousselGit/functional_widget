@@ -4,9 +4,24 @@ import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart' as element_type;
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
+import 'package:collection/collection.dart';
 
 class FunctionParameters {
   FunctionParameters._(this._parameters);
+
+  static const nonUserDefinedTypeSymbols = [
+    'Key',
+    'Key?',
+    'BuildContext',
+    'WidgetRef',
+  ];
+  static const nonUserDefinedNames = {
+    'Key': 'key!',
+    'Key?': 'key',
+    'BuildContext': '_context',
+    'HookContext': '_context',
+    'WidgetRef': '_ref',
+  };
 
   static Future<FunctionParameters> parseFunctionElement(
       FunctionElement element, BuildStep buildStep) async {
@@ -19,34 +34,35 @@ class FunctionParameters {
 
   final List<Parameter> _parameters;
 
-  bool get startsWithKey => _parameters.isNotEmpty && _isKey(_parameters.first);
-  bool get startsWithContext =>
-      _parameters.isNotEmpty && _isContext(_parameters.first);
-  bool get followedByKey =>
-      _parameters.length > 1 && startsWithContext && _isKey(_parameters[1]);
-  bool get followedByContext =>
-      _parameters.length > 1 && startsWithKey && _isContext(_parameters[1]);
+  int get userDefinedStartIndex {
+    final index = _parameters.indexWhere((p) =>
+        nonUserDefinedTypeSymbols.contains(p.type?.symbol ?? '') == false);
+    return index == -1 ? _parameters.length : index;
+  }
 
-  String? get keySymbol => (startsWithKey
-          ? _parameters.first
-          : followedByKey
-              ? _parameters[1]
-              : null)
-      ?.type
-      ?.symbol;
+  late final List<Parameter> nonUserDefined = _parameters.sublist(
+    0,
+    userDefinedStartIndex,
+  );
 
-  List<Parameter> get userDefined => (followedByContext || followedByKey)
-      ? (List<Parameter>.from(_parameters)..removeRange(0, 2))
-      : (startsWithContext || startsWithKey)
-          ? (List<Parameter>.from(_parameters)..removeRange(0, 1))
-          : _parameters;
+  late final List<Parameter> nonUserDefinedRenamed = nonUserDefined
+      .map((p) => Parameter((b) => b
+        ..name = nonUserDefinedNames[p.type?.symbol ?? ''] ?? p.name
+        ..type = p.type
+        ..named = p.named))
+      .toList();
+
+  late final String? keySymbol =
+      nonUserDefined.firstWhereOrNull(_isKey)?.type?.symbol;
+  late final bool hasKey = keySymbol != null;
+  late final bool hasNonNullableKey = keySymbol == 'Key';
+
+  late final List<Parameter> userDefined =
+      _parameters.sublist(userDefinedStartIndex);
 }
 
 bool _isKey(Parameter param) =>
     param.type?.symbol == 'Key' || param.type?.symbol == 'Key?';
-
-bool _isContext(Parameter param) =>
-    param.type?.symbol == 'BuildContext' || param.type?.symbol == 'HookContext';
 
 Future<Parameter> _parseParameter(
     ParameterElement parameter, BuildStep buildStep) async {

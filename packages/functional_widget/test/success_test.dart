@@ -50,7 +50,18 @@ class WithKey extends StatelessWidget {
   const WithKey({required Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext _context) => withKey(key);
+  Widget build(BuildContext _context) => withKey(key!);
+}
+'''));
+    });
+
+    test('nullable key', () async {
+      await _expect('withNullableKey', completion('''
+class WithNullableKey extends StatelessWidget {
+  const WithNullableKey({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => withNullableKey(key);
 }
 '''));
     });
@@ -61,7 +72,7 @@ class WithContextThenKey extends StatelessWidget {
   const WithContextThenKey({required Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext _context) => withContextThenKey(_context, key);
+  Widget build(BuildContext _context) => withContextThenKey(_context, key!);
 }
 '''));
     });
@@ -72,7 +83,7 @@ class WithKeyThenContext extends StatelessWidget {
   const WithKeyThenContext({required Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext _context) => withKeyThenContext(key, _context);
+  Widget build(BuildContext _context) => withKeyThenContext(key!, _context);
 }
 '''));
     });

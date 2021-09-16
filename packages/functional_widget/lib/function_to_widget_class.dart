@@ -86,10 +86,18 @@ class FunctionalWidgetGenerator
       FunctionalWidget annotation, BuildStep buildStep) async {
     final parameters = await FunctionParameters.parseFunctionElement(
         functionElement, buildStep);
+    final keyIsRequired = parameters.startsWithKey || parameters.followedByKey;
+    final keyIsNullable = parameters.keySymbol?.endsWith('?') ?? false;
 
     final userDefined = parameters.userDefined;
-    final positional = _computeBuildPositionalParametersExpression(parameters);
-    final named = _computeBuildNamedParametersExpression(parameters);
+    final positional = _computeBuildPositionalParametersExpression(
+      parameters,
+      keyIsRequired: keyIsRequired && !keyIsNullable,
+    );
+    final named = _computeBuildNamedParametersExpression(
+      parameters,
+      keyIsRequired: keyIsRequired && !keyIsNullable,
+    );
 
     Method? overrideDebugFillProperties;
     if (annotation.debugFillProperties ??
@@ -113,8 +121,7 @@ class FunctionalWidgetGenerator
               doc: functionElement.documentationComment))
           ..constructors.add(_getConstructor(userDefined,
               doc: functionElement.documentationComment,
-              keyIsRequired:
-                  parameters.startsWithKey || parameters.followedByKey))
+              keyIsRequired: keyIsRequired && !keyIsNullable))
           ..methods.add(_createBuildMethod(
               functionElement.displayName, positional, named, functionElement));
         if (functionElement.documentationComment != null) {
@@ -128,7 +135,9 @@ class FunctionalWidgetGenerator
   }
 
   Map<String, Expression> _computeBuildNamedParametersExpression(
-      FunctionParameters parameters) {
+    FunctionParameters parameters, {
+    required bool keyIsRequired,
+  }) {
     final named = <String, Expression>{};
     for (final p in parameters.userDefined.where((p) => p.named)) {
       named[p.name] = CodeExpression(Code(p.name));
@@ -137,19 +146,23 @@ class FunctionalWidgetGenerator
   }
 
   List<Expression> _computeBuildPositionalParametersExpression(
-      FunctionParameters parameters) {
+    FunctionParameters parameters, {
+    required bool keyIsRequired,
+  }) {
     final positional = <Expression>[];
+    final codeForKey = keyIsRequired ? 'key!' : 'key';
+
     if (parameters.startsWithContext) {
       positional.add(const CodeExpression(Code('_context')));
     }
     if (parameters.startsWithKey) {
-      positional.add(const CodeExpression(Code('key')));
+      positional.add(CodeExpression(Code(codeForKey)));
     }
     if (parameters.followedByContext) {
       positional.add(const CodeExpression(Code('_context')));
     }
     if (parameters.followedByKey) {
-      positional.add(const CodeExpression(Code('key')));
+      positional.add(CodeExpression(Code(codeForKey)));
     }
     positional.addAll(parameters.userDefined
         .where((p) => !p.named)
@@ -276,7 +289,7 @@ class FunctionalWidgetGenerator
   Constructor _getConstructor(
     List<Parameter> fields, {
     String? doc,
-    bool keyIsRequired = false,
+    required bool keyIsRequired,
   }) {
     return Constructor(
       (b) => b

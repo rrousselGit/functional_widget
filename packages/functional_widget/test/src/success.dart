@@ -31,6 +31,9 @@ Widget withContextThenOneArg(BuildContext context, int foo) => Container();
 Widget withKey(Key key) => Container();
 
 @swidget
+Widget withNullableKey(Key? key) => Container();
+
+@swidget
 Widget withKeyThenOneArg(Key key, int foo) => Container();
 
 @swidget

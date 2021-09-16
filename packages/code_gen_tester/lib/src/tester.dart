@@ -176,8 +176,11 @@ class _BuildStepImpl implements BuildStep {
   }
 
   @override
-  Future<void> writeAsString(AssetId id, FutureOr<String> contents,
-      {Encoding encoding = utf8}) {
+  Future<void> writeAsString(
+    AssetId id,
+    FutureOr<String> contents, {
+    Encoding encoding = utf8,
+  }) {
     throw UnimplementedError();
   }
 

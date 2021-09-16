@@ -120,6 +120,7 @@ Matcher throwsInvalidGenerationSourceError([dynamic messageMatcher]) {
   return throwsA(c);
 }
 
+// ignore: subtype_of_sealed_class
 class _BuildStepImpl implements BuildStep {
   @override
   AssetId get inputId => throw UnimplementedError();

@@ -1,6 +1,5 @@
 name: functional_widget
 description: A code generator that generates widget classes from their implementation as a function.
-author: Remi Rousselet <darky12s@gmail.com>
 homepage: https://github.com/rrousselGit/functional_widget/tree/master/packages/functional_widget
 version: 0.9.0+2
 
@@ -8,17 +7,20 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  analyzer: ^1.1.0
+  analyzer: ^2.2.0
   build: ^2.0.0
   build_config: ^1.0.0
   meta: ^1.2.0
   functional_widget_annotation: ^0.9.0
-  source_gen: ^1.0.0
+  source_gen: ^1.1.0
   code_builder: ^4.0.0
   collection: ^1.0.0
 
+dependency_overrides:
+  test_api: ^0.4.3
+
 dev_dependencies:
-  test: ^1.15.4
+  test: ^1.17.0
   mockito: ^4.1.1
   dart_style: ^2.0.0
   pedantic: ^1.9.0

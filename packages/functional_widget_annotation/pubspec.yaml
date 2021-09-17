@@ -1,7 +1,7 @@
 name: functional_widget_annotation
 description: Annotations for function_widget_generator used to generate widget classes from a function
 homepage: https://github.com/rrousselGit/functional_widget/tree/master/packages/functional_widget_annotation
-version: 0.9.0
+version: 0.9.0+1
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

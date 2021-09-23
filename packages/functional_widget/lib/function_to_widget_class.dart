@@ -9,19 +9,19 @@ import 'package:source_gen/source_gen.dart';
 
 const _kFlutterWidgetsPath = 'package:flutter/material.dart';
 const _kHookWidgetsPath = 'package:flutter_hooks/flutter_hooks.dart';
-const _kConsumerHookWidgetsPath = 'package:hooks_riverpod/hooks_riverpod.dart';
+const _kHookConsumerWidgetsPath = 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final _widgetRef = refer('Widget', _kFlutterWidgetsPath);
 final _statelessWidgetRef = refer('StatelessWidget', _kFlutterWidgetsPath);
 final _hookWidgetRef = refer('HookWidget', _kHookWidgetsPath);
-final _consumerHookWidgetRef =
-    refer('ConsumerHookWidget', _kConsumerHookWidgetsPath);
+final _hookConsumerWidgetRef =
+    refer('HookConsumerWidget', _kHookConsumerWidgetsPath);
 final _buildContextRef = refer('BuildContext', _kFlutterWidgetsPath);
 final _widgetRefRef = refer('WidgetRef', _kHookWidgetsPath);
 
 final _typeToRefMap = {
   FunctionalWidgetType.hook: _hookWidgetRef,
-  FunctionalWidgetType.consumerHook: _consumerHookWidgetRef,
+  FunctionalWidgetType.hookConsumer: _hookConsumerWidgetRef,
   FunctionalWidgetType.stateless: _statelessWidgetRef,
 };
 
@@ -132,7 +132,7 @@ class FunctionalWidgetGenerator
             named: named,
             function: functionElement,
             hasWidgetRefParameter:
-                widgetType == FunctionalWidgetType.consumerHook,
+                widgetType == FunctionalWidgetType.hookConsumer,
           ));
         if (functionElement.documentationComment != null) {
           b.docs.add(functionElement.documentationComment!);

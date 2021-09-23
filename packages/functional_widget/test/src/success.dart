@@ -73,14 +73,14 @@ Widget withPositionalOptional(int? foo) => Container();
 @hwidget
 Widget hookExample() => Container();
 
-@chwidget
-Widget consumerHookExample() => Container();
+@hcwidget
+Widget hookConsumerExample() => Container();
 
-@chwidget
-Widget consumerHookExampleWithRef(WidgetRef ref) => Container();
+@hcwidget
+Widget hookConsumerExampleWithRef(WidgetRef ref) => Container();
 
-@chwidget
-Widget consumerHookExampleWithRefAndContext(
+@hcwidget
+Widget hookConsumerExampleWithRefAndContext(
         WidgetRef ref, BuildContext context) =>
     Container();
 

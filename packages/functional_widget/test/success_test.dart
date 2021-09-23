@@ -188,36 +188,36 @@ class HookExample extends HookWidget {
     });
 
     test('consumer hook widget', () async {
-      await _expect('consumerHookExample', completion('''
-class ConsumerHookExample extends ConsumerHookWidget {
-  const ConsumerHookExample({Key? key}) : super(key: key);
+      await _expect('hookConsumerExample', completion('''
+class HookConsumerExample extends HookConsumerWidget {
+  const HookConsumerExample({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext _context, WidgetRef _ref) => consumerHookExample();
+  Widget build(BuildContext _context, WidgetRef _ref) => hookConsumerExample();
 }
 '''));
     });
 
     test('consumer hook widget with WidgetRef', () async {
-      await _expect('consumerHookExampleWithRef', completion('''
-class ConsumerHookExampleWithRef extends ConsumerHookWidget {
-  const ConsumerHookExampleWithRef({Key? key}) : super(key: key);
+      await _expect('hookConsumerExampleWithRef', completion('''
+class HookConsumerExampleWithRef extends HookConsumerWidget {
+  const HookConsumerExampleWithRef({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext _context, WidgetRef _ref) =>
-      consumerHookExampleWithRef(_ref);
+      hookConsumerExampleWithRef(_ref);
 }
 '''));
     });
 
     test('consumer hook widget with WidgetRef and BuildContext', () async {
-      await _expect('consumerHookExampleWithRefAndContext', completion('''
-class ConsumerHookExampleWithRefAndContext extends ConsumerHookWidget {
-  const ConsumerHookExampleWithRefAndContext({Key? key}) : super(key: key);
+      await _expect('hookConsumerExampleWithRefAndContext', completion('''
+class HookConsumerExampleWithRefAndContext extends HookConsumerWidget {
+  const HookConsumerExampleWithRefAndContext({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext _context, WidgetRef _ref) =>
-      consumerHookExampleWithRefAndContext(_ref, _context);
+      hookConsumerExampleWithRefAndContext(_ref, _context);
 }
 '''));
     });

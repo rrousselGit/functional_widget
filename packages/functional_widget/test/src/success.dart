@@ -84,6 +84,16 @@ Widget hookConsumerExampleWithRefAndContext(
         WidgetRef ref, BuildContext context) =>
     Container();
 
+@cwidget
+Widget consumerExample() => Container();
+
+@cwidget
+Widget consumerExampleWithRef(WidgetRef ref) => Container();
+
+@cwidget
+Widget consumerExampleWithRefAndContext(WidgetRef ref, BuildContext context) =>
+    Container();
+
 typedef Typedef<T> = void Function(T);
 
 @swidget

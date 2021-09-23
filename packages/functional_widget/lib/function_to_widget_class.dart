@@ -10,18 +10,21 @@ import 'package:source_gen/source_gen.dart';
 const _kFlutterWidgetsPath = 'package:flutter/material.dart';
 const _kHookWidgetsPath = 'package:flutter_hooks/flutter_hooks.dart';
 const _kHookConsumerWidgetsPath = 'package:hooks_riverpod/hooks_riverpod.dart';
+const _kConsumerWidgetsPath = 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final _widgetRef = refer('Widget', _kFlutterWidgetsPath);
 final _statelessWidgetRef = refer('StatelessWidget', _kFlutterWidgetsPath);
 final _hookWidgetRef = refer('HookWidget', _kHookWidgetsPath);
 final _hookConsumerWidgetRef =
     refer('HookConsumerWidget', _kHookConsumerWidgetsPath);
+final _consumerWidgetRef = refer('ConsumerWidget', _kConsumerWidgetsPath);
 final _buildContextRef = refer('BuildContext', _kFlutterWidgetsPath);
 final _widgetRefRef = refer('WidgetRef', _kHookWidgetsPath);
 
 final _typeToRefMap = {
   FunctionalWidgetType.hook: _hookWidgetRef,
   FunctionalWidgetType.hookConsumer: _hookConsumerWidgetRef,
+  FunctionalWidgetType.consumer: _consumerWidgetRef,
   FunctionalWidgetType.stateless: _statelessWidgetRef,
 };
 
@@ -126,14 +129,14 @@ class FunctionalWidgetGenerator
           ..constructors.add(_getConstructor(userDefined,
               doc: functionElement.documentationComment,
               keyIsRequired: parameters.hasNonNullableKey))
-          ..methods.add(_createBuildMethod(
-            functionElement.displayName,
-            positional: positional,
-            named: named,
-            function: functionElement,
-            hasWidgetRefParameter:
-                widgetType == FunctionalWidgetType.hookConsumer,
-          ));
+          ..methods.add(_createBuildMethod(functionElement.displayName,
+              positional: positional,
+              named: named,
+              function: functionElement,
+              hasWidgetRefParameter: [
+                FunctionalWidgetType.consumer,
+                FunctionalWidgetType.hookConsumer
+              ].contains(widgetType)));
         if (functionElement.documentationComment != null) {
           b.docs.add(functionElement.documentationComment!);
         }

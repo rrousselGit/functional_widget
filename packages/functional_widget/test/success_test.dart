@@ -77,6 +77,35 @@ class WithContextThenKey extends StatelessWidget {
 '''));
     });
 
+    test('context then key then arg', () async {
+      await _expect('withContextThenKeyThenOneArg', completion('''
+class WithContextThenKeyThenOneArg extends StatelessWidget {
+  const WithContextThenKeyThenOneArg(this.foo, {required Key key})
+      : super(key: key);
+
+  final int foo;
+
+  @override
+  Widget build(BuildContext _context) =>
+      withContextThenKeyThenOneArg(_context, key!, foo);
+}
+'''));
+    });
+
+    test('context then context', () async {
+      await _expect('withContextThenContext', completion('''
+class WithContextThenContext extends StatelessWidget {
+  const WithContextThenContext(this.context2, {Key? key}) : super(key: key);
+
+  final BuildContext context2;
+
+  @override
+  Widget build(BuildContext _context) =>
+      withContextThenContext(_context, context2);
+}
+'''));
+    });
+
     test('key then context', () async {
       await _expect('withKeyThenContext', completion('''
 class WithKeyThenContext extends StatelessWidget {
@@ -84,6 +113,34 @@ class WithKeyThenContext extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => withKeyThenContext(key!, _context);
+}
+'''));
+    });
+
+    test('key then context then arg', () async {
+      await _expect('withKeyThenContextThenOneArg', completion('''
+class WithKeyThenContextThenOneArg extends StatelessWidget {
+  const WithKeyThenContextThenOneArg(this.foo, {required Key key})
+      : super(key: key);
+
+  final int foo;
+
+  @override
+  Widget build(BuildContext _context) =>
+      withKeyThenContextThenOneArg(key!, _context, foo);
+}
+'''));
+    });
+
+    test('key then key', () async {
+      await _expect('withKeyThenKey', completion('''
+class WithKeyThenKey extends StatelessWidget {
+  const WithKeyThenKey(this.key2, {Key? key}) : super(key: key);
+
+  final Key key2;
+
+  @override
+  Widget build(BuildContext _context) => withKeyThenKey(key, key2);
 }
 '''));
     });

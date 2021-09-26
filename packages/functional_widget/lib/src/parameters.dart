@@ -19,7 +19,6 @@ class FunctionParameters {
     'Key': 'key!',
     'Key?': 'key',
     'BuildContext': '_context',
-    'HookContext': '_context',
     'WidgetRef': '_ref',
   };
 
@@ -34,15 +33,30 @@ class FunctionParameters {
 
   final List<Parameter> _parameters;
 
-  int get userDefinedStartIndex {
-    final index = _parameters.indexWhere((p) =>
-        nonUserDefinedTypeSymbols.contains(p.type?.symbol ?? '') == false);
+  int get _userDefinedStartIndex {
+    final remainingSymbols = nonUserDefinedTypeSymbols.fold<Map<String, bool>>(
+      {},
+      (acc, symbol) => {...acc, symbol.replaceAll('?', ''): true},
+    );
+
+    final index = _parameters.indexWhere((p) {
+      final symbol = p.type?.symbol ?? '';
+      final symbolWithoutNullable = symbol.replaceAll('?', '');
+      final isNonUser = remainingSymbols[symbolWithoutNullable] ?? false;
+
+      if (isNonUser) {
+        remainingSymbols[symbolWithoutNullable] = false;
+      }
+
+      return !isNonUser;
+    });
+
     return index == -1 ? _parameters.length : index;
   }
 
   late final List<Parameter> nonUserDefined = _parameters.sublist(
     0,
-    userDefinedStartIndex,
+    _userDefinedStartIndex,
   );
 
   late final List<Parameter> nonUserDefinedRenamed = nonUserDefined
@@ -58,7 +72,7 @@ class FunctionParameters {
   late final bool hasNonNullableKey = keySymbol == 'Key';
 
   late final List<Parameter> userDefined =
-      _parameters.sublist(userDefinedStartIndex);
+      _parameters.sublist(_userDefinedStartIndex);
 }
 
 bool _isKey(Parameter param) =>

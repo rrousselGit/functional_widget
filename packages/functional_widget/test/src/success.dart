@@ -44,11 +44,18 @@ Widget withContextThenKeyThenOneArg(BuildContext context, Key key, int foo) =>
     Container();
 
 @swidget
+Widget withContextThenContext(BuildContext context, BuildContext context2) =>
+    Container();
+
+@swidget
 Widget withKeyThenContext(Key key, BuildContext context) => Container();
 
 @swidget
 Widget withKeyThenContextThenOneArg(Key key, BuildContext context, int foo) =>
     Container();
+
+@swidget
+Widget withKeyThenKey(Key? key, Key key2) => Container();
 
 @swidget
 Widget whateverThenContext(int foo, BuildContext bar) => Container();

@@ -4,10 +4,22 @@ import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'fake_flutter.dart';
 
 @swidget
-Widget sWidget() => Container();
+Widget sXWidget() => Container();
+
+@swidget
+Widget _privateSWidget() => Container();
+
+@sWidget
+Widget _privateButPublicSWidget() => Container();
 
 @hwidget
-Widget hWidget() => Container();
+Widget hXWidget() => Container();
+
+@hwidget
+Widget _privateHWidget() => Container();
+
+@hWidget
+Widget _privateButPublicHWidget() => Container();
 
 @swidget
 Widget adaptiveWidget() => Container();

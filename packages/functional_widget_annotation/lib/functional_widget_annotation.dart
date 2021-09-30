@@ -20,6 +20,8 @@ class FunctionalWidget {
   const FunctionalWidget({
     this.widgetType = FunctionalWidgetType.stateless,
     this.debugFillProperties,
+    this.name,
+    this.public,
   });
 
   /// Configures which types of widget is generated.
@@ -29,6 +31,12 @@ class FunctionalWidget {
 
   /// Defines if the generated widget should emit diagnostics informations.
   final bool? debugFillProperties;
+
+  /// Name specifies the widget's name
+  final String? name;
+
+  /// Defines whether the widget is to be made public
+  final bool? public;
 }
 
 /// A decorator for functions to generate a `StatelessWidget`.
@@ -37,6 +45,17 @@ class FunctionalWidget {
 /// with an uppercase as first letter.
 const FunctionalWidget swidget = FunctionalWidget(
   widgetType: FunctionalWidgetType.stateless,
+);
+
+/// A decorator for functions to generate a `StatelessWidget`.
+///
+/// The name of the generated widget is the name of the decorated function,
+/// with an uppercase as first letter.
+/// In case provided function was private, the class name will result in an exposed
+/// class (e.g. _foo ==> Foo);
+const FunctionalWidget sWidget = FunctionalWidget(
+  widgetType: FunctionalWidgetType.stateless,
+  public: true,
 );
 
 /// A decorator for functions to generate a `HookWidget`.
@@ -52,3 +71,18 @@ const FunctionalWidget swidget = FunctionalWidget(
 const FunctionalWidget hwidget = FunctionalWidget(
   widgetType: FunctionalWidgetType.hook,
 );
+
+/// A decorator for functions to generate a `HookWidget`.
+///
+/// `HookWidget` must be installed as a separate dependency:
+/// ```yaml
+/// dependencies:
+///   flutter_hooks: any
+/// ```
+///
+/// The name of the generated widget is the name of the decorated function,
+/// with an uppercase as first letter.
+/// In case provided function was private, the class name will result in an exposed
+/// class (e.g. _foo ==> Foo);
+const FunctionalWidget hWidget =
+    FunctionalWidget(widgetType: FunctionalWidgetType.hook, public: true);

@@ -15,10 +15,21 @@ final _statelessWidgetRef = refer('StatelessWidget', _kFlutterWidgetsPath);
 final _hookWidgetRef = refer('HookWidget', _kHookWidgetsPath);
 final _buildContextRef = refer('BuildContext', _kFlutterWidgetsPath);
 
-String _toTitle(String string) {
-  return string.replaceFirstMapped(RegExp('[a-zA-Z]'), (match) {
+String _toTitle(String string, String? name, bool? public) {
+  if (name != null) {
+    return name;
+  }
+  var out = string.replaceFirstMapped(RegExp('[a-zA-Z]'), (match) {
     return match.group(0)!.toUpperCase();
   });
+
+  if (public != null && public == true) {
+    if (out[0] == '_') {
+      out = out.substring(1);
+    }
+  }
+
+  return out;
 }
 
 const _kOverrideDecorator = CodeExpression(Code('override'));
@@ -46,15 +57,24 @@ class FunctionalWidgetGenerator
   @override
   Future<String> generateForAnnotatedElement(
       Element element, ConstantReader annotation, BuildStep buildStep) async {
-    final function = _checkValidElement(element);
+    final name = parseFunctionalWidgetName(annotation);
+    final public = parseFunctionalWidgetPublic(annotation);
+    final function = _checkValidElement(element, name, public);
     final type = parseFunctionalWidgetAnnotation(annotation);
-    final _class =
-        await _makeClassFromFunctionElement(function, type, buildStep);
+
+    final _class = await _makeClassFromFunctionElement(
+      function,
+      type,
+      buildStep,
+      name,
+      public,
+    );
 
     return _class.accept(_emitter).toString();
   }
 
-  FunctionElement _checkValidElement(Element element) {
+  FunctionElement _checkValidElement(
+      Element element, String? name, bool? public) {
     if (element is! FunctionElement) {
       throw InvalidGenerationSourceError(
         'Error, the decorated element is not a function',
@@ -72,7 +92,8 @@ class FunctionalWidgetGenerator
         element: function,
       );
     }
-    final className = _toTitle(function.name);
+
+    final className = _toTitle(function.name, name, public);
     if (className == function.name) {
       throw InvalidGenerationSourceError(
         'The function name must start with a lowercase',
@@ -82,8 +103,13 @@ class FunctionalWidgetGenerator
     return function;
   }
 
-  Future<Spec> _makeClassFromFunctionElement(FunctionElement functionElement,
-      FunctionalWidget annotation, BuildStep buildStep) async {
+  Future<Spec> _makeClassFromFunctionElement(
+    FunctionElement functionElement,
+    FunctionalWidget annotation,
+    BuildStep buildStep,
+    String? name,
+    bool? public,
+  ) async {
     final parameters = await FunctionParameters.parseFunctionElement(
         functionElement, buildStep);
     final keyIsRequired = parameters.startsWithKey || parameters.followedByKey;
@@ -111,7 +137,7 @@ class FunctionalWidgetGenerator
       (b) {
         final widgetType = annotation.widgetType;
         b
-          ..name = _toTitle(functionElement.name)
+          ..name = _toTitle(functionElement.name, name, public)
           ..types.addAll(
               _parseTypeParemeters(functionElement.typeParameters).toList())
           ..extend = widgetType == FunctionalWidgetType.hook

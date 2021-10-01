@@ -142,3 +142,15 @@ typedef _GenericFunction4 = T? Function<T>(T? foo);
 
 @swidget
 Widget genericFunction4(_GenericFunction4? foo) => Container();
+
+@FunctionalWidget(
+  widgetType: FunctionalWidgetType.hook,
+  name: 'CustomHookWidget',
+)
+Widget hookWidgetWithCustomName(BuildContext ctx) => Container();
+
+@FunctionalWidget(
+  widgetType: FunctionalWidgetType.stateless,
+  name: 'CustomStatelessWidget',
+)
+Widget statelessWidgetWithCustomName(BuildContext ctx) => Container();

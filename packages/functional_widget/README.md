@@ -217,6 +217,20 @@ There are a few ways to do so:
   Widget example(int foo, String bar) => Container();
   ```
 
+- With parameters on the `@FunctionalWidget` decorator that will export the generated widget for private functions:
+
+  ```dart
+  @FunctionalWidget(public: true)
+  Widget _privateButExportedExample(int foo, String bar) => Container();
+  ```
+
+- With parameters on the `@FunctionalWidget` decorator that will replace the name with a custom name:
+
+  ```dart
+  @FunctionalWidget(name: "CustomName")
+  Widget willReceiveCustomNameExample(int foo, String bar) => Container();
+  ```
+
 - With the shorthand `@hwidget` decorator:
 
   ```dart
@@ -280,3 +294,9 @@ Widget foo(BuildContext context, int value, { int value2 }) {
 
 Foo(42, value2: 24);
 ```
+
+### Export widgets for private functions
+
+By default, generated code for private functions will also be private.
+In order to export those functions, you can use two alternative decorators
+```@sWidget``` for StatelessWidget and ```@hWidget``` for HookWidgets.

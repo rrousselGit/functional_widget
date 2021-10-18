@@ -15,19 +15,21 @@ final _statelessWidgetRef = refer('StatelessWidget', _kFlutterWidgetsPath);
 final _hookWidgetRef = refer('HookWidget', _kHookWidgetsPath);
 final _buildContextRef = refer('BuildContext', _kFlutterWidgetsPath);
 
-String _toTitle(String string, String? name, bool? public) {
+String _toTitle(String string, String? name) {
   if (name != null) {
     return name;
   }
-  var out = string.replaceFirstMapped(RegExp('[a-zA-Z]'), (match) {
+
+  // as discussed, let's remove first underscore in order to allow for private fns
+  // to become public (https://github.com/rrousselGit/functional_widget/pull/97#discussion_r720210353)
+  var out = string;
+  if (out[0] == '_') {
+    out = out.substring(1);
+  }
+
+  out = out.replaceFirstMapped(RegExp('[a-zA-Z]'), (match) {
     return match.group(0)!.toUpperCase();
   });
-
-  if (public != null && public == true) {
-    if (out[0] == '_') {
-      out = out.substring(1);
-    }
-  }
 
   return out;
 }
@@ -58,8 +60,7 @@ class FunctionalWidgetGenerator
   Future<String> generateForAnnotatedElement(
       Element element, ConstantReader annotation, BuildStep buildStep) async {
     final name = parseFunctionalWidgetName(annotation);
-    final public = parseFunctionalWidgetPublic(annotation);
-    final function = _checkValidElement(element, name, public);
+    final function = _checkValidElement(element, name);
     final type = parseFunctionalWidgetAnnotation(annotation);
 
     final _class = await _makeClassFromFunctionElement(
@@ -67,14 +68,12 @@ class FunctionalWidgetGenerator
       type,
       buildStep,
       name,
-      public,
     );
 
     return _class.accept(_emitter).toString();
   }
 
-  FunctionElement _checkValidElement(
-      Element element, String? name, bool? public) {
+  FunctionElement _checkValidElement(Element element, String? name) {
     if (element is! FunctionElement) {
       throw InvalidGenerationSourceError(
         'Error, the decorated element is not a function',
@@ -93,7 +92,7 @@ class FunctionalWidgetGenerator
       );
     }
 
-    final className = _toTitle(function.name, name, public);
+    final className = _toTitle(function.name, name);
     if (className == function.name) {
       throw InvalidGenerationSourceError(
         'The function name must start with a lowercase',
@@ -108,7 +107,6 @@ class FunctionalWidgetGenerator
     FunctionalWidget annotation,
     BuildStep buildStep,
     String? name,
-    bool? public,
   ) async {
     final parameters = await FunctionParameters.parseFunctionElement(
         functionElement, buildStep);
@@ -137,7 +135,7 @@ class FunctionalWidgetGenerator
       (b) {
         final widgetType = annotation.widgetType;
         b
-          ..name = _toTitle(functionElement.name, name, public)
+          ..name = _toTitle(functionElement.name, name)
           ..types.addAll(
               _parseTypeParemeters(functionElement.typeParameters).toList())
           ..extend = widgetType == FunctionalWidgetType.hook

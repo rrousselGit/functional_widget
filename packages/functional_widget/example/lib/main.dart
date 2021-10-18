@@ -25,13 +25,13 @@ Widget _example(BuildContext ctx) {
   return Container();
 }
 
-@hWidget
-Widget _privateHook(BuildContext ctx) {
+@hwidget
+Widget __privateHook(BuildContext ctx) {
   return Container();
 }
 
-@sWidget
-Widget _privateStatelessWidget(BuildContext ctx) {
+@swidget
+Widget __privateStatelessWidget(BuildContext ctx) {
   return Container();
 }
 

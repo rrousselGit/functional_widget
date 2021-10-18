@@ -70,17 +70,6 @@ String? parseFunctionalWidgetName(ConstantReader reader) {
   throw ArgumentError('Unknown type for name: must be string or null');
 }
 
-bool? parseFunctionalWidgetPublic(ConstantReader reader) {
-  final val = reader.read('public');
-  if (val.isNull) {
-    return null;
-  }
-  if (val.isBool) {
-    return val.boolValue;
-  }
-  throw ArgumentError('Unknown type for public: must be bool or null');
-}
-
 T? _parseEnum<T>(ConstantReader reader, List<T> values) => reader.isNull
     ? null
     : _enumValueForDartObject(

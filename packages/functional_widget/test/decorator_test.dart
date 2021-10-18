@@ -8,7 +8,7 @@ void main() {
   final tester = SourceGenTester.fromPath('test/src/success.dart');
 
   group('decorators', () {
-    test('swidget generate statelesswidget even if default value is hook',
+    test('swidget generates stateless widget even if default value is hook',
         () async {
       final _generator = FunctionalWidgetGenerator(
           const FunctionalWidget(widgetType: FunctionalWidgetType.hook));
@@ -25,20 +25,34 @@ class SXWidget extends StatelessWidget {
 '''));
     });
 
-    test(
-        'swidget generate statelesswidget even if default value is hook and private',
-        () async {
+    test('swidget generates private widget from double-private fn', () async {
       final _generator = FunctionalWidgetGenerator(
           const FunctionalWidget(widgetType: FunctionalWidgetType.hook));
       final _expect = (String name, Matcher matcher) async =>
           expectGenerateNamed(await tester, name, _generator, matcher);
 
-      await _expect('_privateSWidget', completion('''
+      await _expect('__privateSWidget', completion('''
 class _PrivateSWidget extends StatelessWidget {
   const _PrivateSWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext _context) => _privateSWidget();
+  Widget build(BuildContext _context) => __privateSWidget();
+}
+'''));
+    });
+
+    test('swidget generates public stateless widget from private fn', () async {
+      final _generator = FunctionalWidgetGenerator(
+          const FunctionalWidget(widgetType: FunctionalWidgetType.hook));
+      final _expect = (String name, Matcher matcher) async =>
+          expectGenerateNamed(await tester, name, _generator, matcher);
+
+      await _expect('_publicSWidget', completion('''
+class PublicSWidget extends StatelessWidget {
+  const PublicSWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => _publicSWidget();
 }
 '''));
     });
@@ -60,57 +74,40 @@ class HXWidget extends HookWidget {
 '''));
     });
 
-    test(
-        'hwidget generate hookwidget even if default value is stateless and private',
+    test('hwidget generates public hook widget from private fn', () async {
+      final _generator = FunctionalWidgetGenerator(
+          const FunctionalWidget(widgetType: FunctionalWidgetType.stateless));
+      final _expect = (String name, Matcher matcher) async =>
+          expectGenerateNamed(await tester, name, _generator, matcher);
+
+      await _expect('_publicHWidget', completion('''
+class PublicHWidget extends HookWidget {
+  const PublicHWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => _publicHWidget();
+}
+'''));
+    });
+
+    test('hwidget generates private hook widget from double-private fn',
         () async {
       final _generator = FunctionalWidgetGenerator(
           const FunctionalWidget(widgetType: FunctionalWidgetType.stateless));
       final _expect = (String name, Matcher matcher) async =>
           expectGenerateNamed(await tester, name, _generator, matcher);
 
-      await _expect('_privateHWidget', completion('''
+      await _expect('__privateHWidget', completion('''
 class _PrivateHWidget extends HookWidget {
   const _PrivateHWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext _context) => _privateHWidget();
+  Widget build(BuildContext _context) => __privateHWidget();
 }
 '''));
     });
 
     group('exported private widgets', () {
-      test('sWidget exports private member', () async {
-        final _generator = FunctionalWidgetGenerator(
-            const FunctionalWidget(widgetType: FunctionalWidgetType.stateless));
-        final _expect = (String name, Matcher matcher) async =>
-            expectGenerateNamed(await tester, name, _generator, matcher);
-
-        await _expect('_privateButPublicSWidget', completion('''
-class PrivateButPublicSWidget extends StatelessWidget {
-  const PrivateButPublicSWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext _context) => _privateButPublicSWidget();
-}
-'''));
-      });
-
-      test('hWidget exports private member', () async {
-        final _generator = FunctionalWidgetGenerator(
-            const FunctionalWidget(widgetType: FunctionalWidgetType.stateless));
-        final _expect = (String name, Matcher matcher) async =>
-            expectGenerateNamed(await tester, name, _generator, matcher);
-
-        await _expect('_privateButPublicHWidget', completion('''
-class PrivateButPublicHWidget extends HookWidget {
-  const PrivateButPublicHWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext _context) => _privateButPublicHWidget();
-}
-'''));
-      });
-
       test('generate hook if conf is hook', () async {
         var _generator = FunctionalWidgetGenerator(
             const FunctionalWidget(widgetType: FunctionalWidgetType.hook));

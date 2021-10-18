@@ -295,8 +295,31 @@ Widget foo(BuildContext context, int value, { int value2 }) {
 Foo(42, value2: 24);
 ```
 
-### Export widgets for private functions
+### Private vs public widgets
 
-By default, generated code for private functions will also be private.
-In order to export those functions, you can use two alternative decorators
-```@sWidget``` for StatelessWidget and ```@hWidget``` for HookWidgets.
+In order to allow for private function definitions but exported widgets, all
+decorated widget functions with a single underscore will generate an exported widget.
+
+```dart
+@swidget
+Widget _foo(BuildContext context, int value, { int value2 }) {
+  return Text('$value $value2');
+}
+
+// USAGE
+
+Foo(42, value2: 24);
+```
+
+In order to keep generated widget private, do use two underscores:
+
+```dart
+@swidget
+Widget __foo(BuildContext context, int value, { int value2 }) {
+  return Text('$value $value2');
+}
+
+// USAGE
+
+_Foo(42, value2: 24);
+```

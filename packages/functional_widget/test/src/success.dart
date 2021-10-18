@@ -7,19 +7,19 @@ import 'fake_flutter.dart';
 Widget sXWidget() => Container();
 
 @swidget
-Widget _privateSWidget() => Container();
+Widget _publicSWidget() => Container();
 
-@sWidget
-Widget _privateButPublicSWidget() => Container();
+@swidget
+Widget __privateSWidget() => Container();
 
 @hwidget
 Widget hXWidget() => Container();
 
 @hwidget
-Widget _privateHWidget() => Container();
+Widget _publicHWidget() => Container();
 
-@hWidget
-Widget _privateButPublicHWidget() => Container();
+@hwidget
+Widget __privateHWidget() => Container();
 
 @swidget
 Widget adaptiveWidget() => Container();

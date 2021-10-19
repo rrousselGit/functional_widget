@@ -15,23 +15,11 @@ final _statelessWidgetRef = refer('StatelessWidget', _kFlutterWidgetsPath);
 final _hookWidgetRef = refer('HookWidget', _kHookWidgetsPath);
 final _buildContextRef = refer('BuildContext', _kFlutterWidgetsPath);
 
-String _toTitle(String string, String? name) {
-  if (name != null) {
-    return name;
-  }
-
-  // as discussed, let's remove first underscore in order to allow for private fns
-  // to become public (https://github.com/rrousselGit/functional_widget/pull/97#discussion_r720210353)
-  var out = string;
-  if (out[0] == '_') {
-    out = out.substring(1);
-  }
-
-  out = out.replaceFirstMapped(RegExp('[a-zA-Z]'), (match) {
+// _toTitle converts a string's first character ([a-zA-Z]) to uppercase.
+String _toTitle(String string) {
+  return string.replaceFirstMapped(RegExp('[a-zA-Z]'), (match) {
     return match.group(0)!.toUpperCase();
   });
-
-  return out;
 }
 
 const _kOverrideDecorator = CodeExpression(Code('override'));
@@ -56,24 +44,48 @@ class FunctionalWidgetGenerator
     useNullSafetySyntax: true,
   );
 
+  // determineClassName tries to determine a class name used for
+  // class generation. In case a custom name is being provided,
+  // we will use custom name - otherwise we will try to get name
+  // from parsed element.
+  String _determineClassName(Element element, String? customName) {
+    if (customName != null) {
+      return customName;
+    }
+    var out = element.name ?? '';
+
+    // as discussed, let's remove first underscore in order to allow for private fns
+    // to become public (https://github.com/rrousselGit/functional_widget/pull/97#discussion_r720210353)
+    if (out.isNotEmpty && out[0] == '_') {
+      out = out.substring(1);
+    }
+    // as a last step, we need to convert lower case characters to upper case.
+    return _toTitle(out);
+  }
+
   @override
   Future<String> generateForAnnotatedElement(
       Element element, ConstantReader annotation, BuildStep buildStep) async {
-    final name = parseFunctionalWidgetName(annotation);
-    final function = _checkValidElement(element, name);
+    // in case we do have a custom name set, we will find it @ functional widget
+    final customName = parseFunctionalWidgetName(annotation);
+    // to figure out how to call our class, let's either use customName or
+    // the element's name (if available).
+    // _checkValidElement will make sure to validate class name in the next step
+    final className = _determineClassName(element, customName);
+    final function = _checkValidElement(element, className);
     final type = parseFunctionalWidgetAnnotation(annotation);
 
     final _class = await _makeClassFromFunctionElement(
       function,
       type,
       buildStep,
-      name,
+      className,
     );
 
     return _class.accept(_emitter).toString();
   }
 
-  FunctionElement _checkValidElement(Element element, String? name) {
+  FunctionElement _checkValidElement(Element element, String className) {
     if (element is! FunctionElement) {
       throw InvalidGenerationSourceError(
         'Error, the decorated element is not a function',
@@ -92,10 +104,9 @@ class FunctionalWidgetGenerator
       );
     }
 
-    final className = _toTitle(function.name, name);
     if (className == function.name) {
       throw InvalidGenerationSourceError(
-        'The function name must start with a lowercase',
+        'The function name must start with a lowercase character. Alternatively, the function can be private',
         element: function,
       );
     }
@@ -106,7 +117,7 @@ class FunctionalWidgetGenerator
     FunctionElement functionElement,
     FunctionalWidget annotation,
     BuildStep buildStep,
-    String? name,
+    String className,
   ) async {
     final parameters = await FunctionParameters.parseFunctionElement(
         functionElement, buildStep);
@@ -135,7 +146,7 @@ class FunctionalWidgetGenerator
       (b) {
         final widgetType = annotation.widgetType;
         b
-          ..name = _toTitle(functionElement.name, name)
+          ..name = className
           ..types.addAll(
               _parseTypeParemeters(functionElement.typeParameters).toList())
           ..extend = widgetType == FunctionalWidgetType.hook

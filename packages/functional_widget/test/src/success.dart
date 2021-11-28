@@ -44,11 +44,18 @@ Widget withContextThenKeyThenOneArg(BuildContext context, Key key, int foo) =>
     Container();
 
 @swidget
+Widget withContextThenContext(BuildContext context, BuildContext context2) =>
+    Container();
+
+@swidget
 Widget withKeyThenContext(Key key, BuildContext context) => Container();
 
 @swidget
 Widget withKeyThenContextThenOneArg(Key key, BuildContext context, int foo) =>
     Container();
+
+@swidget
+Widget withKeyThenKey(Key? key, Key key2) => Container();
 
 @swidget
 Widget whateverThenContext(int foo, BuildContext bar) => Container();
@@ -72,6 +79,27 @@ Widget withPositionalOptional(int? foo) => Container();
 
 @hwidget
 Widget hookExample() => Container();
+
+@hcwidget
+Widget hookConsumerExample() => Container();
+
+@hcwidget
+Widget hookConsumerExampleWithRef(WidgetRef ref) => Container();
+
+@hcwidget
+Widget hookConsumerExampleWithRefAndContext(
+        WidgetRef ref, BuildContext context) =>
+    Container();
+
+@cwidget
+Widget consumerExample() => Container();
+
+@cwidget
+Widget consumerExampleWithRef(WidgetRef ref) => Container();
+
+@cwidget
+Widget consumerExampleWithRefAndContext(WidgetRef ref, BuildContext context) =>
+    Container();
 
 typedef Typedef<T> = void Function(T);
 

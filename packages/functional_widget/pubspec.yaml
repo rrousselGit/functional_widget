@@ -16,9 +16,12 @@ dependencies:
   code_builder: ^4.0.0
   collection: ^1.0.0
 
+dependency_overrides:
+  functional_widget_annotation:
+    path: ../functional_widget_annotation
+
 dev_dependencies:
   test: ^1.17.0
-  mockito: ^5.0.0
   dart_style: ^2.0.0
   pedantic: ^1.9.0
   build_runner: ^2.0.0

@@ -1,3 +1,7 @@
+## 0.9.2
+
+Added support for `HookConsumerWidget` and `ConsumerWidget` from [Riverpod](https://pub.dev/packages/riverpod) (thanks to @tim-smart)
+
 ## 0.9.1
 
 - Allows nullable widget `Key`

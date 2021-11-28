@@ -187,9 +187,26 @@ class Example extends StatelessWidget {
 
 By default, the generated widget by `@FunctionalWidget()` is a `StatelessWidget`.
 
-It is possible to generate a `HookWidget` instead (from https://github.com/rrousselGit/flutter_hooks)
+It is possible to generate:
+
+- a `HookWidget` (from https://github.com/rrousselGit/flutter_hooks)
+- a `HookConsumerWidget` (from [hooks_riverpod](https://pub.dev/packages/hooks_riverpod))
+- a `ConsumerWidget` (from [flutter_riverpod](https://pub.dev/packages/flutter_riverpod))
 
 There are a few ways to do so:
+
+- With the shorthand `@hwidget` decorator:
+
+  ```dart
+  @hwidget // Creates a HookWidget
+  Widget example(int foo, String bar) => Container();
+
+  @hcwidget // Creates a HookConsumerWidget
+  Widget example(WidgetRef ref, int foo, String bar) => Container();
+
+  @cwidget // Creates a ConsumerWidget
+  Widget example(WidgetRef ref, int foo, String bar) => Container();
+  ```
 
 - Through `build.yaml`:
 
@@ -217,14 +234,8 @@ There are a few ways to do so:
   Widget example(int foo, String bar) => Container();
   ```
 
-- With the shorthand `@hwidget` decorator:
-
-  ```dart
-  @hwidget
-  Widget example(int foo, String bar) => Container();
-  ```
-
-In any cases, `flutter_hooks` must be added as a separate dependency in the `pubspec.yaml`
+In any cases, you will need to install the corresponding package separately, by
+adding either `flutter_hooks`/`flutter_riverpod` or `hooks_riverpod` to your `pubspec.yaml`
 
 ```yaml
 dependencies:

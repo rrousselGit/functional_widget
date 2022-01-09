@@ -515,5 +515,49 @@ class GenericFunction4 extends StatelessWidget {
 '''));
       });
     });
+
+    group('annotations', () {
+      test('annotation', () async {
+        await _expect('annotation', completion('''
+class Annotation extends StatelessWidget {
+  const Annotation({Key? key, @TestAnnotation() this.foo = 42})
+      : super(key: key);
+
+  final int foo;
+
+  @override
+  Widget build(BuildContext _context) => annotation(foo: foo);
+}
+'''));
+      });
+
+      test('annotationParameter', () async {
+        await _expect('annotationParameter', completion('''
+class AnnotationParameter extends StatelessWidget {
+  const AnnotationParameter({Key? key, @TestAnnotation('Test') this.foo = 42})
+      : super(key: key);
+
+  final int foo;
+
+  @override
+  Widget build(BuildContext _context) => annotationParameter(foo: foo);
+}
+'''));
+      });
+
+      test('annotationConstant', () async {
+        await _expect('annotationConstant', completion('''
+class AnnotationConstant extends StatelessWidget {
+  const AnnotationConstant({Key? key, @testAnnotation this.foo = 42})
+      : super(key: key);
+
+  final int foo;
+
+  @override
+  Widget build(BuildContext _context) => annotationConstant(foo: foo);
+}
+'''));
+      });
+    });
   });
 }

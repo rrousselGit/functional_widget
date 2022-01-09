@@ -1,6 +1,7 @@
 // ignore_for_file: implicit_dynamic_parameter
 
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
+
 import 'fake_flutter.dart';
 
 @swidget
@@ -158,3 +159,21 @@ typedef _GenericFunction4 = T? Function<T>(T? foo);
 
 @swidget
 Widget genericFunction4(_GenericFunction4? foo) => Container();
+
+class TestAnnotation {
+  const TestAnnotation([this.argument = 'default']);
+
+  final String argument;
+}
+
+@swidget
+Widget annotation({@TestAnnotation() int foo = 42}) => Container();
+
+@swidget
+Widget annotationParameter({@TestAnnotation('Test') int foo = 42}) =>
+    Container();
+
+const testAnnotation = TestAnnotation('Another test');
+
+@swidget
+Widget annotationConstant({@testAnnotation int foo = 42}) => Container();

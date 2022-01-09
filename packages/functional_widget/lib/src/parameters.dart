@@ -90,8 +90,7 @@ Future<Parameter> _parseParameter(
           : null
       ..docs.add(parameter.documentationComment ?? '')
       ..annotations.addAll(parameter.metadata.map((meta) {
-        // ignore: invalid_use_of_visible_for_testing_member
-        return CodeExpression(Code(meta.element!.displayName));
+        return CodeExpression(Code(meta.toSource().replaceFirst('@', '')));
       }))
       ..named = parameter.isNamed
       ..required = parameter.isRequiredNamed

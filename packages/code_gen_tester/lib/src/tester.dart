@@ -5,7 +5,6 @@ import 'package:_fe_analyzer_shared/src/base/syntactic_entity.dart';
 import 'package:_fe_analyzer_shared/src/scanner/token.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/src/generated/java_engine.dart';
 import 'package:build/build.dart';
 import 'package:code_gen_tester/src/analysis_utils.dart';
 import 'package:crypto/crypto.dart';
@@ -272,7 +271,8 @@ class _AstNodeImpl implements AstNode {
   void setProperty(String name, Object? value) {}
 
   @override
-  E? thisOrAncestorMatching<E extends AstNode>(Predicate<AstNode> predicate) {
+  E? thisOrAncestorMatching<E extends AstNode>(
+      bool Function(AstNode) predicate) {
     throw UnimplementedError();
   }
 

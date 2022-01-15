@@ -272,7 +272,8 @@ class _AstNodeImpl implements AstNode {
 
   @override
   E? thisOrAncestorMatching<E extends AstNode>(
-      bool Function(AstNode) predicate) {
+    bool Function(AstNode) predicate,
+  ) {
     throw UnimplementedError();
   }
 

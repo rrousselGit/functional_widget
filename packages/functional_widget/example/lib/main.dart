@@ -19,6 +19,16 @@ Widget example(
   return Container();
 }
 
+@FunctionalWidget(name: 'Example2')
+Widget _example(BuildContext ctx) {
+  return Container();
+}
+
+@swidget
+Widget __privateStatelessWidget(BuildContext ctx) {
+  return Container();
+}
+
 void main() => runApp(
       // we use the generated class
       const Foo(42),

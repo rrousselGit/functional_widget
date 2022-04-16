@@ -38,6 +38,7 @@ class FunctionalWidget {
   const FunctionalWidget({
     this.widgetType = FunctionalWidgetType.stateless,
     this.debugFillProperties,
+    this.name,
   });
 
   /// Configures which types of widget is generated.
@@ -47,6 +48,14 @@ class FunctionalWidget {
 
   /// Defines if the generated widget should emit diagnostics informations.
   final bool? debugFillProperties;
+
+  /// Defines the name of the generated widget.
+  ///
+  /// By default, uses the function name, such that:
+  ///
+  /// - `Widget _myWidget(...)` generates `class MyWidget`
+  /// - `Widget __myWidget(...)` generates `class _MyWidget`
+  final String? name;
 }
 
 /// A decorator for functions to generate a `StatelessWidget`.

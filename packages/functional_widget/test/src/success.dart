@@ -1,14 +1,26 @@
-// ignore_for_file: implicit_dynamic_parameter
+// ignore_for_file: implicit_dynamic_parameter, unused_element, private elements are used by the tests
 
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 
 import 'fake_flutter.dart';
 
 @swidget
-Widget sWidget() => Container();
+Widget sXWidget() => Container();
+
+@swidget
+Widget _publicSWidget() => Container();
+
+@swidget
+Widget __privateSWidget() => Container();
 
 @hwidget
-Widget hWidget() => Container();
+Widget hXWidget() => Container();
+
+@hwidget
+Widget _publicHWidget() => Container();
+
+@hwidget
+Widget __privateHWidget() => Container();
 
 @swidget
 Widget adaptiveWidget() => Container();
@@ -159,6 +171,18 @@ typedef _GenericFunction4 = T? Function<T>(T? foo);
 
 @swidget
 Widget genericFunction4(_GenericFunction4? foo) => Container();
+
+@FunctionalWidget(
+  widgetType: FunctionalWidgetType.hook,
+  name: 'CustomHookWidget',
+)
+Widget hookWidgetWithCustomName(BuildContext ctx) => Container();
+
+@FunctionalWidget(
+  widgetType: FunctionalWidgetType.stateless,
+  name: 'CustomStatelessWidget',
+)
+Widget statelessWidgetWithCustomName(BuildContext ctx) => Container();
 
 class TestAnnotation {
   const TestAnnotation([this.argument = 'default']);

@@ -42,3 +42,17 @@ class Example extends StatelessWidget {
         .add(DiagnosticsProperty<void Function(bool)?>('onChanged', onChanged));
   }
 }
+
+class Example2 extends StatelessWidget {
+  const Example2({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => _example(_context);
+}
+
+class _PrivateStatelessWidget extends StatelessWidget {
+  const _PrivateStatelessWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => __privateStatelessWidget(_context);
+}

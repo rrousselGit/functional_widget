@@ -28,6 +28,7 @@ final _typeToRefMap = {
   FunctionalWidgetType.stateless: _statelessWidgetRef,
 };
 
+// _toTitle converts a string's first character ([a-zA-Z]) to uppercase.
 String _toTitle(String string) {
   return string.replaceFirstMapped(RegExp('[a-zA-Z]'), (match) {
     return match.group(0)!.toUpperCase();
@@ -56,18 +57,48 @@ class FunctionalWidgetGenerator
     useNullSafetySyntax: true,
   );
 
+  // determineClassName tries to determine a class name used for
+  // class generation. In case a custom name is being provided,
+  // we will use custom name - otherwise we will try to get name
+  // from parsed element.
+  String _determineClassName(Element element, String? customName) {
+    if (customName != null) {
+      return customName;
+    }
+    var out = element.name ?? '';
+
+    // We remove the fist _ such that _widget becomes Widget and __widget
+    // becomes _Widget, giving some control over the privacy of the generated class
+    if (out.isNotEmpty && out[0] == '_') {
+      out = out.substring(1);
+    }
+    // as a last step, we need to convert lower case characters to upper case.
+    return _toTitle(out);
+  }
+
   @override
   Future<String> generateForAnnotatedElement(
       Element element, ConstantReader annotation, BuildStep buildStep) async {
-    final function = _checkValidElement(element);
+    // in case we do have a custom name set, we will find it @ functional widget
+    final customName = parseFunctionalWidgetName(annotation);
+    // to figure out how to call our class, let's either use customName or
+    // the element's name (if available).
+    // _checkValidElement will make sure to validate class name in the next step
+    final className = _determineClassName(element, customName);
+    final function = _checkValidElement(element, className);
     final type = parseFunctionalWidgetAnnotation(annotation);
-    final _class =
-        await _makeClassFromFunctionElement(function, type, buildStep);
+
+    final _class = await _makeClassFromFunctionElement(
+      function,
+      type,
+      buildStep,
+      className,
+    );
 
     return _class.accept(_emitter).toString();
   }
 
-  FunctionElement _checkValidElement(Element element) {
+  FunctionElement _checkValidElement(Element element, String className) {
     if (element is! FunctionElement) {
       throw InvalidGenerationSourceError(
         'Error, the decorated element is not a function',
@@ -85,10 +116,10 @@ class FunctionalWidgetGenerator
         element: function,
       );
     }
-    final className = _toTitle(function.name);
+
     if (className == function.name) {
       throw InvalidGenerationSourceError(
-        'The function name must start with a lowercase',
+        'The function name must start with a lowercase character.',
         element: function,
       );
     }
@@ -99,6 +130,7 @@ class FunctionalWidgetGenerator
     FunctionElement functionElement,
     FunctionalWidget annotation,
     BuildStep buildStep,
+    String className,
   ) async {
     final parameters = await FunctionParameters.parseFunctionElement(
       functionElement,
@@ -120,7 +152,7 @@ class FunctionalWidgetGenerator
       (b) {
         final widgetType = annotation.widgetType;
         b
-          ..name = _toTitle(functionElement.name)
+          ..name = className
           ..types.addAll(
               _parseTypeParemeters(functionElement.typeParameters).toList())
           ..extend = _typeToRefMap[widgetType]

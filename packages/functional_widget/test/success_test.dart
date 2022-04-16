@@ -516,6 +516,19 @@ class GenericFunction4 extends StatelessWidget {
       });
     });
 
+    group('custom named widgets', () {
+      test('hook widget', () async {
+        await _expect('hookWidgetWithCustomName', completion('''
+class CustomHookWidget extends HookWidget {
+  const CustomHookWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => hookWidgetWithCustomName(_context);
+}
+'''));
+      });
+    });
+
     group('annotations', () {
       test('annotation', () async {
         await _expect('annotation', completion('''
@@ -527,6 +540,18 @@ class Annotation extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => annotation(foo: foo);
+}
+'''));
+      });
+
+      test('stateless widget', () async {
+        await _expect('statelessWidgetWithCustomName', completion('''
+class CustomStatelessWidget extends StatelessWidget {
+  const CustomStatelessWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) =>
+      statelessWidgetWithCustomName(_context);
 }
 '''));
       });

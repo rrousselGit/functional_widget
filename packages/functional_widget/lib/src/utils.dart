@@ -70,14 +70,18 @@ String? parseFunctionalWidgetName(ConstantReader reader) {
   throw ArgumentError('Unknown type for name: must be string or null');
 }
 
-T? _parseEnum<T>(ConstantReader reader, List<T> values) => reader.isNull
-    ? null
-    : _enumValueForDartObject(
-        reader.objectValue, values, (f) => f.toString().split('.')[1]);
+T? _parseEnum<T>(ConstantReader reader, List<T> values) {
+  if (reader.isNull) return null;
 
-// code from json_serializable
-T _enumValueForDartObject<T>(
-        DartObject source, List<T> items, String Function(T) name) =>
-    items.singleWhere(
-      (v) => source.getField(name(v)) != null,
-    );
+  final nameField = reader.objectValue.getField('_name');
+  if (nameField == null) return null;
+
+  final name = nameField.toStringValue();
+  if (name == null) return null;
+
+  for (final value in values) {
+    final valueName = value.toString().split('.').last;
+    if (valueName == name) return value;
+  }
+  throw FallThroughError();
+}

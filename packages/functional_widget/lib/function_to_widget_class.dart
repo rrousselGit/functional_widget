@@ -9,11 +9,24 @@ import 'package:source_gen/source_gen.dart';
 
 const _kFlutterWidgetsPath = 'package:flutter/material.dart';
 const _kHookWidgetsPath = 'package:flutter_hooks/flutter_hooks.dart';
+const _kHookConsumerWidgetsPath = 'package:hooks_riverpod/hooks_riverpod.dart';
+const _kConsumerWidgetsPath = 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final _widgetRef = refer('Widget', _kFlutterWidgetsPath);
 final _statelessWidgetRef = refer('StatelessWidget', _kFlutterWidgetsPath);
 final _hookWidgetRef = refer('HookWidget', _kHookWidgetsPath);
+final _hookConsumerWidgetRef =
+    refer('HookConsumerWidget', _kHookConsumerWidgetsPath);
+final _consumerWidgetRef = refer('ConsumerWidget', _kConsumerWidgetsPath);
 final _buildContextRef = refer('BuildContext', _kFlutterWidgetsPath);
+final _widgetRefRef = refer('WidgetRef', _kHookWidgetsPath);
+
+final _typeToRefMap = {
+  FunctionalWidgetType.hook: _hookWidgetRef,
+  FunctionalWidgetType.hookConsumer: _hookConsumerWidgetRef,
+  FunctionalWidgetType.consumer: _consumerWidgetRef,
+  FunctionalWidgetType.stateless: _statelessWidgetRef,
+};
 
 // _toTitle converts a string's first character ([a-zA-Z]) to uppercase.
 String _toTitle(String string) {
@@ -120,19 +133,12 @@ class FunctionalWidgetGenerator
     String className,
   ) async {
     final parameters = await FunctionParameters.parseFunctionElement(
-        functionElement, buildStep);
-    final keyIsRequired = parameters.startsWithKey || parameters.followedByKey;
-    final keyIsNullable = parameters.keySymbol?.endsWith('?') ?? false;
-
+      functionElement,
+      buildStep,
+    );
     final userDefined = parameters.userDefined;
-    final positional = _computeBuildPositionalParametersExpression(
-      parameters,
-      keyIsRequired: keyIsRequired && !keyIsNullable,
-    );
-    final named = _computeBuildNamedParametersExpression(
-      parameters,
-      keyIsRequired: keyIsRequired && !keyIsNullable,
-    );
+    final positional = _computeBuildPositionalParametersExpression(parameters);
+    final named = _computeBuildNamedParametersExpression(parameters);
 
     Method? overrideDebugFillProperties;
     if (annotation.debugFillProperties ??
@@ -149,16 +155,20 @@ class FunctionalWidgetGenerator
           ..name = className
           ..types.addAll(
               _parseTypeParemeters(functionElement.typeParameters).toList())
-          ..extend = widgetType == FunctionalWidgetType.hook
-              ? _hookWidgetRef
-              : _statelessWidgetRef
+          ..extend = _typeToRefMap[widgetType]
           ..fields.addAll(_paramsToFields(userDefined,
               doc: functionElement.documentationComment))
           ..constructors.add(_getConstructor(userDefined,
               doc: functionElement.documentationComment,
-              keyIsRequired: keyIsRequired && !keyIsNullable))
-          ..methods.add(_createBuildMethod(
-              functionElement.displayName, positional, named, functionElement));
+              keyIsRequired: parameters.hasNonNullableKey))
+          ..methods.add(_createBuildMethod(functionElement.displayName,
+              positional: positional,
+              named: named,
+              function: functionElement,
+              hasWidgetRefParameter: [
+                FunctionalWidgetType.consumer,
+                FunctionalWidgetType.hookConsumer
+              ].contains(widgetType)));
         if (functionElement.documentationComment != null) {
           b.docs.add(functionElement.documentationComment!);
         }
@@ -170,9 +180,7 @@ class FunctionalWidgetGenerator
   }
 
   Map<String, Expression> _computeBuildNamedParametersExpression(
-    FunctionParameters parameters, {
-    required bool keyIsRequired,
-  }) {
+      FunctionParameters parameters) {
     final named = <String, Expression>{};
     for (final p in parameters.userDefined.where((p) => p.named)) {
       named[p.name] = CodeExpression(Code(p.name));
@@ -181,28 +189,14 @@ class FunctionalWidgetGenerator
   }
 
   List<Expression> _computeBuildPositionalParametersExpression(
-    FunctionParameters parameters, {
-    required bool keyIsRequired,
-  }) {
-    final positional = <Expression>[];
-    final codeForKey = keyIsRequired ? 'key!' : 'key';
-
-    if (parameters.startsWithContext) {
-      positional.add(const CodeExpression(Code('_context')));
-    }
-    if (parameters.startsWithKey) {
-      positional.add(CodeExpression(Code(codeForKey)));
-    }
-    if (parameters.followedByContext) {
-      positional.add(const CodeExpression(Code('_context')));
-    }
-    if (parameters.followedByKey) {
-      positional.add(CodeExpression(Code(codeForKey)));
-    }
-    positional.addAll(parameters.userDefined
-        .where((p) => !p.named)
-        .map((p) => CodeExpression(Code(p.name))));
-    return positional;
+      FunctionParameters parameters) {
+    return <Expression>[
+      ...parameters.nonUserDefinedRenamed
+          .map((p) => CodeExpression(Code(p.name))),
+      ...parameters.userDefined
+          .where((p) => !p.named)
+          .map((p) => CodeExpression(Code(p.name)))
+    ];
   }
 
   Future<Method?> _overrideDebugFillProperties(List<Parameter> userFields,
@@ -287,18 +281,29 @@ class FunctionalWidgetGenerator
     return propertyType;
   }
 
-  Method _createBuildMethod(String functionName, List<Expression> positional,
-      Map<String, Expression> named, FunctionElement function) {
+  Method _createBuildMethod(
+    String functionName, {
+    required List<Expression> positional,
+    required Map<String, Expression> named,
+    required FunctionElement function,
+    bool hasWidgetRefParameter = false,
+  }) {
     return Method(
       (b) => b
         ..name = 'build'
         ..annotations.add(_kOverrideDecorator)
         ..returns = _widgetRef
-        ..requiredParameters.add(
+        ..requiredParameters.addAll([
           Parameter((b) => b
-            ..name = '_context'
+            ..name = FunctionParameters
+                .nonUserDefinedNames[_buildContextRef.symbol!]!
             ..type = _buildContextRef),
-        )
+          if (hasWidgetRefParameter)
+            Parameter((b) => b
+              ..name =
+                  FunctionParameters.nonUserDefinedNames[_widgetRefRef.symbol!]!
+              ..type = _widgetRefRef),
+        ])
         ..body = CodeExpression(Code(functionName))
             .call(
                 positional,

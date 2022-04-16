@@ -77,6 +77,35 @@ class WithContextThenKey extends StatelessWidget {
 '''));
     });
 
+    test('context then key then arg', () async {
+      await _expect('withContextThenKeyThenOneArg', completion('''
+class WithContextThenKeyThenOneArg extends StatelessWidget {
+  const WithContextThenKeyThenOneArg(this.foo, {required Key key})
+      : super(key: key);
+
+  final int foo;
+
+  @override
+  Widget build(BuildContext _context) =>
+      withContextThenKeyThenOneArg(_context, key!, foo);
+}
+'''));
+    });
+
+    test('context then context', () async {
+      await _expect('withContextThenContext', completion('''
+class WithContextThenContext extends StatelessWidget {
+  const WithContextThenContext(this.context2, {Key? key}) : super(key: key);
+
+  final BuildContext context2;
+
+  @override
+  Widget build(BuildContext _context) =>
+      withContextThenContext(_context, context2);
+}
+'''));
+    });
+
     test('key then context', () async {
       await _expect('withKeyThenContext', completion('''
 class WithKeyThenContext extends StatelessWidget {
@@ -84,6 +113,34 @@ class WithKeyThenContext extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => withKeyThenContext(key!, _context);
+}
+'''));
+    });
+
+    test('key then context then arg', () async {
+      await _expect('withKeyThenContextThenOneArg', completion('''
+class WithKeyThenContextThenOneArg extends StatelessWidget {
+  const WithKeyThenContextThenOneArg(this.foo, {required Key key})
+      : super(key: key);
+
+  final int foo;
+
+  @override
+  Widget build(BuildContext _context) =>
+      withKeyThenContextThenOneArg(key!, _context, foo);
+}
+'''));
+    });
+
+    test('key then key', () async {
+      await _expect('withKeyThenKey', completion('''
+class WithKeyThenKey extends StatelessWidget {
+  const WithKeyThenKey(this.key2, {Key? key}) : super(key: key);
+
+  final Key key2;
+
+  @override
+  Widget build(BuildContext _context) => withKeyThenKey(key, key2);
 }
 '''));
     });
@@ -183,6 +240,76 @@ class HookExample extends HookWidget {
 
   @override
   Widget build(BuildContext _context) => hookExample();
+}
+'''));
+    });
+
+    test('consumer hook widget', () async {
+      await _expect('hookConsumerExample', completion('''
+class HookConsumerExample extends HookConsumerWidget {
+  const HookConsumerExample({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context, WidgetRef _ref) => hookConsumerExample();
+}
+'''));
+    });
+
+    test('consumer hook widget with WidgetRef', () async {
+      await _expect('hookConsumerExampleWithRef', completion('''
+class HookConsumerExampleWithRef extends HookConsumerWidget {
+  const HookConsumerExampleWithRef({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context, WidgetRef _ref) =>
+      hookConsumerExampleWithRef(_ref);
+}
+'''));
+    });
+
+    test('consumer hook widget with WidgetRef and BuildContext', () async {
+      await _expect('hookConsumerExampleWithRefAndContext', completion('''
+class HookConsumerExampleWithRefAndContext extends HookConsumerWidget {
+  const HookConsumerExampleWithRefAndContext({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context, WidgetRef _ref) =>
+      hookConsumerExampleWithRefAndContext(_ref, _context);
+}
+'''));
+    });
+
+    test('consumer widget', () async {
+      await _expect('consumerExample', completion('''
+class ConsumerExample extends ConsumerWidget {
+  const ConsumerExample({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context, WidgetRef _ref) => consumerExample();
+}
+'''));
+    });
+
+    test('consumer widget with WidgetRef', () async {
+      await _expect('consumerExampleWithRef', completion('''
+class ConsumerExampleWithRef extends ConsumerWidget {
+  const ConsumerExampleWithRef({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context, WidgetRef _ref) =>
+      consumerExampleWithRef(_ref);
+}
+'''));
+    });
+
+    test('consumer widget with WidgetRef and BuildContext', () async {
+      await _expect('consumerExampleWithRefAndContext', completion('''
+class ConsumerExampleWithRefAndContext extends ConsumerWidget {
+  const ConsumerExampleWithRefAndContext({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context, WidgetRef _ref) =>
+      consumerExampleWithRefAndContext(_ref, _context);
 }
 '''));
     });
@@ -400,6 +527,22 @@ class CustomHookWidget extends HookWidget {
 }
 '''));
       });
+    });
+
+    group('annotations', () {
+      test('annotation', () async {
+        await _expect('annotation', completion('''
+class Annotation extends StatelessWidget {
+  const Annotation({Key? key, @TestAnnotation() this.foo = 42})
+      : super(key: key);
+
+  final int foo;
+
+  @override
+  Widget build(BuildContext _context) => annotation(foo: foo);
+}
+'''));
+      });
 
       test('stateless widget', () async {
         await _expect('statelessWidgetWithCustomName', completion('''
@@ -409,6 +552,34 @@ class CustomStatelessWidget extends StatelessWidget {
   @override
   Widget build(BuildContext _context) =>
       statelessWidgetWithCustomName(_context);
+}
+'''));
+      });
+
+      test('annotationParameter', () async {
+        await _expect('annotationParameter', completion('''
+class AnnotationParameter extends StatelessWidget {
+  const AnnotationParameter({Key? key, @TestAnnotation('Test') this.foo = 42})
+      : super(key: key);
+
+  final int foo;
+
+  @override
+  Widget build(BuildContext _context) => annotationParameter(foo: foo);
+}
+'''));
+      });
+
+      test('annotationConstant', () async {
+        await _expect('annotationConstant', completion('''
+class AnnotationConstant extends StatelessWidget {
+  const AnnotationConstant({Key? key, @testAnnotation this.foo = 42})
+      : super(key: key);
+
+  final int foo;
+
+  @override
+  Widget build(BuildContext _context) => annotationConstant(foo: foo);
 }
 '''));
       });

@@ -1,6 +1,7 @@
 // ignore_for_file: implicit_dynamic_parameter, unused_element, private elements are used by the tests
 
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
+
 import 'fake_flutter.dart';
 
 @swidget
@@ -56,11 +57,18 @@ Widget withContextThenKeyThenOneArg(BuildContext context, Key key, int foo) =>
     Container();
 
 @swidget
+Widget withContextThenContext(BuildContext context, BuildContext context2) =>
+    Container();
+
+@swidget
 Widget withKeyThenContext(Key key, BuildContext context) => Container();
 
 @swidget
 Widget withKeyThenContextThenOneArg(Key key, BuildContext context, int foo) =>
     Container();
+
+@swidget
+Widget withKeyThenKey(Key? key, Key key2) => Container();
 
 @swidget
 Widget whateverThenContext(int foo, BuildContext bar) => Container();
@@ -84,6 +92,27 @@ Widget withPositionalOptional(int? foo) => Container();
 
 @hwidget
 Widget hookExample() => Container();
+
+@hcwidget
+Widget hookConsumerExample() => Container();
+
+@hcwidget
+Widget hookConsumerExampleWithRef(WidgetRef ref) => Container();
+
+@hcwidget
+Widget hookConsumerExampleWithRefAndContext(
+        WidgetRef ref, BuildContext context) =>
+    Container();
+
+@cwidget
+Widget consumerExample() => Container();
+
+@cwidget
+Widget consumerExampleWithRef(WidgetRef ref) => Container();
+
+@cwidget
+Widget consumerExampleWithRefAndContext(WidgetRef ref, BuildContext context) =>
+    Container();
 
 typedef Typedef<T> = void Function(T);
 
@@ -154,3 +183,21 @@ Widget hookWidgetWithCustomName(BuildContext ctx) => Container();
   name: 'CustomStatelessWidget',
 )
 Widget statelessWidgetWithCustomName(BuildContext ctx) => Container();
+
+class TestAnnotation {
+  const TestAnnotation([this.argument = 'default']);
+
+  final String argument;
+}
+
+@swidget
+Widget annotation({@TestAnnotation() int foo = 42}) => Container();
+
+@swidget
+Widget annotationParameter({@TestAnnotation('Test') int foo = 42}) =>
+    Container();
+
+const testAnnotation = TestAnnotation('Another test');
+
+@swidget
+Widget annotationConstant({@testAnnotation int foo = 42}) => Container();

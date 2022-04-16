@@ -10,25 +10,6 @@ Widget foo(int value) {
   return Container();
 }
 
-@swidget
-Widget example(
-  int foo,
-  String bar, {
-  ValueChanged<bool>? onChanged,
-}) {
-  return Container();
-}
-
-@FunctionalWidget(name: 'Example2')
-Widget _example(BuildContext ctx) {
-  return Container();
-}
-
-@swidget
-Widget __privateStatelessWidget(BuildContext ctx) {
-  return Container();
-}
-
 void main() => runApp(
       // we use the generated class
       const Foo(42),

@@ -50,13 +50,6 @@ class Example2 extends StatelessWidget {
   Widget build(BuildContext _context) => _example(_context);
 }
 
-class _PrivateHook extends HookWidget {
-  const _PrivateHook({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext _context) => __privateHook(_context);
-}
-
 class _PrivateStatelessWidget extends StatelessWidget {
   const _PrivateStatelessWidget({Key? key}) : super(key: key);
 

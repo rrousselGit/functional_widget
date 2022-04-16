@@ -54,8 +54,8 @@ class FunctionalWidgetGenerator
     }
     var out = element.name ?? '';
 
-    // as discussed, let's remove first underscore in order to allow for private fns
-    // to become public (https://github.com/rrousselGit/functional_widget/pull/97#discussion_r720210353)
+    // We remove the fist _ such that _widget becomes Widget and __widget
+    // becomes _Widget, giving some control over the privacy of the generated class
     if (out.isNotEmpty && out[0] == '_') {
       out = out.substring(1);
     }
@@ -106,7 +106,7 @@ class FunctionalWidgetGenerator
 
     if (className == function.name) {
       throw InvalidGenerationSourceError(
-        'The function name must start with a lowercase character. Alternatively, the function can be private',
+        'The function name must start with a lowercase character.',
         element: function,
       );
     }

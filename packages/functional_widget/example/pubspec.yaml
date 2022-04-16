@@ -6,7 +6,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_hooks: ^0.18.0
   functional_widget_annotation:
 
 dev_dependencies:

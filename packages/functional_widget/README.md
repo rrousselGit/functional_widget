@@ -217,20 +217,6 @@ There are a few ways to do so:
   Widget example(int foo, String bar) => Container();
   ```
 
-- With parameters on the `@FunctionalWidget` decorator that will export the generated widget for private functions:
-
-  ```dart
-  @FunctionalWidget(public: true)
-  Widget _privateButExportedExample(int foo, String bar) => Container();
-  ```
-
-- With parameters on the `@FunctionalWidget` decorator that will replace the name with a custom name:
-
-  ```dart
-  @FunctionalWidget(name: "CustomName")
-  Widget willReceiveCustomNameExample(int foo, String bar) => Container();
-  ```
-
 - With the shorthand `@hwidget` decorator:
 
   ```dart

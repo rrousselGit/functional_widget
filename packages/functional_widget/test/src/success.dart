@@ -1,4 +1,4 @@
-// ignore_for_file: implicit_dynamic_parameter
+// ignore_for_file: implicit_dynamic_parameter, unused_element, private elements are used by the tests
 
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'fake_flutter.dart';

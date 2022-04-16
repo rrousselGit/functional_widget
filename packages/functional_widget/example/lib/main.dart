@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 part 'main.g.dart';
 
@@ -22,11 +21,6 @@ Widget example(
 
 @FunctionalWidget(name: 'Example2')
 Widget _example(BuildContext ctx) {
-  return Container();
-}
-
-@hwidget
-Widget __privateHook(BuildContext ctx) {
   return Container();
 }
 

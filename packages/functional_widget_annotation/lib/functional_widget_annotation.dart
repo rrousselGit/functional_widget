@@ -31,7 +31,12 @@ class FunctionalWidget {
   /// Defines if the generated widget should emit diagnostics informations.
   final bool? debugFillProperties;
 
-  /// Name specifies the widget's name
+  /// Defines the name of the generated widget.
+  ///
+  /// By default, uses the function name, such that:
+  ///
+  /// - `Widget _myWidget(...)` generates `class MyWidget`
+  /// - `Widget __myWidget(...)` generates `class _MyWidget`
   final String? name;
 }
 

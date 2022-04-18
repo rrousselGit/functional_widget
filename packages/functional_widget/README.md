@@ -320,3 +320,11 @@ Widget __foo(BuildContext context, int value, { int value2 }) {
 
 _Foo(42, value2: 24);
 ```
+
+## Sponsors
+
+<p align="center">
+  <a href="https://raw.githubusercontent.com/rrousselGit/freezed/master/sponsorkit/sponsors.svg">
+    <img src='https://raw.githubusercontent.com/rrousselGit/freezed/master/sponsorkit/sponsors.svg'/>
+  </a>
+</p>

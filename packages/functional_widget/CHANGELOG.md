@@ -1,3 +1,7 @@
+## 0.10.1
+
+Upgrade analyzer to ^5.2.0
+
 ## 0.10.0
 
 - Changed the logic for how the generated widget name is determined. (thanks to @doejon)

@@ -259,7 +259,7 @@ class FunctionalWidgetGenerator
 
   String? _tryParseFunctionToDiagnostic(
       ParameterElement element, String? propertyType) {
-    final kind = element.type.element?.kind;
+    final kind = element.type.element2?.kind;
     if (kind == ElementKind.FUNCTION ||
         kind == ElementKind.FUNCTION_TYPE_ALIAS ||
         kind == ElementKind.GENERIC_FUNCTION_TYPE) {
@@ -271,7 +271,7 @@ class FunctionalWidgetGenerator
 
   String? _tryParseClassToEnumDiagnostic(
       ParameterElement element, String? propertyType) {
-    if (element.type.element is EnumElement) {
+    if (element.type.element2 is EnumElement) {
       propertyType =
           'EnumProperty<${element.type.getDisplayString(withNullability: true)}>';
     }

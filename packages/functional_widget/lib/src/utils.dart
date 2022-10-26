@@ -82,5 +82,5 @@ T? _parseEnum<T>(ConstantReader reader, List<T> values) {
     final valueName = value.toString().split('.').last;
     if (valueName == name) return value;
   }
-  throw FallThroughError();
+  throw FormatException('Failed to parse the enum as $T');
 }

@@ -7,7 +7,10 @@ part of 'main.dart';
 // **************************************************************************
 
 class Foo extends StatelessWidget {
-  const Foo(this.value, {Key? key}) : super(key: key);
+  const Foo(
+    this.value, {
+    Key? key,
+  }) : super(key: key);
 
   final int value;
 

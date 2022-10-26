@@ -129,7 +129,7 @@ Future<FunctionType> _functionTypedElementToFunctionType(
   final _requiredParameterReferences =
       await _mapOrListParameterReferences<Reference>(
     element.parameters,
-    (p) => p.isNotOptional,
+    (p) => p.isRequired,
     (p) => p.type!,
     buildStep,
   );

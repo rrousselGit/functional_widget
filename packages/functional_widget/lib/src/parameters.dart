@@ -162,15 +162,15 @@ Future<FunctionType> _functionTypedElementToFunctionType(
 Future<Iterable<T>> _mapOrListParameterReferences<T>(
   List<ParameterElement> params,
   bool Function(ParameterElement param) filterFunction,
-  T Function(Parameter p) mapOrListfunction,
+  T Function(Parameter p) mapOrListFunction,
   BuildStep buildStep,
 ) async {
   final parsedParams = await Future.wait(
     params.where(filterFunction).map((p) => _parseParameter(p, buildStep)),
   );
-  final mapOrListParamaterReferences = parsedParams.map<T>(mapOrListfunction);
+  final mapOrListParameterReferences = parsedParams.map<T>(mapOrListFunction);
 
-  return mapOrListParamaterReferences;
+  return mapOrListParameterReferences;
 }
 
 Future<String> tryParseDynamicType(

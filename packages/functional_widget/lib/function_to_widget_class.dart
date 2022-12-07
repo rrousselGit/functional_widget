@@ -154,7 +154,7 @@ class FunctionalWidgetGenerator
         b
           ..name = className
           ..types.addAll(
-              _parseTypeParemeters(functionElement.typeParameters).toList())
+              _parseTypeParameters(functionElement.typeParameters).toList())
           ..extend = _typeToRefMap[widgetType]
           ..fields.addAll(_paramsToFields(userDefined,
               doc: functionElement.documentationComment))
@@ -312,7 +312,7 @@ class FunctionalWidgetGenerator
     );
   }
 
-  Iterable<Reference> _parseTypeParemeters(
+  Iterable<Reference> _parseTypeParameters(
     List<TypeParameterElement> typeParameters,
   ) {
     return typeParameters.map((e) {

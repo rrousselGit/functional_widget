@@ -61,10 +61,34 @@ Widget withContextThenContext(BuildContext context, BuildContext context2) =>
     Container();
 
 @swidget
+Widget withThemeData(ThemeData theme) => Container();
+
+@swidget
 Widget withKeyThenContext(Key key, BuildContext context) => Container();
 
 @swidget
+Widget withContextThenThemeData(BuildContext context, ThemeData theme) =>
+    Container();
+
+@swidget
+Widget withThemeDataThenContext(ThemeData theme, BuildContext context) =>
+    Container();
+
+@swidget
+Widget withKeyThenThemeData(Key key, ThemeData theme) => Container();
+
+@swidget
+Widget withKeyThenContextThenThemeData(
+        Key key, BuildContext context, ThemeData theme) =>
+    Container();
+
+@swidget
 Widget withKeyThenContextThenOneArg(Key key, BuildContext context, int foo) =>
+    Container();
+
+@swidget
+Widget withKeyThenContextThenThemeDataThenOneArg(
+        Key key, BuildContext context, ThemeData theme, int foo) =>
     Container();
 
 @swidget
@@ -75,6 +99,9 @@ Widget whateverThenContext(int foo, BuildContext bar) => Container();
 
 @swidget
 Widget whateverThenKey(int foo, Key bar) => Container();
+
+@swidget
+Widget whateverThenThemeData(int foo, ThemeData bar) => Container();
 
 /// Hello
 /// World

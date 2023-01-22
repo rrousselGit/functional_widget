@@ -7,3 +7,5 @@ class BuildContext {}
 class Key {}
 
 class WidgetRef {}
+
+class ThemeData {}

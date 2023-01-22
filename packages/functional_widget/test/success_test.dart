@@ -122,6 +122,17 @@ class WithContextThenContext extends StatelessWidget {
 '''));
     });
 
+    test('theme data', () async {
+      await _expect('withThemeData', completion('''
+class WithThemeData extends StatelessWidget {
+  const WithThemeData({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => withThemeData(Theme.of(_context));
+}
+'''));
+    });
+
     test('key then context', () async {
       await _expect('withKeyThenContext', completion('''
 class WithKeyThenContext extends StatelessWidget {
@@ -131,6 +142,63 @@ class WithKeyThenContext extends StatelessWidget {
   Widget build(BuildContext _context) => withKeyThenContext(
         key!,
         _context,
+      );
+}
+'''));
+    });
+
+    test('context then theme data', () async {
+      await _expect('withContextThenThemeData', completion('''
+class WithContextThenThemeData extends StatelessWidget {
+  const WithContextThenThemeData({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => withContextThenThemeData(
+        _context,
+        Theme.of(_context),
+      );
+}
+'''));
+    });
+
+    test('theme data then context', () async {
+      await _expect('withThemeDataThenContext', completion('''
+class WithThemeDataThenContext extends StatelessWidget {
+  const WithThemeDataThenContext({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => withThemeDataThenContext(
+        Theme.of(_context),
+        _context,
+      );
+}
+'''));
+    });
+
+    test('key then theme data', () async {
+      await _expect('withKeyThenThemeData', completion('''
+class WithKeyThenThemeData extends StatelessWidget {
+  const WithKeyThenThemeData({required Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => withKeyThenThemeData(
+        key!,
+        Theme.of(_context),
+      );
+}
+'''));
+    });
+
+    test('key then context then theme data', () async {
+      await _expect('withKeyThenContextThenThemeData', completion('''
+class WithKeyThenContextThenThemeData extends StatelessWidget {
+  const WithKeyThenContextThenThemeData({required Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext _context) => withKeyThenContextThenThemeData(
+        key!,
+        _context,
+        Theme.of(_context),
       );
 }
 '''));
@@ -150,6 +218,28 @@ class WithKeyThenContextThenOneArg extends StatelessWidget {
   Widget build(BuildContext _context) => withKeyThenContextThenOneArg(
         key!,
         _context,
+        foo,
+      );
+}
+'''));
+    });
+
+    test('key then context then theme data then arg', () async {
+      await _expect('withKeyThenContextThenThemeDataThenOneArg', completion('''
+class WithKeyThenContextThenThemeDataThenOneArg extends StatelessWidget {
+  const WithKeyThenContextThenThemeDataThenOneArg(
+    this.foo, {
+    required Key key,
+  }) : super(key: key);
+
+  final int foo;
+
+  @override
+  Widget build(BuildContext _context) =>
+      withKeyThenContextThenThemeDataThenOneArg(
+        key!,
+        _context,
+        Theme.of(_context),
         foo,
       );
 }
@@ -212,6 +302,28 @@ class WhateverThenKey extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => whateverThenKey(
+        foo,
+        bar,
+      );
+}
+'''));
+    });
+
+    test('whatever then theme data', () async {
+      await _expect('whateverThenThemeData', completion('''
+class WhateverThenThemeData extends StatelessWidget {
+  const WhateverThenThemeData(
+    this.foo,
+    this.bar, {
+    Key? key,
+  }) : super(key: key);
+
+  final int foo;
+
+  final ThemeData bar;
+
+  @override
+  Widget build(BuildContext _context) => whateverThenThemeData(
         foo,
         bar,
       );

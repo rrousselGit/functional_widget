@@ -191,12 +191,18 @@ class FunctionalWidgetGenerator
   List<Expression> _computeBuildPositionalParametersExpression(
       FunctionParameters parameters) {
     return <Expression>[
-      ...parameters.nonUserDefinedRenamed
-          .map((p) => CodeExpression(Code(p.name))),
+      ...parameters.nonUserDefinedRenamed.map(_computeParameterExpression),
       ...parameters.userDefined
           .where((p) => !p.named)
           .map((p) => CodeExpression(Code(p.name)))
     ];
+  }
+
+  CodeExpression _computeParameterExpression(Parameter paramater) {
+    if (paramater.type?.symbol == 'ThemeData') {
+      return const CodeExpression(Code('Theme.of(_context)'));
+    }
+    return CodeExpression(Code(paramater.name));
   }
 
   Future<Method?> _overrideDebugFillProperties(List<Parameter> userFields,

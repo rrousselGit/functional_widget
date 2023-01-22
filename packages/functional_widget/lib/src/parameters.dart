@@ -14,12 +14,14 @@ class FunctionParameters {
     'Key?',
     'BuildContext',
     'WidgetRef',
+    'ThemeData',
   ];
   static const nonUserDefinedNames = {
     'Key': 'key!',
     'Key?': 'key',
     'BuildContext': '_context',
     'WidgetRef': '_ref',
+    'ThemeData': 'theme',
   };
 
   static Future<FunctionParameters> parseFunctionElement(

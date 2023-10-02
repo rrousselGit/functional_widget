@@ -1,3 +1,7 @@
+## Unreleased patch
+
+Support analyzer 6.0.0
+
 ## 0.10.1
 
 Upgrade analyzer to ^5.2.0

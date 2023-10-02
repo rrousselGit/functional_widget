@@ -24,6 +24,7 @@ class IntTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => intTest(a);
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -45,6 +46,7 @@ class DoubleTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => doubleTest(a);
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -66,6 +68,7 @@ class StringTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => stringTest(a);
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -87,6 +90,7 @@ class EnumTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => enumTest(a);
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -108,6 +112,7 @@ class ObjectTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => objectTest(a);
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -129,6 +134,7 @@ class FunctionTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => functionTest(a);
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -152,6 +158,7 @@ class TypedefTest<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => typedefTest<T>(a);
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -173,6 +180,7 @@ class DynamicTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => dynamicTest(a);
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);

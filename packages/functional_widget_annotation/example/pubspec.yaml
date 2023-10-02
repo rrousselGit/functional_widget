@@ -6,8 +6,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  functional_widget_annotation:
 
 dev_dependencies:
+  functional_widget:
   build_runner: ^2.0.0
 
 dependency_overrides:

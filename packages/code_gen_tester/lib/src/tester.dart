@@ -10,6 +10,7 @@ import 'package:code_gen_tester/src/analysis_utils.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:glob/glob.dart';
+import 'package:package_config/src/package_config.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 
@@ -185,6 +186,9 @@ class _BuildStepImpl implements BuildStep {
 
   @override
   Iterable<AssetId> get allowedOutputs => throw UnimplementedError();
+
+  @override
+  Future<PackageConfig> get packageConfig => throw UnimplementedError();
 }
 
 class _ResolverImpl implements Resolver {

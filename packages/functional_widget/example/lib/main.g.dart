@@ -16,6 +16,7 @@ class Foo extends StatelessWidget {
 
   @override
   Widget build(BuildContext _context) => foo(value);
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);

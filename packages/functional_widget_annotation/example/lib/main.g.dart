@@ -3,11 +3,11 @@
 part of 'main.dart';
 
 // **************************************************************************
-// Generator: FunctionalWidget
+// FunctionalWidgetGenerator
 // **************************************************************************
 
 class Foo extends StatelessWidget {
-  const Foo({Key key}) : super(key: key);
+  const Foo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext _context) => foo();

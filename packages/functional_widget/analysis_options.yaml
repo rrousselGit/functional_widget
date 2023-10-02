@@ -16,7 +16,6 @@ linter:
     - avoid_relative_lib_imports
     - avoid_renaming_method_parameters
     - avoid_return_types_on_setters
-    - avoid_returning_null
     - avoid_types_as_parameter_names
     - avoid_unused_constructor_parameters
     - await_only_futures
@@ -32,10 +31,8 @@ linter:
     - empty_statements
     - hash_and_equals
     - implementation_imports
-    - iterable_contains_unrelated_type
     - library_names
     - library_prefixes
-    - list_remove_unrelated_type
     - no_adjacent_strings_in_list
     - no_duplicate_case_values
     - non_constant_identifier_names

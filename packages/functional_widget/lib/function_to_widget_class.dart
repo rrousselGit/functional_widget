@@ -254,6 +254,7 @@ class FunctionalWidgetGenerator
   Future<String> _getFallbackElementDiagnostic(
       ParameterElement element, BuildStep buildStep) async {
     final parsedDynamicType = await tryParseDynamicType(element, buildStep);
+    // ignore: deprecated_member_use, Needed to suppor both 5.0.0 and 6.0.0
     return 'DiagnosticsProperty<${element.type.isDynamic ? parsedDynamicType : element.type.getDisplayString(withNullability: true)}>';
   }
 

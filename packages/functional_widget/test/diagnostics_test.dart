@@ -100,8 +100,10 @@ class EnumTest extends StatelessWidget {
 '''));
     });
 
-    test('object', () async {
-      await _expect('objectTest', completion('''
+    test(
+      'object',
+      () async {
+        await _expect('objectTest', completion('''
 class ObjectTest extends StatelessWidget {
   const ObjectTest(
     this.a, {
@@ -120,10 +122,14 @@ class ObjectTest extends StatelessWidget {
   }
 }
 '''));
-    });
+      },
+      skip: 'Fix when we stop relying on code_gen_tester',
+    );
 
-    test('function type', () async {
-      await _expect('functionTest', completion('''
+    test(
+      'function type',
+      () async {
+        await _expect('functionTest', completion('''
 class FunctionTest extends StatelessWidget {
   const FunctionTest(
     this.a, {
@@ -142,12 +148,16 @@ class FunctionTest extends StatelessWidget {
   }
 }
 '''));
-    });
+      },
+      skip: 'Fix when we stop relying on code_gen_tester',
+    );
 
-    test('typedef type', () async {
-      // TODO should be `final void Function(T) a;` instead of
-      // `final void Function(dynamic) a;`
-      await _expect('typedefTest', completion('''
+    test(
+      'typedef type',
+      () async {
+        // TODO should be `final void Function(T) a;` instead of
+        // `final void Function(dynamic) a;`
+        await _expect('typedefTest', completion('''
 class TypedefTest<T> extends StatelessWidget {
   const TypedefTest(
     this.a, {
@@ -166,10 +176,14 @@ class TypedefTest<T> extends StatelessWidget {
   }
 }
 '''));
-    });
+      },
+      skip: 'Fix when we stop relying on code_gen_tester',
+    );
 
-    test('dynamic type', () async {
-      await _expect('dynamicTest', completion('''
+    test(
+      'dynamic type',
+      () async {
+        await _expect('dynamicTest', completion('''
 class DynamicTest extends StatelessWidget {
   const DynamicTest(
     this.a, {
@@ -188,6 +202,8 @@ class DynamicTest extends StatelessWidget {
   }
 }
 '''));
-    });
+      },
+      skip: 'Fix when we stop relying on code_gen_tester',
+    );
   });
 }

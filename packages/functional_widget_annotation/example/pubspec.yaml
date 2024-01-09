@@ -1,5 +1,7 @@
 name: functional_widget_annotation_example
 description: A new Flutter project.
+publish_to: none
+
 environment:
   sdk: ^2.12.0
 

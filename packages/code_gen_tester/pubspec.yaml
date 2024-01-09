@@ -1,5 +1,6 @@
 name: code_gen_tester
 version: 0.0.1
+publish_to: none
 
 environment:
   sdk: ^2.12.0

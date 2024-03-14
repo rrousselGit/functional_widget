@@ -158,6 +158,8 @@ Example:
 ```dart
 import 'package:flutter/foundation.dart';
 
+part 'example.g.dart';
+
 @swidget
 Widget example(int foo, String bar) => Container();
 ```

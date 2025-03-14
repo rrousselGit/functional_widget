@@ -116,7 +116,7 @@ Future<Reference> _typeToReference(
     final t = await _functionTypedElementToFunctionType(type, buildStep);
     return t.type;
   }
-  final displayName = type.getDisplayString(withNullability: true);
+  final displayName = type.getDisplayString();
   return refer(displayName);
 }
 

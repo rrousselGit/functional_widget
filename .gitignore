@@ -17,3 +17,4 @@ coverage/
 *.iml
 .idea
 pubspec.lock
+pubspec_overrides.yaml

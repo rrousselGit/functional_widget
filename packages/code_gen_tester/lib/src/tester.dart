@@ -9,6 +9,7 @@ import 'package:crypto/crypto.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:glob/glob.dart';
 import 'package:package_config/src/package_config.dart';
+import 'package:pub_semver/pub_semver.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 
@@ -64,7 +65,7 @@ abstract class SourceGenTester {
 
 class _SourceGenTesterImpl implements SourceGenTester {
   final LibraryReader library;
-  final formatter = DartFormatter();
+  final formatter = DartFormatter(languageVersion: Version(2, 12, 0));
 
   _SourceGenTesterImpl(this.library);
 

@@ -100,8 +100,7 @@ Future<Parameter> _parseParameter(
 
 Future<Reference> _parameterToReference(
     ParameterElement element, BuildStep buildStep) async {
-  // ignore: deprecated_member_use, Needed to suppor both 5.0.0 and 6.0.0
-  if (element.type.isDynamic) {
+  if (element.type is element_type.DynamicType) {
     return refer(await tryParseDynamicType(element, buildStep));
   }
   final typeToReference = await _typeToReference(element.type, buildStep);

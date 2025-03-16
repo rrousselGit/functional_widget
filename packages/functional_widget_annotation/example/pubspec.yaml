@@ -3,7 +3,9 @@ description: A new Flutter project.
 publish_to: none
 
 environment:
-  sdk: ^2.12.0
+  sdk: ^3.6.0
+
+resolution: workspace
 
 dependencies:
   flutter:
@@ -13,9 +15,3 @@ dependencies:
 dev_dependencies:
   functional_widget:
   build_runner: ^2.0.0
-
-dependency_overrides:
-  functional_widget_annotation:
-    path: ../
-  functional_widget:
-    path: ../../functional_widget

@@ -29,6 +29,9 @@ jobs:
       - name: Add pub cache to PATH
         run: echo "PUB_CACHE="$HOME/.pub-cache"" >> $GITHUB_ENV
 
+      - name: Install dependencies
+        run: flutter pub get
+
       - name: Check format
         run: dart format --set-exit-if-changed .
 

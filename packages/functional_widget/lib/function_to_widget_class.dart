@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:functional_widget/src/parameters.dart';
@@ -253,8 +254,7 @@ class FunctionalWidgetGenerator
   Future<String> _getFallbackElementDiagnostic(
       ParameterElement element, BuildStep buildStep) async {
     final parsedDynamicType = await tryParseDynamicType(element, buildStep);
-    // ignore: deprecated_member_use, Needed to suppor both 5.0.0 and 6.0.0
-    return 'DiagnosticsProperty<${element.type.isDynamic ? parsedDynamicType : element.type.getDisplayString(withNullability: true)}>';
+    return 'DiagnosticsProperty<${element.type is DynamicType ? parsedDynamicType : element.type.getDisplayString()}>';
   }
 
   String? _tryParseFunctionToDiagnostic(

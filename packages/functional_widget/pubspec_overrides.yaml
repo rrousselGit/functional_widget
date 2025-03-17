@@ -1,3 +1,0 @@
-dependency_overrides:
-  functional_widget_annotation:
-    path: ../functional_widget_annotation

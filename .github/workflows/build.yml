@@ -14,12 +14,12 @@ jobs:
     strategy:
       matrix:
         channel:
-          - master
+          - stable
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           channel: ${{ matrix.channel }}
 
@@ -29,16 +29,15 @@ jobs:
       - name: Add pub cache to PATH
         run: echo "PUB_CACHE="$HOME/.pub-cache"" >> $GITHUB_ENV
 
-      - run: dart pub global activate melos
-
       - name: Install dependencies
-        run: melos bootstrap
+        run: flutter pub get
 
       - name: Check format
         run: dart format --set-exit-if-changed .
 
       - name: Analyze
-        run: melos exec -- "flutter analyze"
+        run: flutter analyze
 
       - name: Run tests
-        run: melos exec --scope="functional_widget" -- "dart test"
+        run: dart test -r github
+        working-directory: packages/functional_widget

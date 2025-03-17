@@ -23,12 +23,6 @@ jobs:
         with:
           channel: ${{ matrix.channel }}
 
-      - name: Check dart version
-        run: dart --version
-
-      - name: Check flutter version
-        run: flutter --version
-
       - name: Add pub cache bin to PATH
         run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
 

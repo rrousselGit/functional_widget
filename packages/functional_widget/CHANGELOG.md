@@ -1,4 +1,4 @@
-## Unreleased 0.10.3
+## 0.10.3 - 2025-03-24
 
 Upgrade dependencies (thanks to @qwezey)
 

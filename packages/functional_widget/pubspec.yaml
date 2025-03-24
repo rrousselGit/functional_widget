@@ -4,7 +4,9 @@ homepage: https://github.com/rrousselGit/functional_widget/tree/master/packages/
 version: 0.10.2
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ^3.6.0
+
+resolution: workspace
 
 dependencies:
   analyzer: ">=6.9.0 <8.0.0"
@@ -21,4 +23,3 @@ dev_dependencies:
   dart_style: ^3.0.0
   build_runner: ^2.0.0
   code_gen_tester:
-    path: ../code_gen_tester

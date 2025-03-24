@@ -2,7 +2,7 @@ import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'fake_flutter.dart';
 
 @swidget
-final closure = () => Container();
+final closure = Container.new;
 
 @swidget
 external Widget externalTest();

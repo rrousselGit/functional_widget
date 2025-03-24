@@ -1,3 +1,7 @@
+## Unreleased 0.10.3
+
+Upgrade dependencies (thanks to @qwezey)
+
 ## 0.10.2 - 2024-01-09
 
 Support analyzer 6.0.0

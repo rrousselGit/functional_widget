@@ -1,7 +1,12 @@
-name: melos_root
+name: _
 publish_to: none
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
-dev_dependencies:
-  melos: ^3.0.0
+  sdk: ^3.6.0
+
+workspace:
+  - packages/code_gen_tester
+  - packages/functional_widget
+  - packages/functional_widget/example
+  - packages/functional_widget_annotation
+  - packages/functional_widget_annotation/example

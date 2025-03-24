@@ -4,7 +4,9 @@ homepage: https://github.com/rrousselGit/functional_widget/tree/master/packages/
 version: 0.10.0
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ^3.6.0
+
+resolution: workspace
 
 dev_dependencies:
   pedantic: ^1.9.2
